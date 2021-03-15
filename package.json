@@ -10,9 +10,16 @@
     "start": "nuxt start"
   },
   "dependencies": {
-    "nuxt": "^2.0.0"
+    "@tailwindcss/forms": "^0.2.1",
+    "nuxt": "^2.0.0",
+    "vkontakte-api": "https://github.com/lynx-r/vk-api.git#dist"
   },
   "devDependencies": {
-    "nodemon": "^2.0.7"
+    "@nuxtjs/tailwindcss": "^3.4.3",
+    "@tailwindcss/postcss7-compat": "^2.0.3",
+    "autoprefixer": "^9",
+    "nodemon": "^2.0.7",
+    "postcss": "^7",
+    "tailwindcss": "npm:@tailwindcss/postcss7-compat"
   }
 }
