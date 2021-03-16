@@ -24,7 +24,7 @@ export const actions = {
         secretAccessKey: s3SecretAccessKey
       }, region: s3Region
     });
-    commit('setS3', s3);
+    // commit('setS3', s3);
   },
 
   sendToS3(state, params) {

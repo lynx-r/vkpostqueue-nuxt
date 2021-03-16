@@ -45,6 +45,7 @@ export default {
   buildModules: ['@nuxtjs/tailwindcss', '@nuxtjs/composition-api'],
 
   serverMiddleware: [
+    "~/server-middleware/s3post",
     { path: "/api", handler: "~/server-middleware/rest.js" },
   ],
 

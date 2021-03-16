@@ -1,12 +1,15 @@
-const bodyParser = require('body-parser')
-const app = require('express')()
+const express = require('express');
+const {s3Client} = require('./_s3Client');
+const {PutObjectCommand} = require('@aws-sdk/client-s3');
+const app = express();
 
-app.use(bodyParser.json())
-app.all('/getJSON', (req, res) => {
-  res.json({ data: 'data' })
-})
-app.post('putPostToS3', (req, res) => {
 
-})
+app.use(express.json());
 
-module.exports = app
+app.post('/putPostToS3', async (req, res, next) => {
+  const params = req.body;
+  const d = await s3Client.send(new PutObjectCommand(params));
+  res.json(d);
+});
+
+module.exports = app;

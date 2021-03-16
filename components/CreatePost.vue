@@ -1,17 +1,17 @@
 <template>
   <div class="space-y-4 w-1/2 mb-4">
-<!--    <p v-if="$fetchState.pending">Fetching mountains...</p>-->
-<!--    <p v-else-if="$fetchState.error">An error occurred :(</p>-->
-<!--    <ul>-->
-<!--      <li v-for="todo in todos" :key="todo.text">-->
-<!--        <input :checked="todo.done" @change="toggle(todo)" type="checkbox">-->
-<!--        <span :class="{ done: todo.done }">{{ todo.text }}</span>-->
-<!--      </li>-->
-<!--      <li><input @keyup.enter="addTodo" placeholder="What needs to be done?"></li>-->
-<!--    </ul>-->
+    <!--    <p v-if="$fetchState.pending">Fetching mountains...</p>-->
+    <!--    <p v-else-if="$fetchState.error">An error occurred :(</p>-->
+    <!--    <ul>-->
+    <!--      <li v-for="todo in todos" :key="todo.text">-->
+    <!--        <input :checked="todo.done" @change="toggle(todo)" type="checkbox">-->
+    <!--        <span :class="{ done: todo.done }">{{ todo.text }}</span>-->
+    <!--      </li>-->
+    <!--      <li><input @keyup.enter="addTodo" placeholder="What needs to be done?"></li>-->
+    <!--    </ul>-->
     <div class="shadow flex flex-col justify-start p-6">
       <span class="w-min min-w-max">Введите запись на стену</span>
-      <textarea class="rounded text-pink-500 h-40" />
+      <textarea class="rounded text-pink-500 h-40"/>
     </div>
     <div class="shadow flex space-x-4 p-6">
       <div class="w-1/2">
@@ -55,10 +55,10 @@ export default defineNuxtConfig({
     }
   },
 
-  setup: (p) => {
+  setup: () => {
     const ctx = useContext()
 
-    const {s3Bucket} = ctx.$config
+    const {s3Bucket} = ctx['$config']
     // const vkApi = new VKAPI({
     //   isBrowser: true,
     //   accessToken: ''
@@ -84,14 +84,14 @@ export default defineNuxtConfig({
       return this.$store.getters.cnt
     },
 
-    todos () {
+    todos() {
       return this.$store.state.todos.list
     },
   },
 
   methods: {
 
-    addTodo (e) {
+    addTodo(e) {
       this.$store.commit('todos/add', e.target.value)
       e.target.value = ''
     },
@@ -99,8 +99,14 @@ export default defineNuxtConfig({
       console.log('upload')
       try {
         // todo service workers ?
-        let putParams = {Bucket: this.s3Bucket, Key: this.uploadMessage, Body: this.message}
-        this.sendToS3(putParams)
+        let putParams = JSON.stringify({Bucket: this.s3Bucket, Key: this.uploadMessage, Body: this.message})
+        const res = await fetch('/api/putPostToS3', {
+          body: putParams,
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'}
+        })
+        console.log(await res.json())
+        // this.sendToS3(putParams)
         // console.log(this.$store.state.s3Client.send(1))
         // console.log(this.s3.send)
         // console.log(this.counter)
