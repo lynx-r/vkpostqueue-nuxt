@@ -65,14 +65,9 @@ export default defineNuxtConfig({
     async upload() {
       console.log('upload')
       try {
-        // todo service workers ?
-        let putParams = JSON.stringify({Bucket: this.s3Bucket, Key: this.uploadMessage, Body: this.message})
-        const res = await fetch('/api/putPostToS3', {
-          body: putParams,
-          method: 'POST',
-          headers: {'Content-Type': 'application/json'}
-        })
-        console.log(await res.json())
+        let putParams = {Bucket: this.s3Bucket, Key: this.uploadMessage, Body: this.message}
+        const res = await this.$http.post('/api/putPostToS3', putParams)
+        console.log(res)
       } catch (err) {
         console.log('Error', err)
       }

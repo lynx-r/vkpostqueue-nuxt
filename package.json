@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.8.1",
+    "@nuxt/http": "^0.6.4",
     "@nuxtjs/composition-api": "^0.22.1",
     "express": "^4.17.1",
     "nuxt": "^2.15.3",
