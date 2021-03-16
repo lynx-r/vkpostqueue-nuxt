@@ -37,7 +37,8 @@ export default {
 
   http: {
     // HTTP options here
-    baseURL: process.env.baseUrl
+    baseURL: process.env.baseUrl,
+    browserBaseURL: process.env.browserBaseUrl
   },
 
   /*
@@ -64,6 +65,7 @@ export default {
 
   env: {
     baseUrl: process.env.VERCEL_URL || process.env.BASE_URL || 'http://127.0.0.1:3000',
+    browserBaseUrl: process.env.BROWSER_BASE_URL || 'http://127.0.0.1:3000',
   },
 
   publicRuntimeConfig: {
