@@ -38,7 +38,7 @@ export default {
   http: {
     // HTTP options here
     baseURL: process.env.baseUrl
-},
+  },
 
   /*
    ** Build configuration
