@@ -52,9 +52,9 @@ export default {
     '@nuxtjs/date-fns'
   ],
 
-  serverMiddleware: [
-    {path: '/api', handler: '~/server-middleware/rest.ts'},
-  ],
+  serverMiddleware: {
+    '/api/putPostToS3': '~/server-middleware/putPostToS3.ts'
+  },
 
   publicRuntimeConfig: {
     vkGroupOwnerId: process.env.VK_GROUP_OWNER_ID,

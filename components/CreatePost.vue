@@ -50,7 +50,6 @@ export default defineNuxtConfig({
     const ctx = useContext()
 
     const {s3Bucket, vkGroupOwnerId} = ctx['$config']
-    console.log(vkGroupOwnerId)
     return {vkApi: {}, s3Bucket, vkGroupOwnerId}
   },
 
