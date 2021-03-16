@@ -4,7 +4,6 @@ import { S3Client } from './_S3Client'
 
 const app = express();
 
-
 app.use(express.json());
 
 app.post('/putPostToS3', async (req, res, next) => {

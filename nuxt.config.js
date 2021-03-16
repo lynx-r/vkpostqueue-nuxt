@@ -55,6 +55,7 @@ export default {
   ],
 
   publicRuntimeConfig: {
+    vkGroupOwnerId: process.env.VK_GROUP_OWNER_ID,
     s3Bucket: process.env.S3_BUCKET,
     baseURL: process.env.BASE_URL || 'http://localhost:3000'
   },

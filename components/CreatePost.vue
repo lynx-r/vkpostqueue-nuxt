@@ -49,34 +49,14 @@ export default defineNuxtConfig({
   setup: () => {
     const ctx = useContext()
 
-    const {s3Bucket} = ctx['$config']
-    // const vkApi = new VKAPI({
-    //   isBrowser: true,
-    //   accessToken: ''
-    // })
-    // const s3 = new S3Client({
-    //   credentials: {
-    //     accessKeyId: s3AccessKeyId,
-    //     secretAccessKey: s3SecretAccessKey
-    //   }, region: s3Region
-    // })
-
-    // const storage = useStorage()
-    // storage?.setStorageSync('msg', 'hi')
-    return {vkApi: {}, s3Bucket}
+    const {s3Bucket, vkGroupOwnerId} = ctx['$config']
+    console.log(vkGroupOwnerId)
+    return {vkApi: {}, s3Bucket, vkGroupOwnerId}
   },
 
   computed: {
     uploadMessage() {
       return `${this.date}_${this.time}/message.txt`
-    },
-
-    cnt() {
-      return this.$store.getters.cnt
-    },
-
-    todos() {
-      return this.$store.state.todos.list
     },
   },
 
@@ -93,12 +73,6 @@ export default defineNuxtConfig({
           headers: {'Content-Type': 'application/json'}
         })
         console.log(await res.json())
-        // this.sendToS3(putParams)
-        // console.log(this.$store.state.s3Client.send(1))
-        // console.log(this.s3.send)
-        // console.log(this.counter)
-        // const data =  this.s3Client.send(new PutObjectCommand(putParams))
-        // console.log('Success', data)
       } catch (err) {
         console.log('Error', err)
       }
@@ -119,7 +93,7 @@ export default defineNuxtConfig({
     async postText() {
       // const u = await this.vkApi.users.get({userIds: ['1']})
       // console.log(u)
-      // const res = await this.vkApi.wall.post({ownerId: '-203255283', message: 'test', fromGroup: true})
+      // const res = await this.vkApi.wall.post({ownerId: '', message: 'test', fromGroup: true})
       // console.log(res)
     },
 
