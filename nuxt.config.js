@@ -1,5 +1,5 @@
 export default {
-  mode: 'spa',
+  mode: 'universal',
   /*
    ** Headers of the page
    */
@@ -41,5 +41,21 @@ export default {
      */
     extend(config, ctx) {},
   },
-  buildModules: ['@nuxtjs/tailwindcss']
+
+  buildModules: ['@nuxtjs/tailwindcss', '@nuxtjs/composition-api'],
+
+  serverMiddleware: [
+    { path: "/api", handler: "~/server-middleware/rest.js" },
+  ],
+
+  publicRuntimeConfig: {
+    s3Bucket: process.env.S3_BUCKET,
+    baseURL: process.env.BASE_URL || 'http://localhost:3000'
+  },
+
+  privateRuntimeConfig: {
+    s3Region: process.env.S3_REGION,
+    s3AccessKeyId: process.env.S3_ACCESS_KEY_ID,
+    s3SecretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
+  }
 };

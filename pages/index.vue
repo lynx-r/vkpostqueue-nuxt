@@ -11,7 +11,9 @@ import Logo from '~/components/Logo.vue'
 export default {
   components: {
     CreatePost,
-  }
+  },
+  middleware: ['createS3Client'],
+
 }
 </script>
 
