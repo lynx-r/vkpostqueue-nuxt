@@ -9882,6 +9882,12 @@ vkontakte-api@../vkontakte-api:
   dependencies:
     cross-fetch "^3.1.0"
 
+"vkontakte-api@https://github.com/lynx-r/vk-api.git#dist":
+  version "2.4.1"
+  resolved "https://github.com/lynx-r/vk-api.git#cb16f02c3ff02181948133692a90db989a05f432"
+  dependencies:
+    cross-fetch "^3.1.0"
+
 vm-browserify@^1.0.1:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/vm-browserify/-/vm-browserify-1.1.2.tgz#78641c488b8e6ca91a75f511e7a3b32a86e5dda0"
