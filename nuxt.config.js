@@ -34,6 +34,12 @@ export default {
   modules: [
     '@nuxt/http',
   ],
+
+  http: {
+    // HTTP options here
+    baseURL: process.env.baseUrl
+},
+
   /*
    ** Build configuration
    */
@@ -56,10 +62,13 @@ export default {
     '/api/putPostToS3': '~/server-middleware/putPostToS3.ts'
   },
 
+  env: {
+    baseUrl: process.env.VERCEL_URL || process.env.BASE_URL || 'http://127.0.0.1:3000',
+  },
+
   publicRuntimeConfig: {
     vkGroupOwnerId: process.env.VK_GROUP_OWNER_ID,
     s3Bucket: process.env.S3_BUCKET,
-    baseURL: process.env.BASE_URL || 'http://localhost:3000'
   },
 
   privateRuntimeConfig: {
