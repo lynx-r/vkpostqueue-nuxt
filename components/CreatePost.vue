@@ -1,26 +1,17 @@
 <template>
   <div class="space-y-4 w-1/2 mb-4">
-    <!--    <p v-if="$fetchState.pending">Fetching mountains...</p>-->
-    <!--    <p v-else-if="$fetchState.error">An error occurred :(</p>-->
-    <!--    <ul>-->
-    <!--      <li v-for="todo in todos" :key="todo.text">-->
-    <!--        <input :checked="todo.done" @change="toggle(todo)" type="checkbox">-->
-    <!--        <span :class="{ done: todo.done }">{{ todo.text }}</span>-->
-    <!--      </li>-->
-    <!--      <li><input @keyup.enter="addTodo" placeholder="What needs to be done?"></li>-->
-    <!--    </ul>-->
     <div class="shadow flex flex-col justify-start p-6">
       <span class="w-min min-w-max">Введите запись на стену</span>
-      <textarea class="rounded text-pink-500 h-40"/>
+      <textarea class="rounded text-pink-500 h-40" v-model="message"/>
     </div>
     <div class="shadow flex space-x-4 p-6">
       <div class="w-1/2">
         <span class="w-min min-w-max">Дата поста</span>
-        <input type="date" class="rounded text-pink-500 w-full"/>
+        <input type="date" class="rounded text-pink-500 w-full" v-model="date"/>
       </div>
       <div class="w-1/2">
         <span class="w-min min-w-max">Время поста</span>
-        <input type="time" class="rounded text-pink-500 w-full"/>
+        <input type="time" class="rounded text-pink-500 w-full" v-model="time"/>
       </div>
     </div>
     <div class="flex space-x-4">
@@ -30,6 +21,7 @@
 </template>
 
 <script lang="ts">
+import { NuxtConfig } from '@nuxt/types'
 import { defineNuxtConfig, useContext, useStore, computed } from '@nuxtjs/composition-api'
 import { mapMutations, mapGetters, mapActions } from 'vuex'
 
@@ -46,12 +38,11 @@ export default defineNuxtConfig({
     }
   },
 
-  data() {
+  data({ $dateFns }: NuxtConfig) {
     return {
+      date: $dateFns.format(new Date(), 'yyyy-MM-dd'),
+      time: $dateFns.format(new Date(), 'HH:mm'),
       message: 'test',
-      date: '',
-      time: '',
-      post: {}
     }
   },
 
@@ -91,10 +82,6 @@ export default defineNuxtConfig({
 
   methods: {
 
-    addTodo(e) {
-      this.$store.commit('todos/add', e.target.value)
-      e.target.value = ''
-    },
     async upload() {
       console.log('upload')
       try {
@@ -117,7 +104,7 @@ export default defineNuxtConfig({
       }
     },
 
-    async queue(ctx) {
+    async queue() {
       // await this.upload()
       try {
         // const text = await this.getText()
@@ -129,8 +116,7 @@ export default defineNuxtConfig({
 
     },
 
-    async postText({$config}) {
-      console.log($config)
+    async postText() {
       // const u = await this.vkApi.users.get({userIds: ['1']})
       // console.log(u)
       // const res = await this.vkApi.wall.post({ownerId: '-203255283', message: 'test', fromGroup: true})

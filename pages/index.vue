@@ -12,8 +12,6 @@ export default {
   components: {
     CreatePost,
   },
-  middleware: ['createS3Client'],
-
 }
 </script>
 
