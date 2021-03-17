@@ -54,7 +54,9 @@ export default {
   ],
 
   serverMiddleware: {
-    '/api/putPostToS3': '~/server-middleware/putPostToS3.ts',
+    '/api/putPostToS3': process.env.VERCEL
+      ? '~/server-middleware/putPostToS3_vercel.js'
+      : '~/server-middleware/putPostToS3_local.ts',
     '/rest': '~/server-middleware/rest.js'
   },
 
