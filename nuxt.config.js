@@ -55,6 +55,7 @@ export default {
 
   serverMiddleware: {
     '/api/putPostToS3': '~/server-middleware/putPostToS3.ts',
+    '/cron/news/checkAndPost': '~/server-middleware/checkAndPost.ts',
     '/rest': '~/server-middleware/rest.js'
   },
 
