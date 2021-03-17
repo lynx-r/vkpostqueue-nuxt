@@ -49,8 +49,8 @@ export default defineNuxtConfig({
   setup: () => {
     const ctx = useContext()
 
-    const {s3Bucket, vkGroupOwnerId} = ctx['$config']
-    return {vkApi: {}, s3Bucket, vkGroupOwnerId}
+    const {vkGroupOwnerId} = ctx['$config']
+    return {vkApi: {}, vkGroupOwnerId}
   },
 
   computed: {
@@ -64,7 +64,7 @@ export default defineNuxtConfig({
     async upload() {
       console.log('upload')
       try {
-        let putParams = {Bucket: this.s3Bucket, Key: this.uploadMessage, Body: this.message}
+        let putParams = {Key: this.uploadMessage, Body: this.message}
         const res = await this.$http.post('/api/putPostToS3', putParams)
         console.log(res)
       } catch (err) {

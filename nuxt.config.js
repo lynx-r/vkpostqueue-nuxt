@@ -35,12 +35,6 @@ export default {
     '@nuxt/http',
   ],
 
-  http: {
-    // HTTP options here
-    baseURL: process.env.baseUrl,
-    browserBaseURL: process.env.browserBaseUrl
-  },
-
   /*
    ** Build configuration
    */
@@ -64,18 +58,17 @@ export default {
   },
 
   env: {
-    baseUrl: process.env.VERCEL_URL || process.env.BASE_URL || 'http://127.0.0.1:3000',
-    browserBaseUrl: process.env.BROWSER_BASE_URL || 'http://127.0.0.1:3000',
+  },
+
+  http: {
+    // HTTP options here
+    baseUrl: process.env.VERCEL_URL || process.env.BASE_URL || 'http://localhost:3000'
   },
 
   publicRuntimeConfig: {
     vkGroupOwnerId: process.env.VK_GROUP_OWNER_ID,
-    s3Bucket: process.env.S3_BUCKET,
   },
 
   privateRuntimeConfig: {
-    s3Region: process.env.S3_REGION,
-    s3AccessKeyId: process.env.S3_ACCESS_KEY_ID,
-    s3SecretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
   }
 };
