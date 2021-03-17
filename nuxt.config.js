@@ -62,8 +62,8 @@ export default {
 
   http: {
     // HTTP options here
-    // baseUrl: process.env.BASE_URL || 'http://localhost:3000',
-    // browserBaseUrl: process.env.BROWSER_BASE_URL || 'http://localhost:3000',
+    baseUrl: process.env.VERCEL_URL || process.env.BASE_URL || 'http://localhost?:3000',
+    browserBaseUrl: process.env.BROWSER_BASE_URL || 'http://localhost?:3000',
   },
 
   publicRuntimeConfig: {
