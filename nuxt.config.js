@@ -62,6 +62,8 @@ export default {
 
   http: {
     // HTTP options here
+    https: !!process.env.VERCEL,
+    host: process.env.VERCEL_URL
   },
 
   publicRuntimeConfig: {
