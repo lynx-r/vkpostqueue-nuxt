@@ -54,6 +54,7 @@ export default {
   ],
 
   serverMiddleware: {
+    '/hello': '~/server-middleware/hello.js',
     '/api/putPostToS3': '~/server-middleware/putPostToS3.js',
     '/server': '~/server-middleware/rest.js'
   },

@@ -21,15 +21,5 @@
         }
       ]
     }
-  ],
-  "rewrites": [
-    {
-      "source": "/api2/:match*",
-      "destination": "/api/:match*"
-    },
-    {
-      "source": "/api/(.*)",
-      "destination": "/server"
-    }
   ]
 }

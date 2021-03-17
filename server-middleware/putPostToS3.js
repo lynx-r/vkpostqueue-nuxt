@@ -1,7 +1,11 @@
 module.exports = async (req, res) => {
-  const { body } = req
-  res.send(`Hello ${body.name}, you just parsed the request body!`)
-}
+  res.statusCode = 200;
+  try {
+    res.json({name: 'John Doe'});
+  } catch (e) {
+    res.end('ok');
+  }
+};
 // import { PutObjectCommand, PutObjectCommandInput, S3Client } from '@aws-sdk/client-s3'
 // import { IncomingMessage, ServerResponse } from 'http'
 
