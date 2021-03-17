@@ -60,6 +60,11 @@ export default {
 
   env: {},
 
+  http: {
+    // HTTP options here
+    baseUrl: process.env.VERCEL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000'
+  },
+
   publicRuntimeConfig: {
     vkGroupOwnerId: process.env.VK_GROUP_OWNER_ID,
   },
