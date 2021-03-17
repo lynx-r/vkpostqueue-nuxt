@@ -53,15 +53,10 @@ export default {
     '@nuxtjs/date-fns'
   ],
 
-  serverMiddleware: [
-    '~/server-middleware/logger',
-    {path: '/hello', handler: '~/server-middleware/hello.js'},
-  ],
-
-  //   '/hello': '~/server-middleware/hello.js',
-  //   '/api/putPostToS3': '~/server-middleware/putPostToS3.js',
-  //   '/server': '~/server-middleware/rest.js'
-  // },
+  serverMiddleware: {
+    '/api/putPostToS3': '~/server-middleware/putPostToS3.ts',
+    '/rest': '~/server-middleware/rest.js'
+  },
 
   env: {},
 
