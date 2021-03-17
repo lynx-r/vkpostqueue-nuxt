@@ -54,7 +54,7 @@ export default {
   ],
 
   serverMiddleware: {
-    '/api/putPostToS3': '~/server-middleware/putPostToS3.ts'
+    '/api/putPostToS3': '~/server-middleware/putPostToS3.js'
   },
 
   env: {
