@@ -24,7 +24,7 @@
   ],
   "rewrites": [
     {
-      "source": "/api/:match*",
+      "source": "/api2/:match*",
       "destination": "/api/:match*"
     },
     {
