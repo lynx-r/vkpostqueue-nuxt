@@ -54,11 +54,11 @@ export default {
   ],
 
   serverMiddleware: {
-    '/api/putPostToS3': '~/server-middleware/putPostToS3.js'
+    '/api/putPostToS3': '~/server-middleware/putPostToS3.js',
+    '/server': '~/server-middleware/rest.js'
   },
 
-  env: {
-  },
+  env: {},
 
   http: {
     // HTTP options here
@@ -70,6 +70,5 @@ export default {
     vkGroupOwnerId: process.env.VK_GROUP_OWNER_ID,
   },
 
-  privateRuntimeConfig: {
-  }
+  privateRuntimeConfig: {}
 };
