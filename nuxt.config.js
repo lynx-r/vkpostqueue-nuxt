@@ -62,6 +62,7 @@ export default {
 
   http: {
     // HTTP options here
+    port: process.env.PORT,
     https: process.env.VERCEL,
     host: process.env.VERCEL_URL
   },
