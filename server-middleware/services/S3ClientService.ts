@@ -1,11 +1,6 @@
-import {
-  GetObjectCommand,
-  ListObjectsV2Command,
-  PutObjectCommand,
-  PutObjectCommandInput,
-  S3Client
-} from '@aws-sdk/client-s3'
+import { GetObjectCommand, ListObjectsV2Command, PutObjectCommand, S3Client } from '@aws-sdk/client-s3'
 import { Readable } from 'stream'
+import { S3Objects } from '../model'
 import { NEW_BUCKET_PREFIX, S3_BUCKET } from './constants'
 import { parseBody } from './utils'
 
@@ -23,7 +18,7 @@ export const sendToS3 = (putParams: any) =>
     Bucket: S3_BUCKET
   }))
 
-export const getNewsFromS3 = async (): Promise<string[]> => {
+export const getNewsFromS3 = async (): Promise<S3Objects> => {
   const list = await s3.send(new ListObjectsV2Command({
     Bucket: S3_BUCKET,
     Prefix: NEW_BUCKET_PREFIX
@@ -33,11 +28,19 @@ export const getNewsFromS3 = async (): Promise<string[]> => {
     const outPromises = keys.map(getObject)
     const promiseResult = await Promise.allSettled(outPromises)
     return promiseResult.filter(o => o.status === 'fulfilled')
-      .map((o) => (o as PromiseFulfilledResult<string>).value)
+      .map(o => (o as PromiseFulfilledResult<Buffer>).value)
+      .reduce((acc, cur, i) => {
+        const key = keys[i]
+        const idxFolder = key.indexOf('/')
+        const folder = key.slice(0, idxFolder)
+        const file = key.slice(idxFolder + 1)
+        acc[folder] = {...acc[folder], [file]: cur}
+        return acc
+      }, {} as S3Objects)
   }
-  return []
+  return {}
 }
 
-const getObject = <T>(key: string): Promise<T> =>
+const getObject = (key: string): Promise<Buffer> =>
   s3.send(new GetObjectCommand({Bucket: S3_BUCKET, Key: key}))
-    .then(o => parseBody(o.Body as Readable, 'plain'))
+    .then(o => parseBody(o.Body as Readable))
