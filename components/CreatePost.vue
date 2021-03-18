@@ -1,6 +1,10 @@
 <template>
   <div class="space-y-4 w-1/2 mb-4">
     <div class="shadow flex flex-col justify-start p-6">
+      <span class="w-min min-w-max">Введите тему новости</span>
+      <input type="text" class="rounded text-pink-500" v-model="topic"/>
+    </div>
+    <div class="shadow flex flex-col justify-start p-6">
       <span class="w-min min-w-max">Введите запись на стену</span>
       <textarea class="rounded text-pink-500 h-40" v-model="message"/>
     </div>
@@ -21,12 +25,10 @@
 </template>
 
 <script lang="ts">
+import { GetObjectCommand } from '@aws-sdk/client-s3'
 import { NuxtConfig } from '@nuxt/types'
-import { defineNuxtConfig, useContext, useStore, computed } from '@nuxtjs/composition-api'
-import { mapMutations, mapGetters, mapActions } from 'vuex'
-
-import { VKAPI } from 'vkontakte-api'
-import { GetObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3'
+import { defineNuxtConfig, useContext } from '@nuxtjs/composition-api'
+import { mapActions } from 'vuex'
 // import { useStorage } from 'vue3-storage'
 
 export default defineNuxtConfig({
@@ -38,50 +40,33 @@ export default defineNuxtConfig({
     }
   },
 
-  data({ $dateFns }: NuxtConfig) {
+  data({$dateFns}: NuxtConfig) {
     return {
       date: $dateFns.format(new Date(), 'yyyy-MM-dd'),
       time: $dateFns.format(new Date(), 'HH:mm'),
+      topic: 'test post',
       message: 'test',
     }
   },
 
   setup: () => {
-    const ctx = useContext()
-
-    const {vkGroupOwnerId} = ctx['$config']
-    return {vkApi: {}, vkGroupOwnerId}
   },
 
-  computed: {
-    uploadMessage() {
-      return `${this.date}_${this.time}/message.txt`
-    },
-  },
+  computed: {},
 
   methods: {
 
     async upload() {
       console.log('upload')
       try {
-        let putParams = {Key: this.uploadMessage, Body: this.message}
-        const res = await this.$http.post('/api/putPostToS3', putParams)
+        const postOnDate = this.date + '_' + this.time
+        console.log(postOnDate)
+        let putParams = {news: this.message, topic: this.topic, postOnDate}
+        const res = await this.$http.post('/api/queueNews', putParams)
         console.log(res)
       } catch (err) {
         console.log('Error', err)
       }
-    },
-
-    async queue() {
-      // await this.upload()
-      try {
-        // const text = await this.getText()
-        // console.log("Success, bucket returned", text);
-        // await this.postText()
-      } catch (err) {
-        console.log('Error', err)
-      }
-
     },
 
     async postText() {
@@ -89,14 +74,6 @@ export default defineNuxtConfig({
       // console.log(u)
       // const res = await this.vkApi.wall.post({ownerId: '', message: 'test', fromGroup: true})
       // console.log(res)
-    },
-
-    async getText() {
-      const data = await this.s3.send(new GetObjectCommand({Bucket: 'vk-post-queue', Key: 'file'}))
-      // const reader: ReadableStreamDefaultReader = data.Body.getReader()
-      // const uint8array = await reader.read()
-      // return new TextDecoder().decode(uint8array.value)
-      return ''
     },
 
     ...mapActions(['sendToS3'])

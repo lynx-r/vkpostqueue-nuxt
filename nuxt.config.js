@@ -32,7 +32,7 @@ export default {
    ** Nuxt.js modules
    */
   modules: [
-    '@nuxt/http',
+    '@nuxt/http'
   ],
 
   /*
@@ -54,9 +54,8 @@ export default {
   ],
 
   serverMiddleware: {
-    '/api/putPostToS3': '~/server-middleware/putPostToS3.ts',
-    '/cron/news/checkAndPost': '~/server-middleware/checkAndPost.ts',
-    '/rest': '~/server-middleware/rest.js'
+    '/api/queueNews': '~/server-middleware/queueNews.ts',
+    '/action/processQueue': '~/server-middleware/processQueue.ts',
   },
 
   env: {},
@@ -67,7 +66,6 @@ export default {
   },
 
   publicRuntimeConfig: {
-    vkGroupOwnerId: process.env.VK_GROUP_OWNER_ID,
   },
 
   privateRuntimeConfig: {

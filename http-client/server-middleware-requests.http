@@ -1,0 +1,13 @@
+###
+
+POST http://localhost:3000/api/queueNews
+Content-Type: application/json
+
+{
+  "news": "message"
+}
+
+###
+
+GET http://localhost:3000/action/processQueue
+Content-Type: application/json

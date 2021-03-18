@@ -7,7 +7,8 @@
       "config": {
         "generateStaticRoutes": true,
         "serverFiles": [
-          "server-middleware/**"
+          "server-middleware/**",
+          "services/**"
         ]
       }
     }
