@@ -6,9 +6,8 @@ export default async (req: IncomingMessage, res: ServerResponse) => {
   if (req.method === 'POST') {
     const accessToken: VkToken = await parseJson(req)
     saveAccessToken(accessToken)
-    console.log('?', getAccessToken())
     res.end(JSON.stringify({status: 'ok'}))
   } else {
-    res.end('ok')
+    res.end(JSON.stringify({status: 'fail'}))
   }
 }
