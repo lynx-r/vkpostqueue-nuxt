@@ -15,7 +15,7 @@ export default defineNuxtConfig({
     const accessToken = $cookies.get('accessToken');
     console.log(accessToken);
     const vk = new VKAPI({accessToken: accessToken});
-    const res = await vk.wall.post({accessToken, ownerId: '-203255283', message: 'msg', fromGroup: 1});
+    const res = await vk.wall.post({accessToken, ownerId: '', message: 'msg', fromGroup: 1});
     console.log(res);
   },
   mounted() {
