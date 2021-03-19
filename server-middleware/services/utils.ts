@@ -1,7 +1,7 @@
 import { Readable } from 'stream'
 
 export const parseJson =
-  <T>(req: Readable): Promise<T> =>
+  <T>(req: Readable | NodeJS.ReadableStream): Promise<T> =>
     new Promise<string>(
       (resolve) => {
         const requestBody: Uint8Array[] = []

@@ -13,9 +13,11 @@
     "@aws-sdk/client-s3": "^3.8.1",
     "@nuxt/http": "^0.6.4",
     "@nuxtjs/composition-api": "^0.22.1",
+    "@vk-io/authorization": "^1.0.0",
     "express": "^4.17.1",
+    "node-fetch": "^2.6.1",
     "nuxt": "^2.15.3",
-    "vkontakte-api": "https://github.com/lynx-r/vk-api.git#dist"
+    "vk-io": "^4.1.4"
   },
   "devDependencies": {
     "@nuxt/types": "^2.15.3",
@@ -24,6 +26,8 @@
     "@nuxtjs/tailwindcss": "^4.0.1",
     "@tailwindcss/forms": "^0.2.1",
     "@tailwindcss/postcss7-compat": "^2.0.3",
+    "@types/node": "^14.14.35",
+    "@types/node-fetch": "^2.5.8",
     "autoprefixer": "^10.2.5",
     "nodemon": "^2.0.7",
     "postcss": "^7.0.32",
