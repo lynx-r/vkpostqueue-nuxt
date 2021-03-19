@@ -4,7 +4,8 @@
 export default {
   name: 'RedirectVkAuthorization',
   asyncData(ctx) {
-    ctx.redirect(ctx.$config.vkAuthorizeUrl)
+    console.log(ctx.$config.vkAuthorizeUrl);
+    // ctx.redirect(ctx.$config.vkAuthorizeUrl)
   }
 };
 </script>

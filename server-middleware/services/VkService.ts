@@ -2,7 +2,7 @@ import { VK } from 'vk-io'
 import { CallbackService } from 'vk-io';
 import { DirectAuthorization } from '@vk-io/authorization';
 import {RequestOptions} from 'http'
-import { getAccessToken } from './Store'
+import { getAccessToken } from './StoreService'
 
 import { VK_GROUP_OWNER_ID } from './constants'
 import { S3Objects } from '../model'
@@ -18,7 +18,7 @@ export const postNews = async (news?: S3Objects) => {
   console.log(token)
   const vk = new VK({token})
 
-  console.log(news)
-  const res = await vk.api.wall.post({ownerId: `-${VK_GROUP_OWNER_ID}`, message: 'test', fromGroup: true})
+  console.log(VK_GROUP_OWNER_ID)
+  const res = await vk.api.wall.post({owner_id: +`-${VK_GROUP_OWNER_ID}`, message: 'test', fromGroup: true})
   console.log(res)
 }

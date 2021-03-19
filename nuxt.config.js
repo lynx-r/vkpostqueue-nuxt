@@ -56,7 +56,8 @@ export default {
 
   serverMiddleware: {
     '/api/queueNews': '~/server-middleware/queueNews.ts',
-    '/api/vkAuthorizationCodeFlowCallback': '~/server-middleware/vkAuthorizationCodeFlowCallback.ts',
+    '/api/saveVkToken': '~/server-middleware/saveVkToken.ts',
+    // '/api/vkAuthorizationCodeFlowCallback': '~/server-middleware/vkAuthorizationCodeFlowCallback.ts',
     '/action/processQueue': '~/server-middleware/processQueue.ts',
   },
 
@@ -68,7 +69,7 @@ export default {
   },
 
   publicRuntimeConfig: {
-    vkAuthorizeUrl: `https://oauth.vk.com/authorize?client_id=${process.env.VK_CLIENT_ID}&display=page&redirect_uri=${process.env.VK_AUTHORIZATION_SUCCESS_CALLBACK}&scope=${process.env.VK_SCOPE}&response_type=token&v=${process.env.VK_API_V}`
+    vkAuthorizeUrl: `https://oauth.vk.com/authorize?client_id=${process.env.VK_CLIENT_ID}&display=page&redirect_uri=${process.env.VK_AUTHORIZATION_CALLBACK}&scope=${process.env.VK_SCOPE}&response_type=token&v=${process.env.VK_API_V}`
   },
 
   privateRuntimeConfig: {

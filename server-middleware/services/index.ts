@@ -1,5 +1,5 @@
 export * from './constants'
 export * from './S3ClientService'
 export * from './VkService'
+export * from './StoreService'
 export * from './utils'
-export * from './Store'
