@@ -13,3 +13,8 @@ Content-Type: application/json
 
 GET http://localhost:3000/action/processQueue
 Content-Type: application/json
+
+###
+
+GET https://vkpostqueue-nuxt-mll03haie-lynx-r.vercel.app/action/processQueue
+Content-Type: application/json
