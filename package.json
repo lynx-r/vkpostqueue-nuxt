@@ -15,6 +15,7 @@
     "@nuxtjs/composition-api": "^0.22.1",
     "@vk-io/authorization": "^1.0.0",
     "express": "^4.17.1",
+    "node-cache": "^5.1.2",
     "node-fetch": "^2.6.1",
     "nuxt": "^2.15.3",
     "vk-io": "^4.1.4"

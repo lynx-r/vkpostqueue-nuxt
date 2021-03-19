@@ -1,6 +1,6 @@
 import { IncomingMessage, ServerResponse } from 'http'
 import { S3Objects } from '~/server-middleware/model'
-import { getNewsFromS3, postNews } from './services'
+import { getAccessToken, getNewsFromS3, postNews } from './services'
 
 export default async (req: IncomingMessage, res: ServerResponse) => {
   if (req.method === 'GET') {

@@ -55,7 +55,7 @@ export default {
 
   serverMiddleware: {
     '/api/queueNews': '~/server-middleware/queueNews.ts',
-    '/api/vkAuthorizationCallback': '~/server-middleware/vkAuthorizationCallback.ts',
+    '/api/vkAuthorizationCodeFlowCallback': '~/server-middleware/vkAuthorizationCodeFlowCallback.ts',
     '/action/processQueue': '~/server-middleware/processQueue.ts',
   },
 
