@@ -1,6 +1,6 @@
 <template>
   <div>
-    <RouterLink class="bg-blue-300 rounded px-4" to="_VkAuthorization">
+    <RouterLink class="bg-blue-300 rounded px-4" to="RedirectToVkAuthorization">
       Авторизоваться в ВКонтакте
     </RouterLink>
   </div>
