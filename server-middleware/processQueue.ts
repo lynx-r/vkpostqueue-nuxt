@@ -1,5 +1,5 @@
 import { IncomingMessage, ServerResponse } from 'http'
-import { S3Objects } from '~/server-middleware/model'
+import { S3Objects } from './model'
 import { getAccessToken, getNewsFromS3, postNews } from './services'
 
 export default async (req: IncomingMessage, res: ServerResponse) => {

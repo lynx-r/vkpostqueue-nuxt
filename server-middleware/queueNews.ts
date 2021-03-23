@@ -1,5 +1,5 @@
 import { IncomingMessage, ServerResponse } from 'http'
-import { News } from '~/server-middleware/model/News.model'
+import { News } from './model'
 import { NEW_BUCKET_PREFIX, parseJson, sendToS3 } from './services'
 
 export default async (req: IncomingMessage, res: ServerResponse) => {
