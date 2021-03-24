@@ -20,7 +20,8 @@
     "node-fetch": "^2.6.1",
     "nuxt": "^2.15.3",
     "vk-io": "^4.1.4",
-    "vkontakte-api": "https://github.com/lynx-r/vk-api.git#dist"
+    "vkontakte-api": "https://github.com/lynx-r/vk-api.git#dist",
+    "vue-cli-plugin-generator": "../../examples/jhipster/vue-cli-plugin-generator/"
   },
   "devDependencies": {
     "@nuxt/types": "^2.15.3",

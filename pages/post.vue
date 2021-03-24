@@ -6,7 +6,6 @@
 
 <script>
 import CreatePost from '~/components/CreatePost';
-import Logo from '~/components/Logo.vue'
 
 export default {
   middleware: 'auth',
