@@ -19,63 +19,40 @@
       </div>
     </div>
     <div class="flex space-x-4">
-      <button class="bg-blue-300 rounded px-4" @click="upload">Поставить в очередь</button>
+      <button class="bg-blue-300 rounded px-4" @click="uploadPost">Поставить в очередь</button>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { GetObjectCommand } from '@aws-sdk/client-s3'
-import { NuxtConfig } from '@nuxt/types'
-import { defineNuxtConfig, useContext } from '@nuxtjs/composition-api'
-import { mapActions } from 'vuex'
+import { defineComponent, ref, useContext } from '@nuxtjs/composition-api'
 // import { useStorage } from 'vue3-storage'
 
-export default defineNuxtConfig({
-  name: 'CreatePost',
-  props: {
-    msg: {
-      type: String,
-      required: false
-    }
-  },
-
-  data({$dateFns}: NuxtConfig) {
-    return {
-      date: $dateFns.format(new Date(), 'yyyy-MM-dd'),
-      time: $dateFns.format(new Date(), 'HH:mm'),
-      topic: 'test post',
-      message: 'test',
-    }
-  },
+export default defineComponent({
+  name: 'PostText',
 
   setup: () => {
-  },
+    const {$http, $dateFns} = useContext()
 
-  computed: {},
+    const date = ref($dateFns.format(new Date(), 'yyyy-MM-dd'))
+    const time = ref($dateFns.format(new Date(), 'HH:mm'))
+    const topic = ref('test test')
+    const message = ref('test')
 
-  methods: {
-
-    async upload() {
+    const uploadPost = async () => {
       console.log('upload')
       try {
-        const postOnDate = this.date + '_' + this.time
-        console.log(postOnDate)
-        let putParams = {news: this.message, topic: this.topic, postOnDate}
-        const res = await this.$http.post('/api/queueNews', putParams)
-        console.log(res)
+        const postOnDate = date.value + '_' + time.value
+        let putParams = {news: message.value, topic: topic.value, postOnDate}
+        console.log(putParams)
+        const res = await $http.post('/api/queueNews', putParams)
+        console.log(await res.json())
       } catch (err) {
         console.log('Error', err)
       }
-    },
+    }
 
-    async postText() {
-      // const u = await this.vkApi.users.get({userIds: ['1']})
-      // console.log(u)
-      // const res = await this.vkApi.wall.post({ownerId: '', message: 'test', fromGroup: true})
-      // console.log(res)
-    },
-
+    return {uploadPost, date, time, topic, message}
   }
 })
 </script>

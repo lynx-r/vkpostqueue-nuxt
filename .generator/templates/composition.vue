@@ -3,9 +3,9 @@
 </template>
 
 <script lang="ts">
-import { defineNuxtConfig } from '@nuxtjs/composition-api'
+import { defineComponent } from '@nuxtjs/composition-api'
 
-export default defineNuxtConfig({
+export default defineComponent({
   name: '<%= name.pascalCase %>',
   props: [],
   setup() {

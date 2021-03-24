@@ -6,11 +6,11 @@
 </template>
 
 <script lang="ts">
-import { defineNuxtConfig } from '@nuxtjs/composition-api'
+import { defineComponent } from '@nuxtjs/composition-api'
 import PostText from '~/components/PostText.vue'
-import PostAttachment from '~/components/PostAttachment.vue'
+import PostAttachment from './PostAttachment.vue'
 
-export default defineNuxtConfig({
+export default defineComponent({
   name: 'PostForm',
   props: [],
   components: {

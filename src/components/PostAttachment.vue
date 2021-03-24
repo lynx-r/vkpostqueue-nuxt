@@ -1,13 +1,11 @@
 <template>
-  <div>
-    Attachment
-  </div>
+
 </template>
 
 <script lang="ts">
-import { defineComponent } from '@nuxtjs/composition-api'
+import { defineNuxtConfig } from '@nuxtjs/composition-api'
 
-export default defineComponent({
+export default defineNuxtConfig({
   name: 'PostAttachment',
   props: [],
   setup() {
