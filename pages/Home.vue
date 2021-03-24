@@ -12,11 +12,11 @@ export default defineNuxtConfig({
   name: 'Home',
 
   async asyncData({$cookies}) {
-    const accessToken = $cookies.get('accessToken');
-    console.log(accessToken);
-    const vk = new VKAPI({accessToken: accessToken});
-    const res = await vk.wall.post({accessToken, ownerId: '', message: 'msg', fromGroup: 1});
-    console.log(res);
+    // const accessToken = $cookies.get('accessToken');
+    // console.log(accessToken);
+    // const vk = new VKAPI({accessToken: accessToken});
+    // const res = await vk.wall.post({accessToken, ownerId: '', message: 'msg', fromGroup: 1});
+    // console.log(res);
   },
   mounted() {
   }

@@ -1,5 +1,5 @@
 export default {
-  target: 'static',
+  target: 'server',
   /*
    ** Headers of the page
    */
@@ -55,6 +55,7 @@ export default {
   ],
 
   serverMiddleware: {
+    '/api/hello': '~/server-middleware/hello.js',
     '/api/queueNews': '~/server-middleware/queueNews.ts',
     '/api/saveVkToken': '~/server-middleware/saveVkToken.ts',
     // '/api/vkAuthorizationCodeFlowCallback': '~/server-middleware/vkAuthorizationCodeFlowCallback.ts',

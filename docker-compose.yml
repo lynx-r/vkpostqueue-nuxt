@@ -3,12 +3,25 @@ services:
   webapp:
     build:
       context: .
+      dockerfile: docker/nuxt/Dockerfile
     command: "yarn start -H 0.0.0.0"
     volumes:
       - build-node_modules:/build/node_modules
     ports:
       - "3000:3000"
     container_name: "nuxt-build"
+
+  cron:
+    build:
+      context: .
+      dockerfile: docker/cron/Dockerfile
+    command: "crond -f -d 8"
+    links:
+      - webapp
+    volumes:
+        - './docker/cron/cron:/etc/crontabs/root:z'
+    container_name: "cron"
+#      restart: unless-stopped
 
 volumes:
   build-node_modules:

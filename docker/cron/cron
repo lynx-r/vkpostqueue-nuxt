@@ -1,0 +1,1 @@
+*/1 * * * * curl -s http://webapp:3000/api/hello > /dev/null
