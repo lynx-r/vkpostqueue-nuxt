@@ -35,14 +35,16 @@ export default {
       this.isShownAccessTokenForm = true;
     },
 
-    saveAccessToken() {
+    async saveAccessToken() {
       const accessToken = this.accessTokenUrl.match(/access_token=(\w+)/)[1];
       const userId = this.accessTokenUrl.match(/user_id=(\w+)/)[1];
       const expiresIn = this.accessTokenUrl.match(/expires_in=(\w+)/)[1];
 
       const tokenParams = {accessToken, userId, expiresIn};
-      console.log(tokenParams);
-      this.$http.post('/api/saveVkToken', tokenParams);
+      const res = await this.$http.post('/api/saveVkToken', tokenParams);
+      const status = await res.json()
+      console.log(status);
+      this.$router.push('post')
     }
   }
 };

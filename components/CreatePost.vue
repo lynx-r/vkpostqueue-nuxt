@@ -76,7 +76,6 @@ export default defineNuxtConfig({
       // console.log(res)
     },
 
-    ...mapActions(['sendToS3'])
   }
 })
 </script>

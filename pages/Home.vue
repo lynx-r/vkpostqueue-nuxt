@@ -18,6 +18,7 @@ export default defineNuxtConfig({
     // const res = await vk.wall.post({accessToken, ownerId: '', message: 'msg', fromGroup: 1});
     // console.log(res);
   },
+
   mounted() {
   }
 });

@@ -55,9 +55,9 @@ export default {
   ],
 
   serverMiddleware: {
-    '/api/hello': '~/server-middleware/hello.js',
     '/api/queueNews': '~/server-middleware/queueNews.ts',
     '/api/saveVkToken': '~/server-middleware/saveVkToken.ts',
+    '/api/isAuthenticated': '~/server-middleware/isAuthenticated.js',
     // '/api/vkAuthorizationCodeFlowCallback': '~/server-middleware/vkAuthorizationCodeFlowCallback.ts',
     '/action/processQueue': '~/server-middleware/processQueue.ts',
   },
