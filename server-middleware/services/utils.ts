@@ -18,3 +18,9 @@ export const parseBody =
         req.on('data', chunk => requestBody.push(chunk))
         req.on('end', () => resolve(Buffer.concat(requestBody)))
       })
+
+export const asyncSelfCall = (cb: Function) => {
+  (async () => {
+    await cb()
+  })()
+}

@@ -1,16 +1,16 @@
 <template>
   <div class="container">
-    <CreatePost/>
+    <PostForm/>
   </div>
 </template>
 
 <script>
-import CreatePost from '~/components/CreatePost';
+import PostForm from '~/components/PostForm.vue';
 
 export default {
   middleware: 'auth',
   components: {
-    CreatePost,
+    PostForm,
   },
 }
 </script>

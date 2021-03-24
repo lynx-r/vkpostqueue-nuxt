@@ -1,21 +1,21 @@
 <template>
-  <div>
-    Attachment
-  </div>
+
 </template>
 
 <script lang="ts">
 import { defineNuxtConfig } from '@nuxtjs/composition-api'
 
 export default defineNuxtConfig({
-  name: 'PostAttachment',
+  name: '<%= name.pascalCase %>',
   props: [],
   setup() {
     return {}
   }
 })
 </script>
-
+<% if (scoped) { %>
 <style scoped>
-
+<% } else { %>
+<style>
+<% } %>
 </style>

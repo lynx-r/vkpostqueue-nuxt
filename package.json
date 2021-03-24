@@ -1,12 +1,13 @@
 {
   "name": "nuxtjs",
   "version": "1.0.0",
+  "private": true,
   "description": "My astonishing Nuxt.js project",
   "author": "msweeneydev",
-  "private": true,
   "scripts": {
-    "dev": "nuxt",
     "build": "nuxt generate",
+    "dev": "nuxt",
+    "make": "vue invoke generator",
     "start": "nuxt start"
   },
   "dependencies": {
@@ -19,9 +20,7 @@
     "node-cache": "^5.1.2",
     "node-fetch": "^2.6.1",
     "nuxt": "^2.15.3",
-    "vk-io": "^4.1.4",
-    "vkontakte-api": "https://github.com/lynx-r/vk-api.git#dist",
-    "vue-cli-plugin-generator": "../../examples/jhipster/vue-cli-plugin-generator/"
+    "vk-io": "^4.1.4"
   },
   "devDependencies": {
     "@nuxt/types": "^2.15.3",
@@ -35,6 +34,7 @@
     "autoprefixer": "^10.2.5",
     "nodemon": "^2.0.7",
     "postcss": "^7.0.32",
-    "tailwindcss": "npm:@tailwindcss/postcss7-compat"
+    "tailwindcss": "npm:@tailwindcss/postcss7-compat",
+    "vue-cli-plugin-generator": "https://github.com/lynx-r/vue-cli-plugin-generator.git"
   }
 }
