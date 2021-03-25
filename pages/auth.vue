@@ -40,11 +40,12 @@ export default {
       const userId = this.accessTokenUrl.match(/user_id=(\w+)/)[1];
       const expiresIn = this.accessTokenUrl.match(/expires_in=(\w+)/)[1];
 
+      this.$store.commit('auth/setUserId', userId);
       const tokenParams = {accessToken, userId, expiresIn};
       const res = await this.$http.post('/api/saveVkToken', tokenParams);
-      const status = await res.json()
+      const status = await res.json();
       console.log(status);
-      this.$router.push('post')
+      await this.$router.push('post');
     }
   }
 };

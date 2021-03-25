@@ -1,6 +1,8 @@
-import { getAccessToken } from './services';
+import { getAccessToken, parseJson } from './services';
 
-export default (req, res) => {
-  const isAuthenticated = !!getAccessToken()
-  res.end(JSON.stringify({isAuthenticated}))
+export default async (req, res) => {
+  const user = await parseJson(req);
+  console.log(user);
+  const isAuthenticated = !!user?.userId && !!getAccessToken(user.userId);
+  res.end(JSON.stringify({isAuthenticated}));
 }

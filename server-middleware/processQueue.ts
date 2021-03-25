@@ -1,6 +1,6 @@
 import { IncomingMessage, ServerResponse } from 'http'
 import { S3Objects } from './model'
-import { getAccessToken, getNewsFromS3, postNews } from './services'
+import { getNewsFromS3, postNews } from './services'
 
 export default async (req: IncomingMessage, res: ServerResponse) => {
   if (req.method === 'GET') {
@@ -10,8 +10,7 @@ export default async (req: IncomingMessage, res: ServerResponse) => {
       res.end({status: 'ok', message: 'no news'})
       return
     }
-    console.log(news)
-    // await postNews(news)
+    await postNews(news)
     res.end(JSON.stringify({newsCount, status: 'ok'}))
   } else {
     res.end('ok')

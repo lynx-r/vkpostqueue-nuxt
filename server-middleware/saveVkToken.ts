@@ -1,6 +1,6 @@
 import { IncomingMessage, ServerResponse } from 'http'
-import { getAccessToken, parseJson, saveAccessToken } from './services'
 import { VkToken } from './model'
+import { parseJson, saveAccessToken } from './services'
 
 export default async (req: IncomingMessage, res: ServerResponse) => {
   if (req.method === 'POST') {

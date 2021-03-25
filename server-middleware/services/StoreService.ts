@@ -1,12 +1,13 @@
-import store from './store'
 import { VkToken } from '../model'
+import store from './store'
 
-const TOKEN_KEY = 'token'
+export const saveAccessToken = ({userId, expiresIn, accessToken}: VkToken) =>
+  store.set(userId, accessToken, expiresIn)
 
-export const saveAccessToken = ({
-                                  expiresIn,
-                                  accessToken
-                                }: VkToken) =>
-  store.set(TOKEN_KEY, accessToken, expiresIn)
+export const getAccessToken = (userId: string): string | undefined =>
+  store.get(userId)
 
-export const getAccessToken = (): string | undefined => store.get(TOKEN_KEY)
+export const getUsersTokens = (): { [key: string]: string } => {
+  const userIds = store.keys()
+  return store.mget(userIds)
+}

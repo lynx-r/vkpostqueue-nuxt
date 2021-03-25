@@ -1,19 +1,15 @@
 export const state = () => ({
-  token: null,
+  userId: null,
 });
 
 export const mutations = {
-  setToken(state, token) {
-    state.token = token;
+  setUserId(state, token) {
+    state.userId = token;
   },
 };
 
 export const getters = {
-  getToken(state) {
-    return state.token;
+  userId(state) {
+    return state.userId;
   },
-
-  isAuthenticated(state) {
-    return !!state.token;
-  }
 };
