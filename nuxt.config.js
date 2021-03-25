@@ -33,7 +33,7 @@ export default {
    */
   modules: [
     '@nuxt/http',
-    'cookie-universal-nuxt',
+    '@nuxtjs/universal-storage',
   ],
 
   /*
@@ -79,4 +79,20 @@ export default {
       baseUrl: process.env.VERCEL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000'
     },
   },
+
+  storage: {
+    vuex: {
+      namespace: 'storage'
+    },
+    cookie: {
+      prefix: '',
+      options: {
+        path: '/'
+      }
+    },
+    localStorage: {
+      prefix: ''
+    },
+    ignoreExceptions: false,
+  }
 };

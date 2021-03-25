@@ -10,6 +10,7 @@ export default async (req: IncomingMessage, res: ServerResponse) => {
       res.end({status: 'ok', message: 'no news'})
       return
     }
+    console.log(news)
     await postNews(news)
     res.end(JSON.stringify({newsCount, status: 'ok'}))
   } else {
