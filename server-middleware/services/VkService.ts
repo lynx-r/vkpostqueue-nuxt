@@ -5,11 +5,14 @@ import { VK_GROUP_OWNER_ID } from './constants'
 import { getAccessToken, getUsersTokens } from './StoreService'
 
 export const postNews = async (news?: S3Objects) => {
+  console.log(2, news)
   const token = getUsersTokens()
   console.log(1, token)
   if (!token.length) {
-    return
+    return 0
   }
+
+
 
   // console.log(token)
   // const vk = new VK({token})
@@ -17,4 +20,6 @@ export const postNews = async (news?: S3Objects) => {
   // console.log(VK_GROUP_OWNER_ID)
   // const res = await vk.api.wall.post({owner_id: +`-${VK_GROUP_OWNER_ID}`, message: 'test', fromGroup: true})
   // console.log(res)
+  return 1
+
 }

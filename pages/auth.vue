@@ -36,17 +36,24 @@ export default {
     },
 
     async saveAccessToken() {
+      const gotToken = !!this.accessTokenUrl
+          && this.accessTokenUrl.includes('access_token')
+          && this.accessTokenUrl.includes('user_id')
+          && this.accessTokenUrl.includes('expires_in')
+      if (!gotToken) {
+        return
+      }
       const accessToken = this.accessTokenUrl.match(/access_token=(\w+)/)[1];
       const userId = this.accessTokenUrl.match(/user_id=(\w+)/)[1];
       const expiresIn = this.accessTokenUrl.match(/expires_in=(\w+)/)[1];
 
       this.$storage.setUniversal('userId', userId)
-      this.$store.commit('auth/setUserId', userId);
       const tokenParams = {accessToken, userId, expiresIn};
       const res = await this.$http.post('/api/saveVkToken', tokenParams);
       const status = await res.json();
       console.log(status);
-      await this.$router.push('post');
+      const r = await this.$router.push('post');
+      console.log(r);
     }
   }
 };

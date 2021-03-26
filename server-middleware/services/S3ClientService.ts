@@ -1,8 +1,17 @@
-import { GetObjectCommand, ListObjectsV2Command, PutObjectCommand, S3Client } from '@aws-sdk/client-s3'
+import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
+import {
+  GetObjectCommand,
+  ListObjectsV2Command,
+  PutObjectCommand,
+  PutObjectCommandInput,
+  S3Client
+} from '@aws-sdk/client-s3'
 import { Readable } from 'stream'
 import { S3Objects } from '../model'
 import { NEW_BUCKET_PREFIX, S3_BUCKET } from './constants'
 import { parseBody } from './utils'
+
+type PutCommandInput = Omit<PutObjectCommandInput, 'Bucket'>
 
 const s3 = new S3Client({
   credentials: {
@@ -12,7 +21,14 @@ const s3 = new S3Client({
   region: process.env.S3_REGION,
 })
 
-export const sendToS3 = (putParams: any) =>
+export const presignedUrl = (putParams: PutCommandInput) =>
+  getSignedUrl(s3, new PutObjectCommand({
+      ...putParams,
+      Bucket: S3_BUCKET
+    }),
+    {expiresIn: 3600})
+
+export const sendToS3 = (putParams: PutCommandInput) =>
   s3.send(new PutObjectCommand({
     ...putParams,
     Bucket: S3_BUCKET

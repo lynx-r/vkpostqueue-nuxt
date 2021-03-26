@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.8.1",
+    "@aws-sdk/s3-request-presigner": "^3.9.0",
     "@nuxt/http": "^0.6.4",
     "@nuxtjs/composition-api": "^0.22.1",
     "@nuxtjs/universal-storage": "^0.5.7",
@@ -20,7 +21,8 @@
     "node-cache": "^5.1.2",
     "node-fetch": "^2.6.1",
     "nuxt": "^2.15.3",
-    "vk-io": "^4.1.4"
+    "vk-io": "^4.1.4",
+    "vuex-map-fields": "^1.4.1"
   },
   "devDependencies": {
     "@nuxt/types": "^2.15.3",

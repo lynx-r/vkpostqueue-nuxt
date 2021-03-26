@@ -55,6 +55,7 @@ export default {
   ],
 
   serverMiddleware: {
+    '/api/generatePresignedUrl': '~/server-middleware/generatePresignedUrl.ts',
     '/api/queueNews': '~/server-middleware/queueNews.ts',
     '/api/saveVkToken': '~/server-middleware/saveVkToken.ts',
     '/api/isAuthenticated': '~/server-middleware/isAuthenticated.js',

@@ -1,5 +1,5 @@
 import { IncomingMessage, ServerResponse } from 'http'
-import { S3Objects } from './model'
+import { MiddlewareResponse, S3Objects } from './model'
 import { getNewsFromS3, postNews } from './services'
 
 export default async (req: IncomingMessage, res: ServerResponse) => {
@@ -7,13 +7,12 @@ export default async (req: IncomingMessage, res: ServerResponse) => {
     const news: S3Objects = await getNewsFromS3()
     const newsCount = Object.keys(news).length
     if (newsCount == 0) {
-      res.end({status: 'ok', message: 'no news'})
-      return
+      return res.end(MiddlewareResponse.payloadSuccessAsString(null, 'There is no news'))
     }
-    console.log(news)
-    await postNews(news)
-    res.end(JSON.stringify({newsCount, status: 'ok'}))
-  } else {
-    res.end('ok')
+    const newsPosted = await postNews(news)
+    const payload = {newsPosted}
+    return res.end(MiddlewareResponse.payloadSuccessAsString(payload))
   }
+
+  MiddlewareResponse.failMethodNotAllowed(res)
 }

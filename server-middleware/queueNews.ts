@@ -1,14 +1,14 @@
 import { IncomingMessage, ServerResponse } from 'http'
-import { News } from './model'
-import { NEW_BUCKET_PREFIX, parseJson, sendToS3 } from './services'
+import { Message, MiddlewareResponse, News } from './model'
+import { createObjectKey, parseJson, sendToS3 } from './services'
 
 export default async (req: IncomingMessage, res: ServerResponse) => {
   if (req.method === 'POST') {
-    const {postOnDate, news: Body, topic, photoUrls}: News = await parseJson(req)
-    const Key = `${NEW_BUCKET_PREFIX}_${postOnDate}/message_${topic}.txt`
+    const {message: Body, postOnDate, name}: Message = await parseJson(req)
+    const Key = createObjectKey(name, postOnDate, 'message')
     const putRes = await sendToS3({Body, Key})
-    res.end(JSON.stringify(putRes))
-  } else {
-    res.end('ok')
+    return res.end(MiddlewareResponse.payloadSuccessAsString(putRes))
+    // return res.end(MiddlewareResponse.payloadSuccessAsString())
   }
+  MiddlewareResponse.failMethodNotAllowed(res)
 }

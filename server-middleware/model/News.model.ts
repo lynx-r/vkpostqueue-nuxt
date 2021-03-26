@@ -1,6 +1,21 @@
-export interface News {
+export type NewsType = 'message' | 'attachment'
+export type AttachmentType = 'message' | 'image' | 'video'
+
+export interface KeyBuilder {
+  name: string
   postOnDate: string
-  topic: string
-  news: string
-  photoUrls?: string[]
 }
+
+export interface Message extends KeyBuilder {
+  type: 'message'
+  message: string
+}
+
+
+export interface Attachment extends KeyBuilder {
+  type: 'attachment'
+  attachmentType: AttachmentType
+  file: any
+}
+
+export type News = Message | Attachment

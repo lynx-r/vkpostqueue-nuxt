@@ -1,4 +1,6 @@
 import { Readable } from 'stream'
+import { AttachmentType } from '../model'
+import { NEW_BUCKET_PREFIX } from '../services'
 
 export const parseJson =
   <T>(req: Readable | NodeJS.ReadableStream): Promise<T> =>
@@ -23,4 +25,9 @@ export const asyncSelfCall = (cb: Function) => {
   (async () => {
     await cb()
   })()
+}
+
+export const createObjectKey = (name: string, postOnDate: string, type: AttachmentType) => {
+  name += type === 'message' ? '.txt' : ''
+  return `${NEW_BUCKET_PREFIX}_${postOnDate}/${type}_${name}`
 }

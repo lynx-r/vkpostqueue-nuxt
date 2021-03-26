@@ -1,5 +1,5 @@
 <template>
-  <div class="space-y-4 w-1/2 mb-4">
+  <div class="space-y-4">
     <div class="shadow flex flex-col justify-start p-6">
       <span class="w-min min-w-max">Введите тему новости</span>
       <input type="text" class="rounded text-pink-500" v-model="topic"/>
@@ -18,43 +18,19 @@
         <input type="time" class="rounded text-pink-500 w-full" v-model="time"/>
       </div>
     </div>
-    <div class="flex space-x-4">
-      <button class="bg-blue-300 rounded px-4" @click="uploadPost">Поставить в очередь</button>
-    </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, useContext } from '@nuxtjs/composition-api'
-// import { useStorage } from 'vue3-storage'
+import { mapFields } from 'vuex-map-fields';
 
-export default defineComponent({
+export default {
   name: 'PostText',
 
-  setup: () => {
-    const {$http, $dateFns} = useContext()
-
-    const date = ref($dateFns.format(new Date(), 'yyyy-MM-dd'))
-    const time = ref($dateFns.format(new Date(), 'HH:mm'))
-    const topic = ref('test test')
-    const message = ref('test')
-
-    const uploadPost = async () => {
-      console.log('upload')
-      try {
-        const postOnDate = date.value + '_' + time.value
-        let putParams = {news: message.value, topic: topic.value, postOnDate}
-        console.log(putParams)
-        const res = await $http.post('/api/queueNews', putParams)
-        console.log(await res.json())
-      } catch (err) {
-        console.log('Error', err)
-      }
-    }
-
-    return {uploadPost, date, time, topic, message}
+  computed: {
+    ...mapFields('post', ['topic', 'message', 'date', 'time'])
   }
-})
+}
 </script>
 
 <style scoped>
