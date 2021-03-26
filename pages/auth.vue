@@ -52,6 +52,7 @@ export default {
       const res = await this.$http.post('/api/saveVkToken', tokenParams);
       const status = await res.json();
       console.log(status);
+      this.accessTokenUrl = null
       const r = await this.$router.push('post');
       console.log(r);
     }

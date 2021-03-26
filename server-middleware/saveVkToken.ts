@@ -5,7 +5,7 @@ import { parseJson, saveAccessToken } from './services'
 export default async (req: IncomingMessage, res: ServerResponse) => {
   if (req.method === 'POST') {
     const accessToken: VkToken = await parseJson(req)
-    saveAccessToken(accessToken)
+    await saveAccessToken(accessToken)
     return res.end(MiddlewareResponse.payloadSuccessAsString())
   }
 

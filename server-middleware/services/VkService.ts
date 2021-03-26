@@ -1,24 +1,32 @@
-import { VK } from 'vk-io'
 import { S3Objects } from '../model'
 
 import { VK_GROUP_OWNER_ID } from './constants'
-import { getAccessToken, getUsersTokens } from './StoreService'
+import { isBucketReadyForPublish } from '../services'
 
-export const postNews = async (news?: S3Objects) => {
-  console.log(2, news)
-  const token = getUsersTokens()
-  console.log(1, token)
-  if (!token.length) {
+const postOneNews = (news: any) => {
+  console.log(news)
+}
+
+const postNews = async (news?: S3Objects) => {
+  if (!news || !Object.keys(news).length) {
     return 0
   }
+  console.log(0, news)
+  Object
+    .entries(news)
+    .filter(([bucket]) => isBucketReadyForPublish(bucket))
+    .map(([bucket, data]) => {
+      const [_, userId] = bucket.split('__')
+      // const res = await vk.api.wall.post({owner_id: +`-${VK_GROUP_OWNER_ID}`, message: 'test', fromGroup: true})
 
-
+      console.log(userId)
+      console.log(data)
+    })
 
   // console.log(token)
   // const vk = new VK({token})
   //
   // console.log(VK_GROUP_OWNER_ID)
-  // const res = await vk.api.wall.post({owner_id: +`-${VK_GROUP_OWNER_ID}`, message: 'test', fromGroup: true})
   // console.log(res)
   return 1
 

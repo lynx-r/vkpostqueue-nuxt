@@ -81,19 +81,4 @@ export default {
     },
   },
 
-  storage: {
-    vuex: {
-      namespace: 'storage'
-    },
-    cookie: {
-      prefix: '',
-      options: {
-        path: '/'
-      }
-    },
-    localStorage: {
-      prefix: ''
-    },
-    ignoreExceptions: false,
-  }
 };

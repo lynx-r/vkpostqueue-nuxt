@@ -2,6 +2,7 @@ export type NewsType = 'message' | 'attachment'
 export type AttachmentType = 'message' | 'image' | 'video'
 
 export interface KeyBuilder {
+  userId: string
   name: string
   postOnDate: string
 }

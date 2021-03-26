@@ -23,6 +23,7 @@ export default defineComponent({
     PostText,
     PostAttachment
   },
+  inject: ['userId'],
   setup() {
     return {}
   },
@@ -31,14 +32,16 @@ export default defineComponent({
     async uploadPost() {
       console.log('upload')
       try {
+        const userId = this.userId
+        console.log(userId)
         const postOnDate = this.date + '_' + this.time
-        let putParams = {message: this.message, name: this.topic, postOnDate}
+        let putParams = {message: this.message, name: this.topic, postOnDate, userId}
         console.log(putParams)
         const res = await this.$http.post('/api/queueNews', putParams)
         console.log(await res.json())
 
         for (const image of this.images as File[]) {
-          const urlParams = {name: image.name, postOnDate, method: 'put'}
+          const urlParams = {name: image.name, postOnDate, method: 'put', userId}
           let res = await this.$http.post('/api/generatePresignedUrl', urlParams)
           const {payload: {url}} = await res.json()
           console.log(url)

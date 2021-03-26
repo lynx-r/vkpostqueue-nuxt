@@ -12,6 +12,12 @@ export default {
   components: {
     PostForm,
   },
+
+  provide() {
+    return {
+      userId: this.$storage.getUniversal('userId')
+    }
+  },
 }
 </script>
 

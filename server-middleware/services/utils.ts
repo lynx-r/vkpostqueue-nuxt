@@ -21,13 +21,16 @@ export const parseBody =
         req.on('end', () => resolve(Buffer.concat(requestBody)))
       })
 
-export const asyncSelfCall = (cb: Function) => {
-  (async () => {
-    await cb()
-  })()
+export const createObjectKey = (userId: string, name: string, postOnDate: string, type: AttachmentType) => {
+  name += type === 'message' ? '.txt' : ''
+  return `${NEW_BUCKET_PREFIX}__${userId}__${postOnDate}/${type}_${name}`
 }
 
-export const createObjectKey = (name: string, postOnDate: string, type: AttachmentType) => {
-  name += type === 'message' ? '.txt' : ''
-  return `${NEW_BUCKET_PREFIX}_${postOnDate}/${type}_${name}`
+export const isBucketReadyForPublish = (bucket: string) => {
+  if (bucket.startsWith('new__')) {
+    const [publishOnDate] = bucket.split('__').slice(-1)
+    console.log(publishOnDate)
+    return true
+  }
+  return false
 }

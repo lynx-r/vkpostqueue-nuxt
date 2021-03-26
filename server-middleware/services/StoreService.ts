@@ -1,13 +1,16 @@
 import { VkToken } from '../model'
-import store from './store'
+// import store from './store'
+import storage from 'node-persist'
+
+(async () => {
+  await storage.init()
+})()
+// import storage from '@nuxtjs/universal-storage'
 
 export const saveAccessToken = ({userId, expiresIn, accessToken}: VkToken) =>
-  store.set(userId, accessToken, expiresIn)
+  storage.setItem(userId, accessToken)
 
-export const getAccessToken = (userId: string): string | undefined =>
-  store.get(userId)
+export const getAccessToken = (userId: string): Promise<string | undefined> =>
+  storage.getItem(userId)
 
-export const getUsersTokens = (): { [key: string]: string } => {
-  const userIds = store.keys()
-  return store.mget(userIds)
-}
+export const getUserIds = (): Promise<string[]> => storage.keys()
