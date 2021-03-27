@@ -53,7 +53,7 @@ export default {
       const tokenParams = {accessToken, userId, expiresIn}
       await this.$http.post('/api/saveVkToken', tokenParams)
       this.accessTokenUrl = null
-      await this.$router.push('/post/list')
+      await this.$router.push('/post/create')
     }
   }
 }
