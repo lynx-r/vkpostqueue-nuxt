@@ -30,9 +30,11 @@ export default {
     postOnDate() {
       return this.date + '_' + this.time
     },
+
     userId() {
       return this.$storage.getUniversal('userId')
     },
+
     ...mapFields('post', ['message', 'date', 'time', 'images'],)
   }
 }

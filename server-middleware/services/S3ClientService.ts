@@ -1,26 +1,33 @@
-import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
 import {
-  CopyObjectCommand, DeleteObjectCommand,
-  GetObjectCommand, GetObjectCommandInput,
+  CopyObjectCommand,
+  DeleteObjectCommand,
+  GetObjectCommand,
   ListObjectsV2Command,
   PutObjectCommand,
   PutObjectCommandInput,
   S3Client,
 } from '@aws-sdk/client-s3'
+import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
 import { Readable } from 'stream'
 import { S3Objects } from '../model'
-import { NEW_FOLDER_PREFIX, POSTED_FOLDER_PREFIX, S3_BUCKET } from './constants'
+import {
+  NEW_FOLDER_PREFIX,
+  POSTED_FOLDER_PREFIX,
+  S3_ACCESS_KEY_ID,
+  S3_BUCKET,
+  S3_REGION,
+  S3_SECRET_ACCESS_KEY
+} from './constants'
 import { parseBody } from './utils'
 
 type PutCommandInput = Omit<PutObjectCommandInput, 'Bucket'>
-type GetCommandInput = Omit<GetObjectCommandInput, 'Bucket'>
 
 const s3 = new S3Client({
   credentials: {
-    accessKeyId: process.env.S3_ACCESS_KEY_ID!,
-    secretAccessKey: process.env.S3_SECRET_ACCESS_KEY!
+    accessKeyId: S3_ACCESS_KEY_ID!,
+    secretAccessKey: S3_SECRET_ACCESS_KEY!
   },
-  region: process.env.S3_REGION,
+  region: S3_REGION,
 })
 
 export function signedUrlPut(putParams: PutCommandInput) {
@@ -62,6 +69,7 @@ export async function removeNewPrefixOfFolder(folder: string) {
       Key: src
     }))
   }
+  console.log('folder posted')
 }
 
 function getObject(key: string): Promise<Buffer> {

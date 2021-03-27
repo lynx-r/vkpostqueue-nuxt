@@ -27,7 +27,7 @@
       "@nuxt/types",
       "@nuxt/http",
       "@nuxtjs/date-fns",
-      "@nuxtjs/toast",
+      "@nuxtjs/toast"
     ]
   },
   "exclude": [

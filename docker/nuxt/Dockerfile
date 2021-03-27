@@ -11,6 +11,7 @@ COPY plugins plugins
 COPY server-middleware server-middleware
 COPY static static
 COPY store store
+COPY types types
 
 COPY nuxt.config.js .
 COPY package.json .

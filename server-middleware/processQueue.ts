@@ -9,12 +9,12 @@ import {
   isBucketReadyForPublish,
   MESSAGE_TYPE,
   NAME_SEP,
-  PHOTO_TYPE, removeNewPrefixOfFolder,
+  PHOTO_TYPE,
+  removeNewPrefixOfFolder,
   VK_ATTACH_PHOTO_LIMIT,
   VK_GROUP_OWNER_ID,
   VK_MAIN_ALBUM_ID
 } from './services'
-
 
 const OWNER_ID = +`-${VK_GROUP_OWNER_ID}`
 
@@ -27,7 +27,6 @@ async function getUploadUrl(vk: VK): Promise<string> {
 async function uploadPhotos(dataEntries: [string, Buffer][], upload_url: string): Promise<UploadServerResponse> {
   const form = new FormData()
   dataEntries
-    .filter(([n], i) => n.startsWith(PHOTO_TYPE) && i < VK_ATTACH_PHOTO_LIMIT)
     .forEach(([name, image], i) =>
       form.append(`file${i + 1}`, image, {filename: name})
     )
@@ -45,9 +44,9 @@ async function savePhotos({hash, server, photos_list}: UploadServerResponse, vk:
     server,
     photos_list
   }
-  const saveRes = await vk.api.photos.save(saveParams)
-  const imageAttachments = saveRes
-    .map(({id, owner_id}) => `photo${owner_id}_${id}`)
+  const imageAttachments = await vk.api.photos.save(saveParams)
+    .then(({id, owner_id}) => `photo${owner_id}_${id}`)
+  console.log('attachments created')
 
   return `${imageAttachments}`
 }
@@ -55,13 +54,26 @@ async function savePhotos({hash, server, photos_list}: UploadServerResponse, vk:
 function getMessage(dataEntries: [string, Buffer][]) {
   const [, msgBuffer] = dataEntries
     .find(([n]) => n.startsWith(MESSAGE_TYPE))!
+  console.log('message created')
   return msgBuffer.toString()
 }
 
-async function makePost(message: string, attachments: string, vk: VK) {
+async function makePost(message: string, attachments: string | undefined, vk: VK) {
   const wallPostParams = {owner_id: OWNER_ID, message, attachments, fromGroup: true}
-  const res = await vk.api.wall.post(wallPostParams)
-  console.log(res)
+  await vk.api.wall.post(wallPostParams)
+  console.log('post created')
+}
+
+async function getAttachment(vk: VK, dataEntries: [string, Buffer][]) {
+  const photos = dataEntries
+    .filter(([n], i) => n.startsWith(PHOTO_TYPE) && i < VK_ATTACH_PHOTO_LIMIT)
+  if (!photos.length) {
+    console.log('no attachments')
+    return
+  }
+  const upload_url = await getUploadUrl(vk)
+  const uploadRes = await uploadPhotos(photos, upload_url)
+  return await savePhotos(uploadRes, vk)
 }
 
 async function postNews(news?: S3Objects) {
@@ -82,21 +94,16 @@ async function postNews(news?: S3Objects) {
 
     const vk = new VK({token})
     const dataEntries = Object.entries(data)
-
-    const upload_url = await getUploadUrl(vk)
-    const uploadRes = await uploadPhotos(dataEntries, upload_url)
-    const attachments = await savePhotos(uploadRes, vk)
     const message = getMessage(dataEntries)
+    const attachments = await getAttachment(vk, dataEntries)
 
     await makePost(message, attachments, vk)
-
     await removeNewPrefixOfFolder(folder)
 
     postedCount++
   }
 
   return postedCount
-
 }
 
 export default async (req: IncomingMessage, res: ServerResponse) => {
@@ -106,9 +113,8 @@ export default async (req: IncomingMessage, res: ServerResponse) => {
     if (newsCount == 0) {
       return res.end(MiddlewareResponse.payloadSuccessAsString(null, 'There is no news'))
     }
-    const newsPosted = postNews(news)
-    const payload = {newsPosted}
-    return res.end(MiddlewareResponse.payloadSuccessAsString(payload))
+    const newsPosted = await postNews(news)
+    return res.end(MiddlewareResponse.payloadSuccessAsString({newsPosted}))
   }
 
   MiddlewareResponse.failMethodNotAllowed(res)

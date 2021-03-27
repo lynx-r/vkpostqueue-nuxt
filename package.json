@@ -5,7 +5,7 @@
   "description": "My astonishing Nuxt.js project",
   "author": "msweeneydev",
   "scripts": {
-    "build": "nuxt generate",
+    "build": "nuxt build",
     "dev": "nuxt",
     "make": "vue invoke generator",
     "start": "nuxt start"
