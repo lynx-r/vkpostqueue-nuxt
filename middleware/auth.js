@@ -1,5 +1,7 @@
+import { USER_ID } from '~/constants'
+
 export default async ({$http, $storage, redirect}) => {
-  const userId = $storage.getUniversal('userId')
+  const userId = $storage.getUniversal(USER_ID)
   const isAuthenticated = await $http.post('/api/isAuthenticated', {userId})
     .then(r => r.json())
     .then(b => b.payload.isAuthenticated)

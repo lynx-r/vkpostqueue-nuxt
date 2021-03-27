@@ -20,6 +20,8 @@
 </template>
 
 <script>
+import { USER_ID } from '~/constants'
+
 export default {
   name: 'Login',
 
@@ -47,7 +49,7 @@ export default {
       const userId = this.accessTokenUrl.match(/user_id=(\w+)/)[1];
       const expiresIn = this.accessTokenUrl.match(/expires_in=(\w+)/)[1];
 
-      this.$storage.setUniversal('userId', userId)
+      this.$storage.setUniversal(USER_ID, userId)
       const tokenParams = {accessToken, userId, expiresIn};
       const res = await this.$http.post('/api/saveVkToken', tokenParams);
       const status = await res.json();

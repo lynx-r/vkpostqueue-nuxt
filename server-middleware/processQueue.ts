@@ -45,7 +45,7 @@ async function savePhotos({hash, server, photos_list}: UploadServerResponse, vk:
     photos_list
   }
   const imageAttachments = await vk.api.photos.save(saveParams)
-    .then(({id, owner_id}) => `photo${owner_id}_${id}`)
+    .then((res) => res.map(({owner_id, id}) => `photo${owner_id}_${id}`).join(','))
   console.log('attachments created')
 
   return `${imageAttachments}`

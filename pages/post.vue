@@ -5,6 +5,7 @@
 </template>
 
 <script>
+import { USER_ID } from '~/constants'
 import { mapFields } from 'vuex-map-fields'
 
 export default {
@@ -32,7 +33,7 @@ export default {
     },
 
     userId() {
-      return this.$storage.getUniversal('userId')
+      return this.$storage.getUniversal(USER_ID)
     },
 
     ...mapFields('post', ['message', 'date', 'time', 'images'],)

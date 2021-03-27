@@ -4,6 +4,7 @@ WORKDIR /build
 
 COPY assets assets
 COPY components components
+COPY constants constants
 COPY layouts layouts
 COPY middleware middleware
 COPY pages pages
