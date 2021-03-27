@@ -37,8 +37,11 @@
     "@types/node-fetch": "^2.5.8",
     "@types/node-persist": "^3.1.1",
     "autoprefixer": "^10.2.5",
+    "fibers": "^5.0.0",
     "nodemon": "^2.0.7",
     "postcss": "^7.0.32",
+    "sass": "^1.32.8",
+    "sass-loader": "10",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat",
     "vue-cli-plugin-generator": "https://github.com/lynx-r/vue-cli-plugin-generator.git"
   }
