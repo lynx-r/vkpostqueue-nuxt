@@ -5,6 +5,7 @@ export const MESSAGE_TYPE = 'message'
 export const MESSAGE_FILENAME = 'text.txt'
 export const PHOTO_TYPE = 'photo'
 export const NAME_SEP = '__'
+export const PREVIEW_POST_LENGTH = 250
 
 export const S3_BUCKET = process.env.S3_BUCKET
 export const S3_ACCESS_KEY_ID = process.env.S3_ACCESS_KEY_ID

@@ -29,12 +29,12 @@ export default {
     return {
       accessTokenUrl: '',
       isShownAccessTokenForm: true
-    };
+    }
   },
 
   methods: {
     showAccessTokenForm() {
-      this.isShownAccessTokenForm = true;
+      this.isShownAccessTokenForm = true
     },
 
     async saveAccessToken() {
@@ -45,21 +45,18 @@ export default {
       if (!gotToken) {
         return
       }
-      const accessToken = this.accessTokenUrl.match(/access_token=(\w+)/)[1];
-      const userId = this.accessTokenUrl.match(/user_id=(\w+)/)[1];
-      const expiresIn = this.accessTokenUrl.match(/expires_in=(\w+)/)[1];
+      const accessToken = this.accessTokenUrl.match(/access_token=(\w+)/)[1]
+      const userId = this.accessTokenUrl.match(/user_id=(\w+)/)[1]
+      const expiresIn = this.accessTokenUrl.match(/expires_in=(\w+)/)[1]
 
       this.$storage.setUniversal(USER_ID, userId)
-      const tokenParams = {accessToken, userId, expiresIn};
-      const res = await this.$http.post('/api/saveVkToken', tokenParams);
-      const status = await res.json();
-      console.log(status);
+      const tokenParams = {accessToken, userId, expiresIn}
+      await this.$http.post('/api/saveVkToken', tokenParams)
       this.accessTokenUrl = null
-      const r = await this.$router.push('post');
-      console.log(r);
+      await this.$router.push('/post/list')
     }
   }
-};
+}
 </script>
 
 <style scoped>

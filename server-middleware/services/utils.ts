@@ -2,6 +2,10 @@ import { Readable } from 'stream'
 import { AttachmentType } from '../model'
 import { NAME_SEP, NEW_FOLDER_PREFIX } from '../services'
 
+export const parsePayload = <T>(req: Readable | NodeJS.ReadableStream): Promise<T> =>
+  parseJson<{ payload: T }>(req)
+    .then(({payload}) => payload)
+
 export const parseJson =
   <T>(req: Readable | NodeJS.ReadableStream): Promise<T> =>
     new Promise<string>(

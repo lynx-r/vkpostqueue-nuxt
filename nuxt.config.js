@@ -27,7 +27,8 @@ export default {
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: [],
+  plugins: [
+  ],
   /*
    ** Nuxt.js modules
    */
@@ -59,10 +60,11 @@ export default {
   ],
 
   serverMiddleware: {
-    '/api/getSignedUrl': '~/server-middleware/getSignedUrl.ts',
-    '/api/queueNews': '~/server-middleware/queueNews.ts',
-    '/api/saveVkToken': '~/server-middleware/saveVkToken.ts',
     '/api/isAuthenticated': '~/server-middleware/isAuthenticated.js',
+    '/api/saveVkToken': '~/server-middleware/saveVkToken.ts',
+    '/api/getSignedUrl': '~/server-middleware/getSignedUrl.ts',
+    '/api/queuePost': '~/server-middleware/queuePost.ts',
+    '/api/listPosts': '~/server-middleware/listPosts.ts',
     '/action/processQueue': '~/server-middleware/processQueue.ts',
     // '/api/vkAuthorizationCodeFlowCallback': '~/server-middleware/vkAuthorizationCodeFlowCallback.ts',
   },

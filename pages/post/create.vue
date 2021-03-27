@@ -14,12 +14,13 @@ export default {
   methods: {
     async queuePost() {
       const {userId, postOnDate, message, images} = this
-      await this.$http.post('/api/queueNews', {message, postOnDate, userId})
+      await this.$http.post('/api/queuePost', {message, postOnDate, userId})
 
       for (const image of images) {
         const urlParams = {name: image.name, postOnDate, userId}
-        const {payload: {signedUrl}} = await this.$http.post('/api/getSignedUrl', urlParams)
+        const signedUrl = await this.$http.post('/api/getSignedUrl', urlParams)
             .then(r => r.json())
+            .then(({payload: {signedUrl}}) => signedUrl)
         await this.$http.put(signedUrl, image)
       }
 

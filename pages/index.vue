@@ -2,7 +2,7 @@
   <div class="container">
     Добро пожаловать!
 
-    <NuxtLink to="post">
+    <NuxtLink to="post/create">
       Перейти к отправке Новостей
     </NuxtLink>
   </div>
