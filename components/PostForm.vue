@@ -35,7 +35,7 @@ export default defineComponent({
         const userId = this.userId
         console.log(userId)
         const postOnDate = this.date + '_' + this.time
-        let putParams = {message: this.message, name: this.topic, postOnDate, userId}
+        let putParams = {message: this.message, postOnDate, userId}
         console.log(putParams)
         const res = await this.$http.post('/api/queueNews', putParams)
         console.log(await res.json())
@@ -55,7 +55,7 @@ export default defineComponent({
   },
 
   computed: {
-    ...mapFields('post', ['topic', 'message', 'date', 'time', 'images'],)
+    ...mapFields('post', ['message', 'date', 'time', 'images'],)
   }
 })
 </script>

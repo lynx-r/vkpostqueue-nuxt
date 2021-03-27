@@ -1,5 +1,6 @@
-export type NewsType = 'message' | 'attachment'
-export type AttachmentType = 'message' | 'image' | 'video'
+import { MESSAGE_TYPE, PHOTO_TYPE } from '../services'
+
+export type AttachmentType = typeof MESSAGE_TYPE | typeof PHOTO_TYPE
 
 export interface KeyBuilder {
   userId: string

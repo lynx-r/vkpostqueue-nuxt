@@ -16,7 +16,7 @@ const postNews = async (news?: S3Objects) => {
     .entries(news)
     .filter(([bucket]) => isBucketReadyForPublish(bucket))
     .map(([bucket, data]) => {
-      const [_, userId] = bucket.split('__')
+      const [, userId] = bucket.split('__')
       // const res = await vk.api.wall.post({owner_id: +`-${VK_GROUP_OWNER_ID}`, message: 'test', fromGroup: true})
 
       console.log(userId)

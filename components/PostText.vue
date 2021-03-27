@@ -1,10 +1,6 @@
 <template>
   <div class="space-y-4">
     <div class="shadow flex flex-col justify-start p-6">
-      <span class="w-min min-w-max">Введите тему новости</span>
-      <input type="text" class="rounded text-pink-500" v-model="topic"/>
-    </div>
-    <div class="shadow flex flex-col justify-start p-6">
       <span class="w-min min-w-max">Введите запись на стену</span>
       <textarea class="rounded text-pink-500 h-40" v-model="message"/>
     </div>
@@ -28,7 +24,7 @@ export default {
   name: 'PostText',
 
   computed: {
-    ...mapFields('post', ['topic', 'message', 'date', 'time'])
+    ...mapFields('post', ['message', 'date', 'time'])
   }
 }
 </script>

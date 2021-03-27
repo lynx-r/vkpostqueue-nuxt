@@ -1,6 +1,6 @@
 import { Readable } from 'stream'
 import { AttachmentType } from '../model'
-import { NEW_BUCKET_PREFIX } from '../services'
+import { NAME_SEP, NEW_FOLDER_PREFIX } from '../services'
 
 export const parseJson =
   <T>(req: Readable | NodeJS.ReadableStream): Promise<T> =>
@@ -21,14 +21,12 @@ export const parseBody =
         req.on('end', () => resolve(Buffer.concat(requestBody)))
       })
 
-export const createObjectKey = (userId: string, name: string, postOnDate: string, type: AttachmentType) => {
-  name += type === 'message' ? '.txt' : ''
-  return `${NEW_BUCKET_PREFIX}__${userId}__${postOnDate}/${type}_${name}`
-}
+export const createObjectKey = (userId: string, name: string, postOnDate: string, type: AttachmentType) =>
+  `${NEW_FOLDER_PREFIX}${userId}${NAME_SEP}${postOnDate}/${type}_${name}`
 
 export const isBucketReadyForPublish = (bucket: string) => {
-  if (bucket.startsWith('new__')) {
-    const [publishOnDate] = bucket.split('__').slice(-1)
+  if (bucket.startsWith(NEW_FOLDER_PREFIX)) {
+    const [publishOnDate] = bucket.split(NAME_SEP).slice(-1)
     console.log(publishOnDate)
     return true
   }

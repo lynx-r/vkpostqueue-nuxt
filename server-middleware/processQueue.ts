@@ -1,23 +1,70 @@
+import FormData from 'form-data'
 import { IncomingMessage, ServerResponse } from 'http'
+import fetch from 'node-fetch'
 import { VK } from 'vk-io'
-import { PhotosSaveParams, WallPostParams } from 'vk-io/lib/api/schemas/params'
-import { MiddlewareResponse, S3Objects } from './model'
+import { MiddlewareResponse, S3Objects, UploadServerResponse } from './model'
 import {
-  createObjectKey,
   getAccessToken,
   getNewsFromS3,
   isBucketReadyForPublish,
-  parseBody, signedUrlGet,
-  VK_GROUP_OWNER_ID, VK_MAIN_ALBUM_ID
+  MESSAGE_TYPE,
+  NAME_SEP,
+  PHOTO_TYPE, removeNewPrefixOfFolder,
+  VK_ATTACH_PHOTO_LIMIT,
+  VK_GROUP_OWNER_ID,
+  VK_MAIN_ALBUM_ID
 } from './services'
-import fetch, { RequestInit } from 'node-fetch'
-import FormData from 'form-data'
-import { encode, decode } from 'node-base64-image'
 
 
 const OWNER_ID = +`-${VK_GROUP_OWNER_ID}`
 
-const postNews = async (news?: S3Objects) => {
+async function getUploadUrl(vk: VK): Promise<string> {
+  const serverParams = {album_id: +VK_MAIN_ALBUM_ID!, group_id: +VK_GROUP_OWNER_ID!}
+  const {upload_url} = await vk.api.photos.getUploadServer(serverParams)
+  return upload_url
+}
+
+async function uploadPhotos(dataEntries: [string, Buffer][], upload_url: string): Promise<UploadServerResponse> {
+  const form = new FormData()
+  dataEntries
+    .filter(([n], i) => n.startsWith(PHOTO_TYPE) && i < VK_ATTACH_PHOTO_LIMIT)
+    .forEach(([name, image], i) =>
+      form.append(`file${i + 1}`, image, {filename: name})
+    )
+  const uploadParams = {method: 'POST', body: form}
+
+  return await fetch(upload_url, uploadParams)
+    .then(r => r.json())
+}
+
+async function savePhotos({hash, server, photos_list}: UploadServerResponse, vk: VK) {
+  const saveParams = {
+    album_id: +VK_MAIN_ALBUM_ID!,
+    group_id: +VK_GROUP_OWNER_ID!,
+    hash,
+    server,
+    photos_list
+  }
+  const saveRes = await vk.api.photos.save(saveParams)
+  const imageAttachments = saveRes
+    .map(({id, owner_id}) => `photo${owner_id}_${id}`)
+
+  return `${imageAttachments}`
+}
+
+function getMessage(dataEntries: [string, Buffer][]) {
+  const [, msgBuffer] = dataEntries
+    .find(([n]) => n.startsWith(MESSAGE_TYPE))!
+  return msgBuffer.toString()
+}
+
+async function makePost(message: string, attachments: string, vk: VK) {
+  const wallPostParams = {owner_id: OWNER_ID, message, attachments, fromGroup: true}
+  const res = await vk.api.wall.post(wallPostParams)
+  console.log(res)
+}
+
+async function postNews(news?: S3Objects) {
   if (!news || !Object.keys(news).length) {
     return 0
   }
@@ -25,68 +72,30 @@ const postNews = async (news?: S3Objects) => {
     .entries(news)
     .filter(([bucket]) => isBucketReadyForPublish(bucket))
 
-
-  for (const [bucket, data] of objects) {
-    const [_, userId] = bucket.split('__')
+  let postedCount = 0
+  for (const [folder, data] of objects) {
+    const [, userId] = folder.split(NAME_SEP)
     const token = await getAccessToken(userId)
     if (!token) {
       continue
     }
+
     const vk = new VK({token})
     const dataEntries = Object.entries(data)
-    const {topic, message} = dataEntries
-      .filter(([n]) => n.startsWith('message_'))
-      .map(([n, d]) => {
-        const topic = n
-          .replace('message_', '')
-          .replace('.txt', '')
-        const message = d.toString()
-        return {topic, message}
-      })[0]
 
-    const serverParams = {album_id: +VK_MAIN_ALBUM_ID!, group_id: +VK_GROUP_OWNER_ID!}
-    const {upload_url} = await vk.api.photos.getUploadServer(serverParams)
+    const upload_url = await getUploadUrl(vk)
+    const uploadRes = await uploadPhotos(dataEntries, upload_url)
+    const attachments = await savePhotos(uploadRes, vk)
+    const message = getMessage(dataEntries)
 
-    const form = new FormData()
-    dataEntries
-      .filter(([n], i) => n.startsWith('image_') && i < 5)
-      .forEach(([name, image], i) =>
-        form.append(`file${i + 1}`, image, {filename: name})
-      )
-    const uploadParams: RequestInit = {method: 'POST', body: form}
-    const {server, photos_list, hash} = await fetch(upload_url, uploadParams)
-      .then(r => r.json())
+    await makePost(message, attachments, vk)
 
-    const saveParams: PhotosSaveParams = {
-      album_id: +VK_MAIN_ALBUM_ID!,
-      group_id: +VK_GROUP_OWNER_ID!,
-      hash,
-      server,
-      photos_list
-    }
-    const saveRes = await vk.api.photos.save(saveParams)
-    const imageAttachments = saveRes
-      .map(({id, owner_id}) => `photo${owner_id}_${id}`)
-    console.log(saveRes)
+    await removeNewPrefixOfFolder(folder)
 
-    // const sharedLink = await dataEntries
-    //   .filter(([n]) => n.startsWith('link_'))
-    //   .map(([imageName]) => `${bucket}/${imageName}`)
-    //   .map(Key => signedUrlGet({Key}))[0]
-
-    const attachments = `${imageAttachments}`
-    const wallPostParams: WallPostParams = {owner_id: OWNER_ID, message, attachments, fromGroup: true}
-    console.log(wallPostParams)
-    const res = await vk.api.wall.post(wallPostParams)
-
-    console.log(res)
-    // console.log(data)
+    postedCount++
   }
-  // console.log(token)
-  //
-  // console.log(VK_GROUP_OWNER_ID)
-  // console.log(res)
-  return 1
+
+  return postedCount
 
 }
 

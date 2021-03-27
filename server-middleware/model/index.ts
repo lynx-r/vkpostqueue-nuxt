@@ -1,4 +1,4 @@
-export * from './News.model'
+export * from './News'
 export * from './S3News.model'
-export * from './VkToken.model'
+export * from './Vk'
 export * from './MiddlewareResponse.model'

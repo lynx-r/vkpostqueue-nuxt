@@ -1,14 +1,13 @@
 import { IncomingMessage, ServerResponse } from 'http'
-import { Message, MiddlewareResponse, News } from './model'
-import { createObjectKey, parseJson, sendToS3 } from './services'
+import { Message, MiddlewareResponse } from './model'
+import { createObjectKey, MESSAGE_FILENAME, MESSAGE_TYPE, parseJson, sendToS3 } from './services'
 
 export default async (req: IncomingMessage, res: ServerResponse) => {
   if (req.method === 'POST') {
-    const {message: Body, postOnDate, name, userId}: Message = await parseJson(req)
-    const Key = createObjectKey(userId, name, postOnDate, 'message')
+    const {message: Body, postOnDate, userId}: Message = await parseJson(req)
+    const Key = createObjectKey(userId, MESSAGE_FILENAME, postOnDate, MESSAGE_TYPE)
     const putRes = await sendToS3({Body, Key})
     return res.end(MiddlewareResponse.payloadSuccessAsString(putRes))
-    // return res.end(MiddlewareResponse.payloadSuccessAsString())
   }
   MiddlewareResponse.failMethodNotAllowed(res)
 }
