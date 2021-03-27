@@ -31,13 +31,6 @@ export function signedUrlPut(putParams: PutCommandInput) {
     {expiresIn: 3600})
 }
 
-export function signedUrlGet(putParams: GetCommandInput) {
-  return getSignedUrl(s3, new GetObjectCommand({
-    ...putParams,
-    Bucket: S3_BUCKET
-  }))
-}
-
 export function sendToS3(putParams: PutCommandInput) {
   return s3.send(new PutObjectCommand({
     ...putParams,

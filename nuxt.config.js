@@ -48,15 +48,18 @@ export default {
     },
   },
 
+  components: true,
+
   buildModules: [
     '@nuxt/typescript-build',
     '@nuxtjs/tailwindcss',
     '@nuxtjs/composition-api',
-    '@nuxtjs/date-fns'
+    '@nuxtjs/date-fns',
+    'nuxt-typed-vuex',
   ],
 
   serverMiddleware: {
-    '/api/generateSignedUrl': '~/server-middleware/generateSignedUrl.ts',
+    '/api/getSignedUrl': '~/server-middleware/getSignedUrl.ts',
     '/api/queueNews': '~/server-middleware/queueNews.ts',
     '/api/saveVkToken': '~/server-middleware/saveVkToken.ts',
     '/api/isAuthenticated': '~/server-middleware/isAuthenticated.js',

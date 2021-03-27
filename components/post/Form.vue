@@ -13,21 +13,3 @@
     </div>
   </div>
 </template>
-
-<script lang="ts">
-import PostAttachment from '~/components/PostAttachment.vue'
-import PostText from '~/components/PostText.vue'
-
-export default {
-  name: 'PostForm',
-  props: [],
-  components: {
-    PostText,
-    PostAttachment
-  },
-}
-</script>
-
-<style scoped>
-
-</style>

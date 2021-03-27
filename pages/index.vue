@@ -2,9 +2,9 @@
   <div class="container">
     Добро пожаловать!
 
-    <RouterLink to="post">
+    <NuxtLink to="post">
       Перейти к отправке Новостей
-    </RouterLink>
+    </NuxtLink>
   </div>
 </template>
 
@@ -14,5 +14,3 @@ export default {
 }
 </script>
 
-<style>
-</style>
