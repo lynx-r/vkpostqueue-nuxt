@@ -10,7 +10,8 @@
     </div>
     <div>
       <div>Прикрепите изображение</div>
-      <input ref="fileUpload" type="file" class="bg-blue-300 rounded p-2 shadow" multiple @change="imageUploaded($event.target.files)">
+      <input ref="fileUpload" type="file" class="bg-blue-300 rounded p-2 shadow"
+             multiple @change="imageUploaded($event.target.files)">
     </div>
   </div>
 </template>

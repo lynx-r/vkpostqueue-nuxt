@@ -2,9 +2,8 @@ import storage from 'node-persist'
 import { VkToken } from '../model'
 import { PREVIEW_POST_LENGTH } from './constants'
 
-const storagePostKey = (userId: string | number) => `post_${userId}`
-const storageAccessTokenKey = (userId: string | number) => `accesskey_${userId}`;
-
+const storagePostKey = (userId: string | number) => `post__${userId}`
+const storageAccessTokenKey = (userId: string | number) => `access_token__${userId}`;
 
 (async () => {
   await storage.init()

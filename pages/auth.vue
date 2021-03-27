@@ -1,21 +1,19 @@
 <template>
-  <div>
-    <div v-if="isShownAccessTokenForm">
-      <div>Скопируйте access_token в это поле</div>
+  <div class="h-full">
+    <div v-if="isShownAccessTokenForm" class="mb-4">
+      <div>Скопируйте сюда URL из открывшейся вкладки</div>
       <input type="text" v-model="accessTokenUrl">
-      <button class="bg-blue-300 rounded px-4" @click="saveAccessToken">
+      <Button @click="saveAccessToken" :disabled="!accessTokenUrl">
         Сохранить "Ключ доступа"
-      </button>
+      </Button>
     </div>
-    <div>
-      <a :href="$config.vkAuthorizeUrl"
-         target="_blank"
-         class="bg-blue-300 rounded px-4"
-         @click="showAccessTokenForm"
-      >
-        Авторизоваться в ВКонтакте
-      </a>
-    </div>
+    <a :href="$config.vkAuthorizeUrl"
+       target="_blank"
+       class="bg-blue-300 w-72 block text-center rounded p-2 shadow"
+       @click="showAccessTokenForm"
+    >
+      Авторизоваться в ВКонтакте
+    </a>
   </div>
 </template>
 
@@ -28,7 +26,7 @@ export default {
   data() {
     return {
       accessTokenUrl: '',
-      isShownAccessTokenForm: true
+      isShownAccessTokenForm: false
     }
   },
 
@@ -43,6 +41,8 @@ export default {
           && this.accessTokenUrl.includes('user_id')
           && this.accessTokenUrl.includes('expires_in')
       if (!gotToken) {
+        this.$toast.error('Не верный URL')
+        this.accessTokenUrl = ''
         return
       }
       const accessToken = this.accessTokenUrl.match(/access_token=(\w+)/)[1]
@@ -58,7 +58,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-
-</style>
