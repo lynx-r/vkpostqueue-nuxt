@@ -34,6 +34,7 @@ export default {
   modules: [
     '@nuxt/http',
     '@nuxtjs/universal-storage',
+    '@nuxtjs/toast',
   ],
 
   /*
@@ -55,12 +56,12 @@ export default {
   ],
 
   serverMiddleware: {
-    '/api/generatePresignedUrl': '~/server-middleware/generatePresignedUrl.ts',
+    '/api/generateSignedUrl': '~/server-middleware/generateSignedUrl.ts',
     '/api/queueNews': '~/server-middleware/queueNews.ts',
     '/api/saveVkToken': '~/server-middleware/saveVkToken.ts',
     '/api/isAuthenticated': '~/server-middleware/isAuthenticated.js',
-    // '/api/vkAuthorizationCodeFlowCallback': '~/server-middleware/vkAuthorizationCodeFlowCallback.ts',
     '/action/processQueue': '~/server-middleware/processQueue.ts',
+    // '/api/vkAuthorizationCodeFlowCallback': '~/server-middleware/vkAuthorizationCodeFlowCallback.ts',
   },
 
   env: {},
@@ -80,5 +81,10 @@ export default {
       baseUrl: process.env.VERCEL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000'
     },
   },
+
+  toast: {
+    duration: 2000,
+    closeOnSwipe: true,
+  }
 
 };

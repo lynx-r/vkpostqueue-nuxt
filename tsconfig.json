@@ -25,7 +25,9 @@
     "types": [
       "@types/node",
       "@nuxt/types",
-      "@nuxtjs/date-fns"
+      "@nuxt/http",
+      "@nuxtjs/date-fns",
+      "@nuxtjs/toast",
     ]
   },
   "exclude": [
