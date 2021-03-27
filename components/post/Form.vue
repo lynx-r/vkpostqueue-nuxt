@@ -5,11 +5,9 @@
       <PostAttachment class="w-1/2"/>
     </div>
     <div class="mt-4">
-      <button class="bg-blue-300 rounded px-4"
-              @click="$emit('queuePost')"
-      >
+      <Button @click="$emit('queuePost')">
         Поставить в очередь
-      </button>
+      </Button>
     </div>
   </div>
 </template>

@@ -8,7 +8,7 @@ export default async (req: IncomingMessage, res: ServerResponse) => {
     await savePost(userId, postOnDate, Body)
 
     const Key = createObjectKey(userId, MESSAGE_FILENAME, postOnDate, MESSAGE_TYPE)
-    // await sendToS3({Body, Key})
+    await sendToS3({Body, Key})
     return res.end(MiddlewareResponse.payloadSuccessAsString())
   }
   MiddlewareResponse.failMethodNotAllowed(res)

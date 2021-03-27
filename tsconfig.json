@@ -25,9 +25,10 @@
     "types": [
       "@types/node",
       "@nuxt/types",
+      "@nuxt/vue-app",
       "@nuxt/http",
       "@nuxtjs/date-fns",
-      "@nuxtjs/toast"
+      "@nuxtjs/toast",
     ]
   },
   "exclude": [

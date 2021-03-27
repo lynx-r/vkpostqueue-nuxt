@@ -23,7 +23,9 @@ export default {
   /*
    ** Global CSS
    */
-  css: [],
+  css: [
+    '~/assets/css/main.css',
+  ],
   /*
    ** Plugins to load before mounting the App
    */
@@ -49,12 +51,17 @@ export default {
     },
   },
 
-  components: true,
+  components: {
+    dirs: [
+      '~/components',
+      '~/components/base'
+    ]
+  },
 
   buildModules: [
     '@nuxt/typescript-build',
-    '@nuxtjs/tailwindcss',
     '@nuxtjs/composition-api',
+    '@nuxtjs/tailwindcss',
     '@nuxtjs/date-fns',
     'nuxt-typed-vuex',
   ],
@@ -90,6 +97,10 @@ export default {
   toast: {
     duration: 2000,
     closeOnSwipe: true,
-  }
+    position: 'bottom-center',
+  },
 
+  tailwindcss: {
+    jit: true
+  }
 };

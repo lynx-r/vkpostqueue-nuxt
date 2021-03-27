@@ -1,16 +1,5 @@
 <template>
-  <div class="container">
+  <div>
     Добро пожаловать!
-
-    <NuxtLink to="post/create">
-      Перейти к отправке Новостей
-    </NuxtLink>
   </div>
 </template>
-
-<script>
-
-export default {
-}
-</script>
-

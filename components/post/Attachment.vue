@@ -1,14 +1,16 @@
 <template>
   <div>
-    <div>
-      <span v-for="img of images">
-        {{ img.name }}
-      </span>
+    <div v-if="images.length" class="mb-4">
+      <ul>
+        <li v-for="img of images">
+          {{ img.name }}
+        </li>
+      </ul>
+      <Button @click="clearImages" color="bg-red-200">Очистить</Button>
     </div>
-    <button v-if="images.length" @click="clearImages">Очистить</button>
     <div>
       <div>Прикрепите изображение</div>
-      <input ref="fileUpload" type="file" multiple @change="imageUploaded($event.target.files)">
+      <input ref="fileUpload" type="file" class="bg-blue-300 rounded p-2 shadow" multiple @change="imageUploaded($event.target.files)">
     </div>
   </div>
 </template>
