@@ -1,6 +1,6 @@
 import { IncomingMessage, ServerResponse } from 'http'
+import fetch from 'node-fetch'
 import { parseJson, saveAccessToken, VK_AUTH_ERROR_REDIRECT, VK_AUTH_SUCCESS_REDIRECT, VK_GET_ACCESS_TOKEN_URL } from './services'
-import fetch  from 'node-fetch'
 
 /**
  * @deprecated
@@ -14,23 +14,20 @@ import fetch  from 'node-fetch'
 export default async (req: IncomingMessage, res: ServerResponse) => {
   const codeMatch = req.url?.match(/code=(\w+)/)
   if (!codeMatch?.length) {
-    res.end({message: 'Unable to get "authorization code"'})
+    res.end({ message: 'Unable to get "authorization code"' })
     return
   }
   const code = codeMatch[1]
   const requestAccessTokenUrl = VK_GET_ACCESS_TOKEN_URL + `&code=${code}`
-  console.log(requestAccessTokenUrl)
   const tokenRes = await fetch(requestAccessTokenUrl)
   const token: any = await parseJson(tokenRes.body)
-  if (!!token?.error) {
-    console.log(token)
-    res.writeHead(302, {Location: VK_AUTH_ERROR_REDIRECT})
+  if (token?.error) {
+    res.writeHead(302, { Location: VK_AUTH_ERROR_REDIRECT })
     res.end()
     return
   }
-  const accessToken = {accessToken: token.access_token, expiresIn: token.expires_in, userId: token.user_id}
-  console.log(0, accessToken)
+  const accessToken = { accessToken: token.access_token, expiresIn: token.expires_in, userId: token.user_id }
   saveAccessToken(accessToken)
-  res.writeHead(302, {Location: VK_AUTH_SUCCESS_REDIRECT})
+  res.writeHead(302, { Location: VK_AUTH_SUCCESS_REDIRECT })
   res.end()
 }

@@ -14,7 +14,6 @@ export const mutations: MutationTree<RootState> = {}
 
 export const actions: ActionTree<RootState, RootState> = {}
 
-
 // This compiles to nothing and only serves to return the correct type of the accessor
 export const accessorType = getAccessorType({
   state,
@@ -23,6 +22,6 @@ export const accessorType = getAccessorType({
   actions,
   modules: {
     auth,
-    post,
-  },
+    post
+  }
 })

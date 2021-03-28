@@ -1,4 +1,4 @@
-import { NuxtConfig } from "@nuxt/types";
+import { NuxtConfig } from '@nuxt/types'
 
 interface NuxtConfigExt extends NuxtConfig {
   components: boolean | {dirs: string[]; loader: any} | undefined
@@ -12,25 +12,25 @@ const config: NuxtConfigExt = {
   head: {
     title: process.env.npm_package_name || '',
     meta: [
-      {charset: 'utf-8'},
-      {name: 'viewport', content: 'width=device-width, initial-scale=1'},
+      { charset: 'utf-8' },
+      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       {
         hid: 'description',
         name: 'description',
-        content: process.env.npm_package_description || '',
-      },
+        content: process.env.npm_package_description || ''
+      }
     ],
-    link: [{rel: 'icon', type: 'image/x-icon', href: '/favicon.ico'}],
+    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
   },
   /*
    ** Customize the progress-bar color
    */
-  loading: {color: '#fff'},
+  loading: { color: '#fff' },
   /*
    ** Global CSS
    */
   css: [
-    '~/assets/css/main.scss',
+    '~/assets/css/main.scss'
   ],
   /*
    ** Plugins to load before mounting the App
@@ -43,7 +43,7 @@ const config: NuxtConfigExt = {
   modules: [
     '@nuxt/http',
     '@nuxtjs/universal-storage',
-    '@nuxtjs/toast',
+    '@nuxtjs/toast'
   ],
 
   /*
@@ -70,16 +70,16 @@ const config: NuxtConfigExt = {
     '@nuxtjs/composition-api',
     '@nuxtjs/tailwindcss',
     '@nuxtjs/date-fns',
-    'nuxt-typed-vuex',
+    'nuxt-typed-vuex'
   ],
 
   serverMiddleware: [
-    {path: '/api/isAuthenticated', handler: '~/server-middleware/isAuthenticated.ts'},
-    {path: '/api/saveVkToken', handler: '~/server-middleware/saveVkToken.ts'},
-    {path: '/api/getSignedUrl', handler: '~/server-middleware/getSignedUrl.ts'},
-    {path: '/api/queuePost', handler: '~/server-middleware/queuePost.ts'},
-    {path: '/api/listPosts', handler: '~/server-middleware/listPosts.ts'},
-    {path: '/action/processQueue', handler: '~/server-middleware/processQueue.ts'},
+    { path: '/api/isAuthenticated', handler: '~/server-middleware/isAuthenticated.ts' },
+    { path: '/api/saveVkToken', handler: '~/server-middleware/saveVkToken.ts' },
+    { path: '/api/getSignedUrl', handler: '~/server-middleware/getSignedUrl.ts' },
+    { path: '/api/queuePost', handler: '~/server-middleware/queuePost.ts' },
+    { path: '/api/listPosts', handler: '~/server-middleware/listPosts.ts' },
+    { path: '/action/processQueue', handler: '~/server-middleware/processQueue.ts' }
   ],
 
   env: {},
@@ -97,18 +97,26 @@ const config: NuxtConfigExt = {
     http: {
       // HTTP options here
       baseUrl: process.env.VERCEL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000'
-    },
+    }
   },
 
   toast: {
     duration: 2000,
     closeOnSwipe: true,
-    position: 'bottom-center',
+    position: 'bottom-center'
   },
 
   tailwindcss: {
     jit: true
+  },
+
+  typescript: {
+    typeCheck: {
+      eslint: {
+        files: './**/*.{ts,js,vue}'
+      }
+    }
   }
 }
 
-export default config;
+export default config

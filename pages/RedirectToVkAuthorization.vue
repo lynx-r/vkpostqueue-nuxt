@@ -1,10 +1,9 @@
-<template></template>
+<template>
+  <div />
+</template>
 
 <script>
 export default {
-  name: 'RedirectVkAuthorization',
-  asyncData(ctx) {
-    // ctx.redirect(ctx.$config.vkAuthorizeUrl)
-  }
-};
+  name: 'RedirectVkAuthorization'
+}
 </script>

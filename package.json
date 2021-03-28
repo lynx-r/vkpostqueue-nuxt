@@ -8,7 +8,8 @@
     "build": "nuxt build",
     "dev": "nuxt",
     "make": "vue invoke generator",
-    "start": "nuxt start"
+    "start": "nuxt start",
+    "lint": "eslint --ext .ts,.js,.vue ."
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.8.1",
@@ -29,6 +30,7 @@
     "@nuxt/types": "^2.15.3",
     "@nuxt/typescript-build": "^2.1.0",
     "@nuxtjs/date-fns": "^1.4.3",
+    "@nuxtjs/eslint-config-typescript": "^6.0.0",
     "@nuxtjs/tailwindcss": "^4.0.1",
     "@tailwindcss/forms": "^0.2.1",
     "@tailwindcss/jit": "^0.1.14",
@@ -37,6 +39,7 @@
     "@types/node-fetch": "^2.5.8",
     "@types/node-persist": "^3.1.1",
     "autoprefixer": "^10.2.5",
+    "eslint": "^7.23.0",
     "fibers": "^5.0.0",
     "nodemon": "^2.0.7",
     "postcss": "^7.0.32",

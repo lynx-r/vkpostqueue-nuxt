@@ -4,9 +4,9 @@ import { getPosts, parseJson } from './services'
 
 const listPosts: ServerMiddleware = async (req, res) => {
   if (req.method === 'POST') {
-    const {userId} = await parseJson(req)
+    const { userId } = await parseJson(req)
     const posts = await getPosts(userId)
-    return res.end(MiddlewareResponse.payloadSuccessAsString({posts}))
+    return res.end(MiddlewareResponse.payloadSuccessAsString({ posts }))
   }
   MiddlewareResponse.failMethodNotAllowed(res)
 }

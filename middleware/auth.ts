@@ -1,17 +1,16 @@
 import { Middleware } from '@nuxt/types'
 import { USER_ID } from '~/constants'
 
-const auth: Middleware = async ({$http, $storage, redirect}) => {
+const auth: Middleware = async ({ $http, $storage, redirect }) => {
   const userId = $storage.getUniversal(USER_ID)
-  const isAuthenticated = await $http.post('/api/isAuthenticated', {userId})
+  const isAuthenticated = await $http.post('/api/isAuthenticated', { userId })
     .then(r => r.json())
-    .then(({payload: {isAuthenticated}}) => isAuthenticated)
-    .catch(e => {
-      console.log(e.message)
+    .then(({ payload: { isAuthenticated } }) => isAuthenticated)
+    .catch(() => {
       return false
     })
   if (!isAuthenticated) {
-    return redirect({name: 'auth'})
+    return redirect({ name: 'auth' })
   }
 }
 

@@ -13,7 +13,6 @@ export interface Message extends KeyBuilder {
   message: string
 }
 
-
 export interface Attachment extends KeyBuilder {
   type: 'attachment'
   attachmentType: AttachmentType

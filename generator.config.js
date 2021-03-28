@@ -16,8 +16,8 @@ module.exports = {
           message: 'This component with scoped styling?',
           default: true,
           group: 'composition',
-          when: answers => answers.type === 'composition',
-        },
+          when: answers => answers.type === 'composition'
+        }
       ]
     },
     {
@@ -62,8 +62,8 @@ module.exports = {
           message: 'This component with scoped styling?',
           default: true,
           group: 'view',
-          when: answers => answers.type === 'view',
-        },
+          when: answers => answers.type === 'view'
+        }
       ]
     },
     {
@@ -90,19 +90,19 @@ module.exports = {
               needle: 'needle-add-module-to-store-import',
               splicable: [
                 'import ${name.camelCase} from \'./${name.kebabCase}\'',
-                'import { ${name.pascalCase}StateInterface } from \'./${name.kebabCase}/state\'',
+                'import { ${name.pascalCase}StateInterface } from \'./${name.kebabCase}/state\''
               ]
             },
             {
               needle: 'needle-add-module-to-modules-object',
               splicable: [
-                '${name.camelCase},',
+                '${name.camelCase},'
               ]
             },
             {
               needle: 'needle-add-module-state-interface-to-root-state-interface',
               splicable: [
-                '${name.camelCase}: ${name.pascalCase}StateInterface,',
+                '${name.camelCase}: ${name.pascalCase}StateInterface,'
               ]
             }
           ]
@@ -126,25 +126,25 @@ module.exports = {
               needle: 'needle-add-mutation-to-type-mutations',
               splicable: [
                 // it adds '&' before '=' but it is legal
-                '& \${name.pascalCase}Mutations',
+                '& \${name.pascalCase}Mutations'
               ]
             },
             {
               needle: 'needle-add-action-to-type-actions',
               splicable: [
-                '& \${name.pascalCase}Actions',
+                '& \${name.pascalCase}Actions'
               ]
             },
             {
               needle: 'needle-add-getter-to-type-getters',
               splicable: [
-                '& \${name.pascalCase}Getters',
+                '& \${name.pascalCase}Getters'
               ]
             },
             {
               needle: 'needle-add-module-state-interface-to-root-state-interface',
               splicable: [
-                '${name.camelCase}: ${name.pascalCase}StateInterface,',
+                '${name.camelCase}: ${name.pascalCase}StateInterface,'
               ]
             }
           ]
@@ -158,7 +158,7 @@ module.exports = {
       label: 'Component',
       template: {
         // eslint-disable-next-line no-template-curly-in-string
-        ['./components/${name.pascalCase}.vue']: 'component.vue'
+        './components/${name.pascalCase}.vue': 'component.vue'
       },
       renameFile: true, // Rename file question
       prompts: [
@@ -169,9 +169,9 @@ module.exports = {
           message: 'This component with scoped styling?',
           default: true,
           group: 'component',
-          when: answers => answers.type === 'component',
-        },
+          when: answers => answers.type === 'component'
+        }
       ]
-    },
+    }
   ]
-};
+}

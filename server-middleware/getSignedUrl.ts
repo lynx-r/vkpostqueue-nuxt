@@ -4,10 +4,10 @@ import { createObjectKey, parseJson, PHOTO_TYPE, signedUrlPut } from './services
 
 const getSignedUrl: ServerMiddleware = async (req, res) => {
   if (req.method === 'POST') {
-    const {name, postOnDate, userId}: KeyBuilder = await parseJson(req)
+    const { name, postOnDate, userId }: KeyBuilder = await parseJson(req)
     const Key = createObjectKey(userId, name, postOnDate, PHOTO_TYPE)
-    const signedUrl = await signedUrlPut({Key})
-    return res.end(MiddlewareResponse.payloadSuccessAsString({signedUrl}))
+    const signedUrl = await signedUrlPut({ Key })
+    return res.end(MiddlewareResponse.payloadSuccessAsString({ signedUrl }))
   }
 
   MiddlewareResponse.failMethodNotAllowed(res)

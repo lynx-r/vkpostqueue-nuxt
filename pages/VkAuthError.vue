@@ -7,7 +7,7 @@
 <script>
 export default {
   name: 'VkAuthError'
-};
+}
 </script>
 
 <style scoped>

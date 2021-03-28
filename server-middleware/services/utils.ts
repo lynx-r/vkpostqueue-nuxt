@@ -2,10 +2,6 @@ import { Readable } from 'stream'
 import { AttachmentType } from '../model'
 import { NAME_SEP, NEW_FOLDER_PREFIX } from '../services'
 
-export const parsePayload = <T>(req: Readable | NodeJS.ReadableStream): Promise<T> =>
-  parseJson<{ payload: T }>(req)
-    .then(({payload}) => payload)
-
 export const parseJson =
   <T>(req: Readable | NodeJS.ReadableStream): Promise<T> =>
     new Promise<string>(
@@ -17,7 +13,7 @@ export const parseJson =
       .then(body => JSON.parse(body))
 
 export const parseBody =
-  <T>(req: Readable): Promise<Buffer> =>
+  (req: Readable): Promise<Buffer> =>
     new Promise<Buffer>(
       (resolve) => {
         const requestBody: Uint8Array[] = []
@@ -30,8 +26,8 @@ export const createObjectKey = (userId: string, name: string, postOnDate: string
 
 export const isBucketReadyForPublish = (bucket: string) => {
   if (bucket.startsWith(NEW_FOLDER_PREFIX)) {
-    const [publishOnDate] = bucket.split(NAME_SEP).slice(-1)
-    console.log(publishOnDate)
+    // const [publishOnDate] = bucket.split(NAME_SEP).slice(-1)
+    // todo isBucketReadyForPublish
     return true
   }
   return false

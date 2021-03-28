@@ -1,3 +1,5 @@
+/* eslint-disable camelcase */
+
 export interface VkToken {
   userId: string
   accessToken: string

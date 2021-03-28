@@ -9,7 +9,7 @@ import { PREVIEW_POST_LENGTH } from './constants'
 const storagePostKey = (userId: string | number) => `post__${userId}`
 const storageAccessTokenKey = (userId: string | number) => `access_token__${userId}`
 
-export const saveAccessToken = ({userId, accessToken}: VkToken) =>
+export const saveAccessToken = ({ userId, accessToken }: VkToken) =>
   storage.setItem(storageAccessTokenKey(userId), accessToken)
 
 export const getAccessToken = (userId: string): Promise<string | undefined> =>
@@ -17,7 +17,7 @@ export const getAccessToken = (userId: string): Promise<string | undefined> =>
 
 export const getUserIds = (): Promise<string[]> => storage.keys()
 
-export const getPosts = async (userId: string) => storage.getItem(storagePostKey(userId))
+export const getPosts = (userId: string) => storage.getItem(storagePostKey(userId))
 
 export const savePost = async (userId: string, postOnDate: string, body: string) => {
   const key = storagePostKey(userId)
