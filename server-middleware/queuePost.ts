@@ -5,12 +5,12 @@ import { createObjectKey, MESSAGE_FILENAME, MESSAGE_TYPE, parseJson, savePost, s
 const queuePost: ServerMiddleware = async (req, res) => {
   if (req.method === 'POST') {
     const { message: Body, postOnDate, userId }: Message = await parseJson(req)
-    await savePost(userId, postOnDate, Body)
-
     const Key = createObjectKey(userId, MESSAGE_FILENAME, postOnDate, MESSAGE_TYPE)
+    await savePost(userId, Key, postOnDate, Body)
     await sendToS3({ Body, Key })
     return res.end(MiddlewareResponse.payloadSuccessAsString())
   }
+
   MiddlewareResponse.failMethodNotAllowed(res)
 }
 

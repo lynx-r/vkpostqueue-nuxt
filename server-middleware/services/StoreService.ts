@@ -19,11 +19,12 @@ export const getUserIds = (): Promise<string[]> => storage.keys()
 
 export const getPosts = (userId: string) => storage.getItem(storagePostKey(userId))
 
-export const savePost = async (userId: string, postOnDate: string, body: string) => {
+export const savePost = async (userId: string, S3Key: string, postOnDate: string, body: string) => {
   const key = storagePostKey(userId)
   const userPosts = await storage.getItem(key) ?? []
   const preview = body.substring(0, PREVIEW_POST_LENGTH)
   const post = {
+    S3Key,
     postOnDate,
     preview
   }

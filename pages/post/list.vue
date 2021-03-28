@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import { USER_ID } from '~/constants'
+import { POST_ATTACHMENTS, USER_ID } from '~/constants'
 
 export default {
   middleware: 'auth',
@@ -17,6 +17,7 @@ export default {
     const posts = await $http.post('/api/listPosts', { userId })
       .then(r => r.json())
       .then(({ payload: { posts } }) => posts)
+      .then(posts => posts?.filter(p => !POST_ATTACHMENTS.includes(p.preview)))
     return { posts }
   }
 

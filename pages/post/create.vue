@@ -6,14 +6,17 @@
 
 <script>
 import { mapFields } from 'vuex-map-fields'
-import { USER_ID } from '~/constants'
+import { parse, formatISO } from 'date-fns'
+
+import { DATE_FMT, TIME_FMT, USER_ID } from '~/constants'
 
 export default {
   middleware: 'auth',
 
   computed: {
     postOnDate () {
-      return this.date + '_' + this.time
+      const date = parse(this.date + '_' + this.time, DATE_FMT + '_' + TIME_FMT, new Date())
+      return formatISO(date)
     },
 
     userId () {

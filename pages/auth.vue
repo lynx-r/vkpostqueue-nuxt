@@ -27,7 +27,7 @@ export default {
   data () {
     return {
       accessTokenUrl: '',
-      isShownAccessTokenForm: false
+      isShownAccessTokenForm: true
     }
   },
 
