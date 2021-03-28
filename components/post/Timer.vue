@@ -1,67 +1,82 @@
 <template>
-  <div class="flex space-x-4 items-end flex-wrap">
-    <div class="flex flex-col">
-      <span class="">Дата поста</span>
-      <input v-model="date" type="date" class="rounded">
+  <div class="">
+    <div class="flex space-x-4">
+      <DateInput v-model="date" :future-and-now="{linkedTime: time}" name="Дата поста" />
+      <TimeInput v-model="time" :future-and-now="{linkedDate: date}" name="Время поста" />
     </div>
-    <div class="flex flex-col">
-      <span class="">Время поста</span>
-      <input v-model="time" type="time" class="rounded">
+    <div class="flex space-x-4">
+      <Button class="bg-green-300" @click="onNow">
+        Ближайшее
+      </Button>
+      <Button class="bg-green-300" @click="onRoundTime">
+        Округлить
+      </Button>
+      <Button class="bg-green-300" @click="onAddHours(1)">
+        +1 ч.
+      </Button>
+      <Button class="bg-green-300" @click="onSubHours(1)">
+        -1 ч.
+      </Button>
     </div>
-    <Button class="bg-green-300" @click="now">
-      Сейчас
-    </Button>
-    <Button class="bg-green-300" @click="roundTime">
-      Округлить
-    </Button>
-    <Button class="bg-green-300" @click="addHours(1)">
-      +1 ч.
-    </Button>
-    <Button class="bg-green-300" @click="subHours(1)">
-      -1 ч.
-    </Button>
   </div>
 </template>
 
 <script lang="ts">
+import { defineComponent } from '@nuxtjs/composition-api'
+import { addHours, addMinutes, format, parse, roundToNearestMinutes, subHours, isPast } from 'date-fns'
 import { mapFields } from 'vuex-map-fields'
-import { format, parse, roundToNearestMinutes, addHours, subHours } from 'date-fns'
-import { TIME_FMT, TIME_NEAREST_TO } from '~/constants'
+import { DATE_FMT, TIME_FMT, TIME_NEAREST_TO } from '~/constants'
 
-export default {
+export default defineComponent({
   name: 'PostTimer',
 
   data () {
     return {
-      plusHours: [1]
+      time2: ''
     }
   },
 
   computed: {
+
+    nowDate () {
+      return format(new Date(), DATE_FMT)
+    },
+
     timeParsed () {
       return parse(this.time as string, TIME_FMT, new Date())
     },
+
+    dateTimeParsed () {
+      return parse(this.date + ' ' + this.time, DATE_FMT + ' ' + TIME_FMT, new Date())
+    },
+
     ...mapFields('post', ['date', 'time'])
   },
 
   methods: {
-    now () {
+    onNow () {
       this.time = format(new Date(), TIME_FMT)
+      this.date = format(new Date(), DATE_FMT)
+      this.onRoundTime()
     },
 
-    roundTime () {
-      this.time = format(roundToNearestMinutes(this.timeParsed, { nearestTo: TIME_NEAREST_TO }), TIME_FMT)
+    onRoundTime () {
+      let time = roundToNearestMinutes(this.timeParsed, { nearestTo: TIME_NEAREST_TO })
+      if (isPast(time)) {
+        time = roundToNearestMinutes(addMinutes(time, 15), { nearestTo: TIME_NEAREST_TO })
+      }
+      this.time = format(time, TIME_FMT)
     },
 
-    addHours (hours: number) {
+    onAddHours (hours: number) {
       this.time = format(addHours(this.timeParsed, hours), TIME_FMT)
     },
 
-    subHours (hours: number) {
+    onSubHours (hours: number) {
       this.time = format(subHours(this.timeParsed, hours), TIME_FMT)
     }
   }
-}
+})
 </script>
 
 <style scoped>

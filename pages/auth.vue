@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import { USER_ID } from '~/constants'
+import { INVALID_URL, USER_ID } from '~/constants'
 
 export default {
   name: 'Login',
@@ -42,7 +42,7 @@ export default {
           this.accessTokenUrl.includes('user_id') &&
           this.accessTokenUrl.includes('expires_in')
       if (!gotToken) {
-        this.$toast.error('Не верный URL')
+        this.$toast.error(INVALID_URL)
         this.accessTokenUrl = ''
         return
       }

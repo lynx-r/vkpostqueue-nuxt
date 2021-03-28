@@ -19,12 +19,15 @@
     "@nuxtjs/toast": "^3.3.1",
     "@nuxtjs/universal-storage": "^0.5.7",
     "@vk-io/authorization": "^1.0.0",
+    "lodash": "^4.17.21",
     "node-fetch": "^2.6.1",
     "node-persist": "^3.1.0",
     "nuxt": "^2.15.3",
     "nuxt-typed-vuex": "^0.1.22",
     "tslog": "^3.1.2",
+    "vee-validate": "^3.4.5",
     "vk-io": "^4.1.4",
+    "vue-lodash": "^2.1.2",
     "vuex-map-fields": "^1.4.1"
   },
   "devDependencies": {
@@ -36,6 +39,7 @@
     "@tailwindcss/forms": "^0.2.1",
     "@tailwindcss/jit": "^0.1.14",
     "@tailwindcss/postcss7-compat": "^2.0.3",
+    "@types/lodash": "^4.14.168",
     "@types/node": "^14.14.35",
     "@types/node-fetch": "^2.5.8",
     "@types/node-persist": "^3.1.1",

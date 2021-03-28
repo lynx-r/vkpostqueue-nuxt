@@ -36,6 +36,8 @@ const config: NuxtConfigExt = {
    ** Plugins to load before mounting the App
    */
   plugins: [
+    '~/plugins/vee-validate.ts',
+    '~/plugins/vue-lodash.ts'
   ],
   /*
    ** Nuxt.js modules
@@ -50,6 +52,9 @@ const config: NuxtConfigExt = {
    ** Build configuration
    */
   build: {
+    transpile: [
+      'vee-validate/dist/rules'
+    ]
     /*
      ** You can extend webpack config here
      */

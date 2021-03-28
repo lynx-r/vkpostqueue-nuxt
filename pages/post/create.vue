@@ -8,7 +8,7 @@
 import { mapFields } from 'vuex-map-fields'
 import { parse, formatISO } from 'date-fns'
 
-import { DATE_FMT, TIME_FMT, USER_ID } from '~/constants'
+import { DATE_FMT, NEWS_IN_QUEUE, TIME_FMT, USER_ID } from '~/constants'
 
 export default {
   middleware: 'auth',
@@ -39,7 +39,7 @@ export default {
         await this.$http.put(signedUrl, image)
       }
 
-      this.$toast.success('Новость поставлена в очередь')
+      this.$toast.success(NEWS_IN_QUEUE)
     }
   }
 }
