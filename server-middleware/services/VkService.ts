@@ -12,6 +12,7 @@ import {
   VK_GROUP_OWNER_ID,
   VK_MAIN_ALBUM_ID
 } from './constants'
+import logger from './logger'
 import { removeNewPrefixOfFolder } from './S3ClientService'
 import { getAccessToken } from './StoreService'
 import { isBucketReadyForPublish } from './utils'
@@ -44,7 +45,7 @@ const savePhotos = async ({ hash, server, photos_list }: UploadServerResponse, v
   }
   const imageAttachments = await vk.api.photos.save(saveParams)
     .then(res => res.map(({ owner_id, id }) => `photo${owner_id}_${id}`).join(','))
-  console.log('attachments created')
+  logger.debug('attachments created')
 
   return `${imageAttachments}`
 }
@@ -52,21 +53,21 @@ const savePhotos = async ({ hash, server, photos_list }: UploadServerResponse, v
 const getMessage = (dataEntries: [string, Buffer][]) => {
   const [, msgBuffer] = dataEntries
     .find(([n]) => n.startsWith(MESSAGE_TYPE))!
-  console.log('message created')
+  logger.debug('message created')
   return msgBuffer.toString()
 }
 
 const makePost = async (message: string, attachments: string | undefined, vk: VK) => {
   const wallPostParams = { owner_id: OWNER_ID, message, attachments, fromGroup: true }
   await vk.api.wall.post(wallPostParams)
-  console.log('post created')
+  logger.debug('post created')
 }
 
 const getAttachment = async (vk: VK, dataEntries: [string, Buffer][]) => {
   const photos = dataEntries
     .filter(([n], i) => n.startsWith(PHOTO_TYPE) && i < VK_ATTACH_PHOTO_LIMIT)
   if (!photos.length) {
-    console.log('no attachments')
+    logger.debug('no attachments')
     return
   }
   const upload_url = await getUploadUrl(vk)

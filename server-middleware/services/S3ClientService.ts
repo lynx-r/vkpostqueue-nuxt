@@ -18,6 +18,7 @@ import {
   S3_REGION,
   S3_SECRET_ACCESS_KEY
 } from './constants'
+import logger from './logger'
 import { parseBody } from './utils'
 
 type PutCommandInput = Omit<PutObjectCommandInput, 'Bucket'>
@@ -67,7 +68,7 @@ export const removeNewPrefixOfFolder = async (folder: string) => {
       Key: src
     }))
   }
-  console.log('folder posted')
+  logger.debug(`folder ${folder} moved to posted`)
 }
 
 const getObject = (key: string): Promise<Buffer> =>

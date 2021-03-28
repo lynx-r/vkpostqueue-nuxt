@@ -1,6 +1,6 @@
-import { IncomingMessage, ServerResponse } from 'http'
+import { ServerMiddleware } from '@nuxt/types'
 import fetch from 'node-fetch'
-import { parseJson, saveAccessToken, VK_AUTH_ERROR_REDIRECT, VK_AUTH_SUCCESS_REDIRECT, VK_GET_ACCESS_TOKEN_URL } from './services'
+import { saveAccessToken, VK_AUTH_ERROR_REDIRECT, VK_AUTH_SUCCESS_REDIRECT, VK_GET_ACCESS_TOKEN_URL } from './services'
 
 /**
  * @deprecated
@@ -11,7 +11,7 @@ import { parseJson, saveAccessToken, VK_AUTH_ERROR_REDIRECT, VK_AUTH_SUCCESS_RED
  * @param req
  * @param res
  */
-export default async (req: IncomingMessage, res: ServerResponse) => {
+const vkAuthorizationCodeFlowCallback: ServerMiddleware = async (req, res) => {
   const codeMatch = req.url?.match(/code=(\w+)/)
   if (!codeMatch?.length) {
     res.end({ message: 'Unable to get "authorization code"' })
@@ -19,15 +19,17 @@ export default async (req: IncomingMessage, res: ServerResponse) => {
   }
   const code = codeMatch[1]
   const requestAccessTokenUrl = VK_GET_ACCESS_TOKEN_URL + `&code=${code}`
-  const tokenRes = await fetch(requestAccessTokenUrl)
-  const token: any = await parseJson(tokenRes.body)
+  const token = await fetch(requestAccessTokenUrl)
+    .then(r => r.json())
   if (token?.error) {
     res.writeHead(302, { Location: VK_AUTH_ERROR_REDIRECT })
     res.end()
     return
   }
   const accessToken = { accessToken: token.access_token, expiresIn: token.expires_in, userId: token.user_id }
-  saveAccessToken(accessToken)
+  await saveAccessToken(accessToken)
   res.writeHead(302, { Location: VK_AUTH_SUCCESS_REDIRECT })
   res.end()
 }
+
+export default vkAuthorizationCodeFlowCallback

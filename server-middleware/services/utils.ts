@@ -3,7 +3,7 @@ import { AttachmentType } from '../model'
 import { NAME_SEP, NEW_FOLDER_PREFIX } from '../services'
 
 export const parseJson =
-  <T>(req: Readable | NodeJS.ReadableStream): Promise<T> =>
+  <T>(req: Readable): Promise<T> =>
     new Promise<string>(
       (resolve) => {
         const requestBody: Uint8Array[] = []
