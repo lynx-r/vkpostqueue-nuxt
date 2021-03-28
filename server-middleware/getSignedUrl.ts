@@ -1,8 +1,8 @@
-import { IncomingMessage, ServerResponse } from 'http'
+import { ServerMiddleware } from '@nuxt/types'
 import { KeyBuilder, MiddlewareResponse } from './model'
 import { createObjectKey, parseJson, PHOTO_TYPE, signedUrlPut } from './services'
 
-export default async (req: IncomingMessage, res: ServerResponse) => {
+const getSignedUrl: ServerMiddleware = async (req, res) => {
   if (req.method === 'POST') {
     const {name, postOnDate, userId}: KeyBuilder = await parseJson(req)
     const Key = createObjectKey(userId, name, postOnDate, PHOTO_TYPE)
@@ -12,3 +12,4 @@ export default async (req: IncomingMessage, res: ServerResponse) => {
 
   MiddlewareResponse.failMethodNotAllowed(res)
 }
+export default getSignedUrl

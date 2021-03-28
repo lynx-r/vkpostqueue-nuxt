@@ -1,4 +1,10 @@
-export default {
+import { NuxtConfig } from "@nuxt/types";
+
+interface NuxtConfigExt extends NuxtConfig {
+  components: boolean | {dirs: string[]; loader: any} | undefined
+}
+
+const config: NuxtConfigExt = {
   target: 'server',
   /*
    ** Headers of the page
@@ -47,15 +53,16 @@ export default {
     /*
      ** You can extend webpack config here
      */
-    extend(config, ctx) {
-    },
+    // extend(config, ctx) {
+    // },
   },
 
   components: {
     dirs: [
       '~/components',
       '~/components/base'
-    ]
+    ],
+    loader: []
   },
 
   buildModules: [
@@ -66,15 +73,14 @@ export default {
     'nuxt-typed-vuex',
   ],
 
-  serverMiddleware: {
-    '/api/isAuthenticated': '~/server-middleware/isAuthenticated.js',
-    '/api/saveVkToken': '~/server-middleware/saveVkToken.ts',
-    '/api/getSignedUrl': '~/server-middleware/getSignedUrl.ts',
-    '/api/queuePost': '~/server-middleware/queuePost.ts',
-    '/api/listPosts': '~/server-middleware/listPosts.ts',
-    '/action/processQueue': '~/server-middleware/processQueue.ts',
-    // '/api/vkAuthorizationCodeFlowCallback': '~/server-middleware/vkAuthorizationCodeFlowCallback.ts',
-  },
+  serverMiddleware: [
+    {path: '/api/isAuthenticated', handler: '~/server-middleware/isAuthenticated.ts'},
+    {path: '/api/saveVkToken', handler: '~/server-middleware/saveVkToken.ts'},
+    {path: '/api/getSignedUrl', handler: '~/server-middleware/getSignedUrl.ts'},
+    {path: '/api/queuePost', handler: '~/server-middleware/queuePost.ts'},
+    {path: '/api/listPosts', handler: '~/server-middleware/listPosts.ts'},
+    {path: '/action/processQueue', handler: '~/server-middleware/processQueue.ts'},
+  ],
 
   env: {},
 
@@ -103,4 +109,6 @@ export default {
   tailwindcss: {
     jit: true
   }
-};
+}
+
+export default config;

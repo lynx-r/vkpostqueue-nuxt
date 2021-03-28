@@ -30,22 +30,20 @@ const s3 = new S3Client({
   region: S3_REGION,
 })
 
-export function signedUrlPut(putParams: PutCommandInput) {
-  return getSignedUrl(s3, new PutObjectCommand({
+export const signedUrlPut = (putParams: PutCommandInput) =>
+  getSignedUrl(s3, new PutObjectCommand({
       ...putParams,
       Bucket: S3_BUCKET
     }),
     {expiresIn: 3600})
-}
 
-export function sendToS3(putParams: PutCommandInput) {
-  return s3.send(new PutObjectCommand({
+export const sendToS3 = (putParams: PutCommandInput) =>
+  s3.send(new PutObjectCommand({
     ...putParams,
     Bucket: S3_BUCKET
   }))
-}
 
-export async function removeNewPrefixOfFolder(folder: string) {
+export const removeNewPrefixOfFolder = async (folder: string) => {
   const listObjects = await s3.send(new ListObjectsV2Command({
     Bucket: S3_BUCKET,
     Prefix: folder,
@@ -72,12 +70,11 @@ export async function removeNewPrefixOfFolder(folder: string) {
   console.log('folder posted')
 }
 
-function getObject(key: string): Promise<Buffer> {
-  return s3.send(new GetObjectCommand({Bucket: S3_BUCKET, Key: key}))
+const getObject = (key: string): Promise<Buffer> =>
+  s3.send(new GetObjectCommand({Bucket: S3_BUCKET, Key: key}))
     .then(o => parseBody(o.Body as Readable))
-}
 
-export async function getNewsFromS3(): Promise<S3Objects> {
+export const getNewsFromS3 = async (): Promise<S3Objects> => {
   const list = await s3.send(new ListObjectsV2Command({
     Bucket: S3_BUCKET,
     Prefix: NEW_FOLDER_PREFIX

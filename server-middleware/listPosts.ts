@@ -1,12 +1,14 @@
-import { IncomingMessage, ServerResponse } from 'http'
+import { ServerMiddleware } from '@nuxt/types'
 import { MiddlewareResponse } from './model'
-import { listPosts, parseJson } from './services'
+import { getPosts, parseJson } from './services'
 
-export default async (req: IncomingMessage, res: ServerResponse) => {
+const listPosts: ServerMiddleware = async (req, res) => {
   if (req.method === 'POST') {
     const {userId} = await parseJson(req)
-    const posts = await listPosts(userId)
+    const posts = await getPosts(userId)
     return res.end(MiddlewareResponse.payloadSuccessAsString({posts}))
   }
   MiddlewareResponse.failMethodNotAllowed(res)
 }
+
+export default listPosts

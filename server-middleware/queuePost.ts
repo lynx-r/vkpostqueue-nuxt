@@ -1,8 +1,8 @@
-import { IncomingMessage, ServerResponse } from 'http'
+import { ServerMiddleware } from '@nuxt/types'
 import { Message, MiddlewareResponse } from './model'
 import { createObjectKey, MESSAGE_FILENAME, MESSAGE_TYPE, parseJson, savePost, sendToS3 } from './services'
 
-export default async (req: IncomingMessage, res: ServerResponse) => {
+const queuePost: ServerMiddleware = async (req, res) => {
   if (req.method === 'POST') {
     const {message: Body, postOnDate, userId}: Message = await parseJson(req)
     await savePost(userId, postOnDate, Body)
@@ -13,3 +13,5 @@ export default async (req: IncomingMessage, res: ServerResponse) => {
   }
   MiddlewareResponse.failMethodNotAllowed(res)
 }
+
+export default queuePost

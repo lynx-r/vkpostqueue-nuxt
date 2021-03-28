@@ -1,8 +1,8 @@
-import { IncomingMessage, ServerResponse } from 'http'
+import { ServerMiddleware } from '@nuxt/types'
 import { MiddlewareResponse, VkToken } from './model'
 import { parseJson, saveAccessToken } from './services'
 
-export default async (req: IncomingMessage, res: ServerResponse) => {
+const saveVkToken: ServerMiddleware = async (req, res) => {
   if (req.method === 'POST') {
     const accessToken: VkToken = await parseJson(req)
     await saveAccessToken(accessToken)
@@ -11,3 +11,5 @@ export default async (req: IncomingMessage, res: ServerResponse) => {
 
   MiddlewareResponse.failMethodNotAllowed(res)
 }
+
+export default saveVkToken

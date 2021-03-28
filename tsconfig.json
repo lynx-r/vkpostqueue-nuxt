@@ -27,8 +27,9 @@
       "@nuxt/types",
       "@nuxt/vue-app",
       "@nuxt/http",
+      "@nuxtjs/universal-storage",
       "@nuxtjs/date-fns",
-      "@nuxtjs/toast",
+      "@nuxtjs/toast"
     ]
   },
   "exclude": [

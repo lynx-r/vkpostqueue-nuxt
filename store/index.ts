@@ -1,30 +1,19 @@
 import { getAccessorType } from 'typed-vuex'
+import { ActionTree, GetterTree, MutationTree } from 'vuex'
 
 import * as auth from '~/store/auth'
 import * as post from '~/store/post'
 
-export const state = () => ({
-  counter: 0,
-  s3: null,
-})
+export const state = () => ({})
 
-export const mutations = {
-  // increment(state) {
-  //   state.counter++;
-  // },
-}
+export type RootState = ReturnType<typeof state>
 
-export const actions = {
-  // nuxtServerInit({state, commit, getters}: any, req: any) {
-  //   const user = getters['auth/userId']
-  //   console.log(process.server, user)
-  //   if (!!user?.userId) {
-  //     commit('auth/setUserId', user.userId)
-  //   }
-  // }
-}
+export const getters: GetterTree<RootState, RootState> = {}
 
-export const getters = {}
+export const mutations: MutationTree<RootState> = {}
+
+export const actions: ActionTree<RootState, RootState> = {}
+
 
 // This compiles to nothing and only serves to return the correct type of the accessor
 export const accessorType = getAccessorType({

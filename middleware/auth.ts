@@ -1,6 +1,7 @@
+import { Middleware } from '@nuxt/types'
 import { USER_ID } from '~/constants'
 
-export default async ({$http, $storage, redirect}) => {
+const auth: Middleware = async ({$http, $storage, redirect}) => {
   const userId = $storage.getUniversal(USER_ID)
   const isAuthenticated = await $http.post('/api/isAuthenticated', {userId})
     .then(r => r.json())
@@ -13,3 +14,5 @@ export default async ({$http, $storage, redirect}) => {
     return redirect({name: 'auth'})
   }
 }
+
+export default auth

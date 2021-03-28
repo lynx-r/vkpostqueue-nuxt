@@ -17,7 +17,6 @@ export default {
     const posts = await $http.post('/api/listPosts', {userId})
         .then(r => r.json())
         .then(({payload: {posts}}) => posts)
-    console.log(posts)
     return {posts}
   },
 
