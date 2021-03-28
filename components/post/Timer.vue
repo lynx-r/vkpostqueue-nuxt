@@ -1,8 +1,8 @@
 <template>
   <div class="">
     <div class="flex space-x-4">
-      <DateInput v-model="date" :future-and-now="{linkedTime: time}" name="Дата поста" />
-      <TimeInput v-model="time" :future-and-now="{linkedDate: date}" name="Время поста" />
+      <DateInput v-model="date" :future-and-link-time="{linkedTime: time}" name="Дата поста" />
+      <TimeInput v-model="time" :future-and-link-date="{linkedDate: date}" name="Время поста" />
     </div>
     <div class="flex space-x-4">
       <Button class="bg-green-300" @click="onNow">
@@ -75,6 +75,10 @@ export default defineComponent({
     onSubHours (hours: number) {
       this.time = format(subHours(this.timeParsed, hours), TIME_FMT)
     }
+
+    // onValidateDate (valid: boolean) {
+    // this.$store.commit('post/validatedDate', valid)
+    // }
   }
 })
 </script>

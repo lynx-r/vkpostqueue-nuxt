@@ -1,5 +1,10 @@
 <template>
-  <button :class="color" class="rounded p-2 shadow" @click="$emit('click')">
+  <button
+    :class="color"
+    class="rounded p-2 shadow"
+    :disabled="disabled"
+    @click="$emit('click')"
+  >
     <slot />
   </button>
 </template>
@@ -12,6 +17,11 @@ export default {
       default: 'bg-blue-300',
       required: false,
       type: String
+    },
+    disabled: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   }
 }

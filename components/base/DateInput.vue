@@ -20,7 +20,7 @@ extend('required', {
   message: 'дата обязательна'
 })
 
-extend('futureAndNowDate', {
+extend('onlyFutureWithTime', {
   validate (value: string, { check }: any) {
     const chk = check !== 'null'
     if (chk) {
@@ -46,7 +46,7 @@ export default defineComponent({
       required: true,
       type: String
     },
-    futureAndNow: {
+    futureAndLinkTime: {
       // type: {linkedTime: string}
       type: Object,
       required: false,
@@ -56,7 +56,7 @@ export default defineComponent({
 
   computed: {
     rules (): string {
-      return `required|futureAndNowDate:${JSON.stringify(this.futureAndNow)}`
+      return `required|onlyFutureWithTime:${JSON.stringify(this.futureAndLinkTime)}`
     }
   }
 })

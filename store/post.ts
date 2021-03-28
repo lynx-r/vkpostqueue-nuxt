@@ -8,7 +8,8 @@ export const state = () => ({
   message: 'message',
   date: format(new Date(), DATE_FMT),
   time: format(roundToNearestMinutes(new Date(), { nearestTo: TIME_NEAREST_TO }), TIME_FMT),
-  images: [] as File[]
+  images: [] as File[],
+  validatedDate: false
 })
 
 export type PostState = ReturnType<typeof state>
