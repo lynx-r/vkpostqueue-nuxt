@@ -69,7 +69,7 @@ export default defineComponent({
       }
       let time = roundToNearestMinutes(this.timeParsed, { nearestTo: TIME_NEAREST_TO })
       if (isPast(time)) {
-        time = roundToNearestMinutes(addMinutes(time, 15), { nearestTo: TIME_NEAREST_TO })
+        time = roundToNearestMinutes(addMinutes(time, TIME_NEAREST_TO), { nearestTo: TIME_NEAREST_TO })
       }
       this.time = format(time, TIME_FMT)
     },
