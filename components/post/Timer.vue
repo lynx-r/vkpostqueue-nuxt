@@ -23,7 +23,10 @@
 
 <script lang="ts">
 import { defineComponent } from '@nuxtjs/composition-api'
-import { addHours, addMinutes, format, parse, roundToNearestMinutes, subHours, isPast } from 'date-fns'
+import {
+  addHours, addMinutes, format, parse, roundToNearestMinutes, subHours,
+  isPast, isValid
+} from 'date-fns'
 import { mapFields } from 'vuex-map-fields'
 import { DATE_FMT, TIME_FMT, TIME_NEAREST_TO } from '~/constants'
 
@@ -37,7 +40,6 @@ export default defineComponent({
   },
 
   computed: {
-
     nowDate () {
       return format(new Date(), DATE_FMT)
     },
@@ -61,6 +63,10 @@ export default defineComponent({
     },
 
     onRoundTime () {
+      if (!isValid(this.dateTimeParsed)) {
+        this.onNow()
+        return
+      }
       let time = roundToNearestMinutes(this.timeParsed, { nearestTo: TIME_NEAREST_TO })
       if (isPast(time)) {
         time = roundToNearestMinutes(addMinutes(time, 15), { nearestTo: TIME_NEAREST_TO })
