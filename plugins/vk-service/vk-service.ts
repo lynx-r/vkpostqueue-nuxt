@@ -1,7 +1,7 @@
 import { Context } from '@nuxt/types'
 import { IVKAPIConstructorProps, VKAPI } from 'vkontakte-api'
 import { DocsRepository } from './DocsRepository'
-import { ACCESS_TOKEN_KEY } from '~/plugins/constants'
+// import { ACCESS_TOKEN_KEY } from '~/plugins/constants'
 
 const props: IVKAPIConstructorProps = {
   // rps: 20,
@@ -13,7 +13,7 @@ const api = new VKAPI(props)
   .addRepository('docs', DocsRepository)
 
 export const saveMessage = async (ctx: Context, message: string) => {
-  const accessToken = ctx.$storage.getCookie(ACCESS_TOKEN_KEY)
+  const accessToken = ctx.$storage.getCookie(ctx.$const.ACCESS_TOKEN_KEY)
   console.log(accessToken, ctx.$config.groupId)
   console.log(api.docs.getUploadServer)
   const r = await api.users.get({ accessToken, userIds: [222] })

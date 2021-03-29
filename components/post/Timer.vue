@@ -5,7 +5,7 @@
       <TimeInput v-model="time" :future-and-link-date="{linkedDate: date}" name="Время поста" />
     </div>
     <div class="flex space-x-4">
-      <Button class="bg-green-300" @click="onNow">
+      <Button class="bg-green-300" @click="onNearest">
         Ближайшее
       </Button>
       <Button class="bg-green-300" @click="onRoundTime">
@@ -28,7 +28,6 @@ import {
   isPast, isValid
 } from 'date-fns'
 import { mapFields } from 'vuex-map-fields'
-import { DATE_FMT, TIME_FMT, TIME_NEAREST_TO } from '~/constants'
 
 export default defineComponent({
   name: 'PostTimer',
@@ -41,45 +40,49 @@ export default defineComponent({
 
   computed: {
     nowDate () {
-      return format(new Date(), DATE_FMT)
+      return format(new Date(), this.$const.DATE_FMT)
     },
 
     timeParsed () {
-      return parse(this.time as string, TIME_FMT, new Date())
+      return parse(this.time as string, this.$const.TIME_FMT, new Date())
     },
 
     dateTimeParsed () {
-      return parse(this.date + ' ' + this.time, DATE_FMT + ' ' + TIME_FMT, new Date())
+      return parse(this.date + ' ' + this.time, this.$const.DATE_FMT + ' ' + this.$const.TIME_FMT, new Date())
     },
 
     ...mapFields('post', ['date', 'time'])
   },
 
+  created () {
+    this.onNearest()
+  },
+
   methods: {
-    onNow () {
-      this.time = format(new Date(), TIME_FMT)
-      this.date = format(new Date(), DATE_FMT)
+    onNearest () {
+      this.time = format(new Date(), this.$const.TIME_FMT)
+      this.date = format(new Date(), this.$const.DATE_FMT)
       this.onRoundTime()
     },
 
     onRoundTime () {
       if (!isValid(this.dateTimeParsed)) {
-        this.onNow()
+        this.onNearest()
         return
       }
-      let time = roundToNearestMinutes(this.timeParsed, { nearestTo: TIME_NEAREST_TO })
+      let time = roundToNearestMinutes(this.timeParsed, { nearestTo: this.$const.TIME_NEAREST_TO })
       if (isPast(time)) {
-        time = roundToNearestMinutes(addMinutes(time, TIME_NEAREST_TO), { nearestTo: TIME_NEAREST_TO })
+        time = roundToNearestMinutes(addMinutes(time, this.$const.TIME_NEAREST_TO), { nearestTo: this.$const.TIME_NEAREST_TO })
       }
-      this.time = format(time, TIME_FMT)
+      this.time = format(time, this.$const.TIME_FMT)
     },
 
     onAddHours (hours: number) {
-      this.time = format(addHours(this.timeParsed, hours), TIME_FMT)
+      this.time = format(addHours(this.timeParsed, hours), this.$const.TIME_FMT)
     },
 
     onSubHours (hours: number) {
-      this.time = format(subHours(this.timeParsed, hours), TIME_FMT)
+      this.time = format(subHours(this.timeParsed, hours), this.$const.TIME_FMT)
     }
 
     // onValidateDate (valid: boolean) {

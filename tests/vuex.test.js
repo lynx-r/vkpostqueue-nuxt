@@ -1,4 +1,4 @@
-import { isArray, isFunction} from 'lodash'
+import { isArray, isFunction } from 'lodash'
 import constants from '~/tests/constants'
 describe('store/movies', () => {
   // ----------------------------------------------------

@@ -8,19 +8,17 @@
 import { mapFields } from 'vuex-map-fields'
 import { parse, formatISO } from 'date-fns'
 
-import { DATE_FMT, NEWS_IN_QUEUE, TIME_FMT, USER_ID } from '~/constants'
-
 export default {
   middleware: 'auth',
 
   computed: {
     postOnDate () {
-      const date = parse(this.date + '_' + this.time, DATE_FMT + '_' + TIME_FMT, new Date())
+      const date = parse(this.date + '_' + this.time, this.$const.DATE_FMT + '_' + this.$const.TIME_FMT, new Date())
       return formatISO(date)
     },
 
     userId () {
-      return this.$storage.getUniversal(USER_ID)
+      return this.$storage.getUniversal(this.$const.USER_ID)
     },
 
     ...mapFields('post', ['message', 'date', 'time', 'images'])
@@ -41,7 +39,7 @@ export default {
       //   await this.$http.put(signedUrl, image)
       // }
 
-      this.$toast.success(NEWS_IN_QUEUE)
+      this.$toast.success(this.$const.NEWS_IN_QUEUE)
     }
   }
 }

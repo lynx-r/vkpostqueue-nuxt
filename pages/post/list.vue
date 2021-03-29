@@ -7,13 +7,13 @@
 </template>
 
 <script>
-import { POST_ATTACHMENTS, USER_ID } from '~/constants'
+import { POST_ATTACHMENTS, USER_ID_KEY } from '~/plugins/config-constants'
 
 export default {
   middleware: 'auth',
 
   async asyncData ({ $http, $storage }) {
-    const userId = $storage.getUniversal(USER_ID)
+    const userId = $storage.getUniversal(USER_ID_KEY)
     const posts = await $http.post('/api/listPosts', { userId })
       .then(r => r.json())
       .then(({ payload: { posts } }) => posts)

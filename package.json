@@ -23,6 +23,7 @@
     "@nuxtjs/universal-storage": "^0.5.7",
     "@vk-io/authorization": "^1.0.0",
     "babel-eslint": "^10.1.0",
+    "date-fns": "^2.19.0",
     "eslint-plugin-nuxt": "^2.0.0",
     "lodash": "^4.17.21",
     "node-fetch": "^2.6.1",
