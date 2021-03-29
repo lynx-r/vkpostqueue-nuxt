@@ -36,7 +36,7 @@ const config: NuxtConfigExt = {
    ** Plugins to load before mounting the App
    */
   plugins: [
-    '~/plugins/vee-validate.ts',
+    '~/plugins/vee-validate',
     '~/plugins/vue-lodash.ts',
     '~/plugins/vk-wall-post.ts',
     '~/plugins/constants.ts'

@@ -1,6 +1,6 @@
 <template>
-  <ValidationProvider v-slot="{ errors }" name="дата" :rules="rules" class="flex flex-col w-36">
-    <span class="">{{ name }}</span>
+  <ValidationProvider v-slot="{ errors }" :name="name" :rules="rules" class="flex flex-col w-36">
+    <span class="">{{ label }}</span>
     <input :value="value" type="date" class="rounded" @input="$emit('input', $event.target.value)">
     <span v-show="!_.isEmpty(errors)" class="text-red-500 text-sm">{{ errors[0] }}</span>
     <span v-show="_.isEmpty(errors)" class="text-sm">&nbsp;</span>
@@ -14,25 +14,23 @@ export default defineComponent({
   name: 'DateInput',
 
   props: {
-    name: {
+    label: {
       type: String,
       required: true
+    },
+    name: {
+      type: String,
+      required: false,
+      default: 'dateInput'
+    },
+    rules: {
+      type: String,
+      required: false,
+      default: 'required'
     },
     value: {
       required: true,
       type: String
-    },
-    futureAndLinkTime: {
-      // type: {linkedTime: string}
-      type: Object,
-      required: false,
-      default: () => null
-    }
-  },
-
-  computed: {
-    rules (): string {
-      return `required|onlyFutureWithTime:${JSON.stringify(this.futureAndLinkTime)}`
     }
   }
 })

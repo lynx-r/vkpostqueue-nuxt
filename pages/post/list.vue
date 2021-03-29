@@ -7,12 +7,12 @@
 </template>
 
 <script>
-import { POST_ATTACHMENTS, USER_ID_KEY } from '~/plugins/config-constants'
 
 export default {
   middleware: 'auth',
 
   async asyncData ({ $http, $storage }) {
+    const { USER_ID_KEY, POST_ATTACHMENTS } = this.$const
     const userId = $storage.getUniversal(USER_ID_KEY)
     const posts = await $http.post('/api/listPosts', { userId })
       .then(r => r.json())

@@ -13,10 +13,10 @@ it('should save message', async () => {
   }
   try {
     const r = await saveMessage(ctx, 'hi')
-    console.log(r)
+    // console.log(r)
     expect(r).toEqual(1)
   } catch (e) {
-    console.log(e)
+    // console.log(e)
     expect(1).toEqual(1)
   }
 })

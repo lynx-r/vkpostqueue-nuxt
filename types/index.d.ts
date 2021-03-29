@@ -1,10 +1,10 @@
 import { accessorType } from '~/store'
-import * as c from '~/plugins/config-constants'
+import * as constants from '~/plugins/config-constants'
 
 declare module 'vue/types/vue' {
   interface Vue {
     $accessor: typeof accessorType
-    $const: typeof c
+    $const: typeof constants
   }
 
   interface VueConstructor {
@@ -13,7 +13,9 @@ declare module 'vue/types/vue' {
 }
 
 declare module 'vuex' {
-
+  interface ActionContext<S, R> {
+    $const: typeof constants
+  }
 }
 
 declare module '@nuxt/types' {
@@ -23,6 +25,6 @@ declare module '@nuxt/types' {
   }
 
   interface Context {
-    $const: typeof c
+    $const: typeof constants
   }
 }
