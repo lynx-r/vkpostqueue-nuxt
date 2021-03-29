@@ -1,22 +1,21 @@
 module.exports = {
-  // tell Jest to handle `*.vue` files
-  moduleFileExtensions: ['js', 'ts', 'json', 'vue'],
-  watchman: false,
+  globalSetup: '<rootDir>/jest.setup.js',
   moduleNameMapper: {
+    '^@/(.*)$': '<rootDir>/$1',
     '^~/(.*)$': '<rootDir>/$1',
-    '^~~/(.*)$': '<rootDir>/$1',
-    '^@/(.*)$': '<rootDir>/$1'
+    '^vue$': 'vue/dist/vue.common.js'
   },
+  moduleFileExtensions: ['ts', 'js', 'vue', 'json'],
   transform: {
-    // process js with `babel-jest`
-    '^.+\\.[jt]s$': '<rootDir>/node_modules/babel-jest',
-    // process `*.vue` files with `vue-jest`
-    '.*\\.(vue)$': '<rootDir>/node_modules/vue-jest'
+    '^.+\\.ts$': 'ts-jest',
+    '^.+\\.js$': 'babel-jest',
+    '.*\\.(vue)$': 'vue-jest'
   },
-  snapshotSerializers: ['<rootDir>/node_modules/jest-serializer-vue'],
   collectCoverage: true,
   collectCoverageFrom: [
+    '<rootDir>/constants/*.ts',
     '<rootDir>/components/**/*.vue',
-    '<rootDir>/pages/*.vue'
-  ]
+    '<rootDir>/pages/**/*.vue'
+  ],
+  forceExit: !!process.env.CI // almost every CI platform sets this by default
 }

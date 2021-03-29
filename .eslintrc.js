@@ -1,14 +1,15 @@
 module.exports = {
   root: true,
   env: {
-    'jest/globals': true
-  },
-  globals: {
-    jest: true
+    browser: true,
+    node: true
   },
   extends: [
     '@nuxtjs/eslint-config-typescript',
-    'plugin:jest/recommended'
+    'plugin:nuxt/recommended'
   ],
-  ignorePatterns: ['**/*.test.*']
+  plugins: [
+  ],
+  // add your custom rules here
+  rules: {}
 }

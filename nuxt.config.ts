@@ -38,7 +38,8 @@ const config: NuxtConfigExt = {
   plugins: [
     '~/plugins/vee-validate.ts',
     '~/plugins/vue-lodash.ts',
-    '~/plugins/vk-wall-post.ts'
+    '~/plugins/vk-wall-post.ts',
+    '~/plugins/constants.ts'
   ],
   /*
    ** Nuxt.js modules
@@ -100,6 +101,7 @@ const config: NuxtConfigExt = {
   },
 
   publicRuntimeConfig: {
+    groupId: process.env.VK_GROUP_OWNER_ID,
     vkAuthorizeUrl: `https://oauth.vk.com/authorize?client_id=${process.env.VK_CLIENT_ID}&display=page&redirect_uri=${process.env.VK_AUTHORIZATION_CALLBACK}&scope=${process.env.VK_SCOPE}&response_type=token&v=${process.env.VK_API_V}`
   },
 

@@ -6,10 +6,12 @@ module.exports = function (api) {
   if (api.env('test') && !api.caller(isBabelLoader)) {
     return {
       presets: [
-        [
-          ['@babel/preset-env', { targets: { node: 'current' } }],
-          '@babel/preset-typescript'
-        ]
+        ['@babel/preset-env', {
+          targets: {
+            chrome: '58'
+          }
+        }],
+        '@babel/preset-typescript'
       ]
     }
   }

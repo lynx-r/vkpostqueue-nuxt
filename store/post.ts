@@ -1,7 +1,7 @@
 import { GetterTree, MutationTree } from 'vuex'
 import { getField, updateField } from 'vuex-map-fields'
 import { format, roundToNearestMinutes } from 'date-fns'
-import { DATE_FMT, TIME_FMT, TIME_NEAREST_TO } from '~/constants'
+import { DATE_FMT, TIME_FMT, TIME_NEAREST_TO } from '~/plugins/constants'
 import { RootState } from '~/store'
 
 export const state = () => ({

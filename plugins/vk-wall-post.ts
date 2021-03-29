@@ -1,11 +1,6 @@
 import { defineNuxtPlugin } from '@nuxtjs/composition-api'
-import { USER_ID } from '~/constants'
+import { saveMessage } from './vk-service'
 
-const saveMessage = (message: string) => {
-  console.log(message)
-}
-
-export default defineNuxtPlugin(({ $storage }, inject) => {
-  console.log($storage.getUniversal(USER_ID))
-  inject('saveMessage', saveMessage)
+export default defineNuxtPlugin((ctx, inject) => {
+  inject('saveMessage', (message: string) => saveMessage(ctx, message))
 })
