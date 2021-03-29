@@ -9,7 +9,8 @@
     "dev": "nuxt",
     "make": "vue invoke generator",
     "start": "nuxt start",
-    "lint": "eslint --ext .ts,.js,.vue ."
+    "lint": "eslint --ext .ts,.js,.vue .",
+    "test": "jest"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.8.1",
@@ -31,6 +32,9 @@
     "vuex-map-fields": "^1.4.1"
   },
   "devDependencies": {
+    "@babel/core": "^7.13.13",
+    "@babel/preset-env": "^7.13.12",
+    "@babel/preset-typescript": "^7.13.0",
     "@nuxt/types": "^2.15.3",
     "@nuxt/typescript-build": "^2.1.0",
     "@nuxtjs/date-fns": "^1.4.3",
@@ -39,13 +43,16 @@
     "@tailwindcss/forms": "^0.2.1",
     "@tailwindcss/jit": "^0.1.14",
     "@tailwindcss/postcss7-compat": "^2.0.3",
+    "@types/jest": "^26.0.22",
     "@types/lodash": "^4.14.168",
     "@types/node": "^14.14.35",
     "@types/node-fetch": "^2.5.8",
     "@types/node-persist": "^3.1.1",
     "autoprefixer": "^10.2.5",
+    "babel-jest": "^26.6.3",
     "eslint": "^7.23.0",
     "fibers": "^5.0.0",
+    "jest": "^26.6.3",
     "nodemon": "^2.0.7",
     "postcss": "^7.0.32",
     "sass": "^1.32.8",

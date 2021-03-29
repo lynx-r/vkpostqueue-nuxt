@@ -104,3 +104,7 @@ export async function postNews (news?: S3Objects) {
 
   return postedCount
 }
+
+export function sum (a: number, b: number) {
+  return a + b
+}
