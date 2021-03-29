@@ -37,7 +37,8 @@ const config: NuxtConfigExt = {
    */
   plugins: [
     '~/plugins/vee-validate.ts',
-    '~/plugins/vue-lodash.ts'
+    '~/plugins/vue-lodash.ts',
+    '~/plugins/vk-wall-post.ts'
   ],
   /*
    ** Nuxt.js modules
@@ -62,7 +63,9 @@ const config: NuxtConfigExt = {
     // },
   },
 
-  ignore: ['**/*.test.*'],
+  ignoreOptions: {
+    ignorecase: true
+  },
 
   components: {
     dirs: [

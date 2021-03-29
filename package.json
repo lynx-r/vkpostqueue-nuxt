@@ -48,16 +48,20 @@
     "@types/node": "^14.14.35",
     "@types/node-fetch": "^2.5.8",
     "@types/node-persist": "^3.1.1",
+    "@vue/test-utils": "^1.1.3",
     "autoprefixer": "^10.2.5",
     "babel-jest": "^26.6.3",
     "eslint": "^7.23.0",
+    "eslint-plugin-jest": "^24.3.2",
     "fibers": "^5.0.0",
     "jest": "^26.6.3",
+    "jest-serializer-vue": "^2.0.2",
     "nodemon": "^2.0.7",
     "postcss": "^7.0.32",
     "sass": "^1.32.8",
     "sass-loader": "10",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat",
-    "vue-cli-plugin-generator": "https://github.com/lynx-r/vue-cli-plugin-generator.git"
+    "vue-cli-plugin-generator": "https://github.com/lynx-r/vue-cli-plugin-generator.git",
+    "vue-jest": "^3.0.7"
   }
 }
