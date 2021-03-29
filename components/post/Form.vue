@@ -1,6 +1,6 @@
 <template>
   <div>
-    <ValidationObserver v-slot="{invalid}">
+    <ValidationObserver v-slot="{invalid}" ref="form">
       <div class="flex space-x-4">
         <div class="flex flex-col flex space-y-4 w-1/2">
           <PostTimer />
@@ -16,3 +16,11 @@
     </ValidationObserver>
   </div>
 </template>
+
+<script lang="ts">
+
+export default {
+  name: 'PostForm'
+
+}
+</script>

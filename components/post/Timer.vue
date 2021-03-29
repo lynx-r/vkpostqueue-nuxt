@@ -8,6 +8,7 @@
         rules="required|onlyFutureDateWithTime:@timeInput"
       />
       <TimeInput
+        ref="timeInput"
         v-model="time"
         label="Время поста"
         name="timeInput"
@@ -34,8 +35,15 @@
 <script lang="ts">
 import { defineComponent } from '@nuxtjs/composition-api'
 import {
-  addHours, addMinutes, format, parse, roundToNearestMinutes, subHours,
-  isPast, isValid
+  addHours,
+  addMinutes,
+  format,
+  isPast,
+  isValid,
+  parse,
+  roundToNearestMinutes,
+  subDays,
+  subHours
 } from 'date-fns'
 import { mapFields } from 'vuex-map-fields'
 

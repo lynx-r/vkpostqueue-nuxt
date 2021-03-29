@@ -1,7 +1,18 @@
 <template>
-  <ValidationProvider v-slot="{ errors }" :name="name" :rules="rules" class="flex flex-col w-36">
+  <ValidationProvider
+    v-slot="{ errors }"
+    :name="name"
+    :rules="rules"
+    :immediate="immediate"
+    class="flex flex-col w-36"
+  >
     <span class="">{{ label }}</span>
-    <input :value="value" type="date" class="rounded" @input="$emit('input', $event.target.value)">
+    <input
+      :value="value"
+      type="date"
+      class="rounded"
+      @input="$emit('input', $event.target.value)"
+    >
     <span v-show="!_.isEmpty(errors)" class="text-red-500 text-sm">{{ errors[0] }}</span>
     <span v-show="_.isEmpty(errors)" class="text-sm">&nbsp;</span>
   </ValidationProvider>
@@ -31,6 +42,12 @@ export default defineComponent({
     value: {
       required: true,
       type: String
+    },
+    // to immediate detect onNearest()
+    immediate: {
+      type: Boolean,
+      required: false,
+      default: true
     }
   }
 })
