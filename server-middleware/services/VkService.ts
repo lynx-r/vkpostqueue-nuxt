@@ -105,6 +105,14 @@ export async function postNews (news?: S3Objects) {
   return postedCount
 }
 
+// const docsGetUploadServer = (vk: VK, groupId: string) => {
+//   const vk = new VK({ token })
+// }
+//
+// export const saveMessage = (key: string, message: string) => {
+//
+// }
+
 export function sum (a: number, b: number) {
   return a + b
 }

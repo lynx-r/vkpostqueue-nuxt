@@ -7,3 +7,5 @@ coverage
 
 generator.config.js
 types
+
+**/*.test.*

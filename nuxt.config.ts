@@ -62,6 +62,8 @@ const config: NuxtConfigExt = {
     // },
   },
 
+  ignore: ['**/*.test.*'],
+
   components: {
     dirs: [
       '~/components',
