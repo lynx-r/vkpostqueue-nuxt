@@ -42,7 +42,6 @@ import {
   isValid,
   parse,
   roundToNearestMinutes,
-  subDays,
   subHours
 } from 'date-fns'
 import { mapFields } from 'vuex-map-fields'

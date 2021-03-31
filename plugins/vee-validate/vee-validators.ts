@@ -1,12 +1,24 @@
 import { isFuture, parse } from 'date-fns'
 import { extend } from 'vee-validate'
-import { required } from 'vee-validate/dist/rules'
+import { mimes, required } from 'vee-validate/dist/rules'
 import { DATE_FMT, TIME_FMT } from '../config-constants'
 
 export const createValidators = () => {
   extend('required', {
     ...required,
     message: '* обязательно'
+  })
+
+  extend('mimes', {
+    ...mimes,
+    message (_, args) {
+      const allowedMimes = Object
+        .values(args)
+        .slice(0, -3)
+        .map(m => m.split('/')[1])
+        .join(', ')
+      return `* доступные типы файлов: ${allowedMimes}`
+    }
   })
 
   extend('onlyFutureDateWithTime', {
