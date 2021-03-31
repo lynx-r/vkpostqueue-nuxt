@@ -1,6 +1,20 @@
 <template>
   <div class="">
     <div class="flex space-x-4">
+      <Button class="bg-green-300" @click="onNearest">
+        Ближайшее
+      </Button>
+      <Button class="bg-green-300" @click="onRoundTime">
+        Округлить
+      </Button>
+      <Button class="bg-green-300" @click="onAddHours(1)">
+        +1 ч.
+      </Button>
+      <Button class="bg-green-300" @click="onSubHours(1)">
+        -1 ч.
+      </Button>
+    </div>
+    <div class="flex space-x-4">
       <DateInput
         v-model="date"
         label="Дата поста"
@@ -14,20 +28,6 @@
         name="timeInput"
         rules="required|onlyFutureTimeWithDate:@dateInput"
       />
-    </div>
-    <div class="flex space-x-4">
-      <Button class="bg-green-300" @click="onNearest">
-        Ближайшее
-      </Button>
-      <Button class="bg-green-300" @click="onRoundTime">
-        Округлить
-      </Button>
-      <Button class="bg-green-300" @click="onAddHours(1)">
-        +1 ч.
-      </Button>
-      <Button class="bg-green-300" @click="onSubHours(1)">
-        -1 ч.
-      </Button>
     </div>
   </div>
 </template>
