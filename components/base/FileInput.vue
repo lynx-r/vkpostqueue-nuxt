@@ -5,8 +5,9 @@
     :rules="rules"
     class="flex flex-col"
   >
-    <span>{{ label }}</span>
+    <label for="input">{{ label }}</label>
     <input
+      id="input"
       ref="input"
       type="file"
       class="bg-blue-300 rounded p-2 shadow"
@@ -36,11 +37,6 @@ export default {
       type: Boolean,
       required: false,
       default: false
-    },
-    immediate: {
-      type: Boolean,
-      required: false,
-      default: true
     }
   },
 

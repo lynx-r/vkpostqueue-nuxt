@@ -1,6 +1,6 @@
 <template>
   <div>
-    <ValidationObserver v-slot="{handleSubmit, invalid}" ref="form">
+    <ValidationObserver v-slot="{handleSubmit, invalid}">
       <form @submit.prevent="handleSubmit(onSubmit)">
         <div class="flex space-x-4">
           <div class="flex flex-col flex space-y-4 w-1/2">

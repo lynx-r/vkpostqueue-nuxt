@@ -6,7 +6,7 @@ import { DATE_FMT, TIME_FMT } from '../config-constants'
 export const createValidators = () => {
   extend('required', {
     ...required,
-    message: '* обязательно'
+    message: '* поле обязательно'
   })
 
   extend('mimes', {
@@ -19,6 +19,16 @@ export const createValidators = () => {
         .join(', ')
       return `* доступные типы файлов: ${allowedMimes}`
     }
+  })
+
+  extend('vkAuthUrl', {
+    validate (value: string) {
+      return !!value &&
+        value.includes('access_token') &&
+        value.includes('user_id') &&
+        value.includes('expires_in')
+    },
+    message: '* неверная ссылка авторизации'
   })
 
   extend('onlyFutureDateWithTime', {
