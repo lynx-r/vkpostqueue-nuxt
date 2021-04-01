@@ -84,14 +84,14 @@ const config: NuxtConfigExt = {
     'nuxt-typed-vuex'
   ],
 
-  serverMiddleware: [
-    { path: '/api/isAuthenticated', handler: '~/server-middleware/isAuthenticated.ts' },
-    { path: '/api/saveVkToken', handler: '~/server-middleware/saveVkToken.ts' },
-    { path: '/api/getSignedUrl', handler: '~/server-middleware/getSignedUrl.ts' },
-    { path: '/api/queuePost', handler: '~/server-middleware/queuePost.ts' },
-    { path: '/api/listPosts', handler: '~/server-middleware/listPosts.ts' },
-    { path: '/action/processQueue', handler: '~/server-middleware/processQueue.ts' }
-  ],
+  // serverMiddleware: [
+  //   { path: '/api/isAuthenticated', handler: '~/server-middleware/isAuthenticated.ts' },
+  //   { path: '/api/saveVkToken', handler: '~/server-middleware/saveVkToken.ts' },
+  //   { path: '/api/getSignedUrl', handler: '~/server-middleware/getSignedUrl.ts' },
+  //   { path: '/api/queuePost', handler: '~/server-middleware/queuePost.ts' },
+  //   { path: '/api/listPosts', handler: '~/server-middleware/listPosts.ts' },
+  //   { path: '/action/processQueue', handler: '~/server-middleware/processQueue.ts' }
+  // ],
 
   env: {},
 
