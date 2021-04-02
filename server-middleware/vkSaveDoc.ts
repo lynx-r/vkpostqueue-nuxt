@@ -5,6 +5,8 @@ import FormData from 'form-data'
 import { MiddlewareResponse } from './model'
 import { parseBody } from './services'
 
+type FormDataPayload = [{file: Buffer, filename: string}, {uploadUrl: string}]
+
 const vkSaveDocs: ServerMiddleware = async (req, res) => {
   if (req.method === 'POST') {
     const busboy: any = (req as any).busboy
@@ -19,8 +21,7 @@ const vkSaveDocs: ServerMiddleware = async (req, res) => {
         fieldname === 'uploadUrl' && resolve({ uploadUrl }))
     )
 
-    const payload =
-      await Promise.all([filePromise, uploadUrlPromise]) as [{file: Buffer, filename: string}, {uploadUrl: string}]
+    const payload = await Promise.all([filePromise, uploadUrlPromise]) as FormDataPayload
     const { file, filename } = payload[0]
     const { uploadUrl } = payload[1]
     const body = new FormData()

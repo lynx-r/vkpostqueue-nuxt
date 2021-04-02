@@ -10,7 +10,7 @@ const processQueue: ServerMiddleware = (req, res) => {
     //   return res.end(MiddlewareResponse.payloadSuccessAsString(null, 'There is no news'))
     // }
     // const newsPosted = await postNews(news)
-    // return res.end(MiddlewareResponse.payloadSuccessAsString({ newsPosted }))
+    return res.end(MiddlewareResponse.payloadSuccessAsString({ msg: 'not implemented' }))
   }
 
   MiddlewareResponse.failMethodNotAllowed(res)

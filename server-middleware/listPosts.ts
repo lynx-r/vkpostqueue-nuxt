@@ -1,12 +1,9 @@
 import { ServerMiddleware } from '@nuxt/types'
 import { MiddlewareResponse } from './model'
-import { getPosts, parseJson } from './services'
 
-const listPosts: ServerMiddleware = async (req, res) => {
+const listPosts: ServerMiddleware = (req, res) => {
   if (req.method === 'POST') {
-    const { userId } = await parseJson(req)
-    const posts = await getPosts(userId)
-    return res.end(MiddlewareResponse.payloadSuccessAsString({ posts }))
+    return res.end(MiddlewareResponse.payloadSuccessAsString({ msg: 'not implemented' }))
   }
   MiddlewareResponse.failMethodNotAllowed(res)
 }
