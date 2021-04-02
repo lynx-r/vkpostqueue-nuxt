@@ -1,4 +1,5 @@
-export const USER_ID = 'userId'
+export const USER_ID_KEY = 'userId'
+export const ACCESS_TOKEN_KEY = 'accessToken'
 
 // see ~/server-middleware/services/constants.ts
 export const PHOTO_TYPE = 'photo'

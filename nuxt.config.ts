@@ -1,4 +1,5 @@
 import { NuxtConfig } from '@nuxt/types'
+import connectBusboy from 'connect-busboy'
 
 interface NuxtConfigExt extends NuxtConfig {
   components: boolean | {dirs: string[]; loader: any} | undefined
@@ -36,8 +37,10 @@ const config: NuxtConfigExt = {
    ** Plugins to load before mounting the App
    */
   plugins: [
-    '~/plugins/vee-validate.ts',
-    '~/plugins/vue-lodash.ts'
+    '~/plugins/vee-validate',
+    '~/plugins/vue-lodash.ts',
+    '~/plugins/vk-wall-post.ts',
+    '~/plugins/constants.ts'
   ],
   /*
    ** Nuxt.js modules
@@ -62,6 +65,10 @@ const config: NuxtConfigExt = {
     // },
   },
 
+  ignoreOptions: {
+    ignorecase: true
+  },
+
   components: {
     dirs: [
       '~/components',
@@ -79,12 +86,8 @@ const config: NuxtConfigExt = {
   ],
 
   serverMiddleware: [
-    { path: '/api/isAuthenticated', handler: '~/server-middleware/isAuthenticated.ts' },
-    { path: '/api/saveVkToken', handler: '~/server-middleware/saveVkToken.ts' },
-    { path: '/api/getSignedUrl', handler: '~/server-middleware/getSignedUrl.ts' },
-    { path: '/api/queuePost', handler: '~/server-middleware/queuePost.ts' },
-    { path: '/api/listPosts', handler: '~/server-middleware/listPosts.ts' },
-    { path: '/action/processQueue', handler: '~/server-middleware/processQueue.ts' }
+    { path: '/api', handler: connectBusboy({ immediate: true }) as any },
+    { path: '/api/vk-save-doc', handler: '~/server-middleware/vkSaveDoc.ts' }
   ],
 
   env: {},
@@ -95,6 +98,7 @@ const config: NuxtConfigExt = {
   },
 
   publicRuntimeConfig: {
+    groupId: process.env.VK_GROUP_OWNER_ID,
     vkAuthorizeUrl: `https://oauth.vk.com/authorize?client_id=${process.env.VK_CLIENT_ID}&display=page&redirect_uri=${process.env.VK_AUTHORIZATION_CALLBACK}&scope=${process.env.VK_SCOPE}&response_type=token&v=${process.env.VK_API_V}`
   },
 
@@ -113,15 +117,15 @@ const config: NuxtConfigExt = {
 
   tailwindcss: {
     jit: true
-  },
-
-  typescript: {
-    typeCheck: {
-      eslint: {
-        files: './**/*.{ts,js,vue}'
-      }
-    }
   }
+
+  // typescript: {
+  //   typeCheck: {
+  //     eslint: {
+  //       files: './**/*.{ts,js,vue}'
+  //     }
+  //   }
+  // }
 }
 
 export default config

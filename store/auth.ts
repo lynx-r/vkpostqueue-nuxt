@@ -20,7 +20,8 @@ export const mutations: MutationTree<AuthState> = {
 }
 
 export const actions: ActionTree<AuthState, RootState> = {
-  // printRootState ({ rootState }) {
+  // printRootState ({ $const }) {
+  // console.log($const.USER_ID_KEY)
   // console.log('accessing rootState:', rootState.name)
   // }
 }

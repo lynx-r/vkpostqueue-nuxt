@@ -1,5 +1,12 @@
 <template>
   <div>
+    <FileInput
+      ref="fileUpload"
+      :reset-input-flag="resetFileInputFlag"
+      rules="required|mimes:image/jpg,image/png,image/gif"
+      label="Прикрепить изображение"
+      @change="imageUploaded"
+    />
     <div v-if="images.length" class="mb-4">
       <ul>
         <li v-for="img of images" :key="img.name">
@@ -9,16 +16,6 @@
       <Button color="bg-red-200" @click="clearImages">
         Очистить
       </Button>
-    </div>
-    <div>
-      <div>Прикрепите изображение</div>
-      <input
-        ref="fileUpload"
-        type="file"
-        class="bg-blue-300 rounded p-2 shadow"
-        multiple
-        @change="imageUploaded($event.target.files)"
-      >
     </div>
   </div>
 </template>
@@ -30,18 +27,24 @@ import { mapFields } from 'vuex-map-fields'
 export default defineComponent({
   name: 'PostAttachment',
 
+  data () {
+    return {
+      resetFileInputFlag: false
+    }
+  },
+
   computed: {
     ...mapFields('post', ['images'])
   },
 
   methods: {
-    imageUploaded (files: File[]) {
+    imageUploaded (files: FileList) {
       this.$accessor.post.setImages(files)
     },
 
     clearImages () {
-      this.$accessor.post.setImages([]);
-      (this.$refs.fileUpload as HTMLInputElement).value = ''
+      this.$accessor.post.setImages([])
+      this.resetFileInputFlag = !this.resetFileInputFlag
     }
   }
 

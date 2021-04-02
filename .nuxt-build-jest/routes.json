@@ -1,0 +1,58 @@
+[
+  {
+    "name": "auth",
+    "path": "/auth",
+    "component": "/Volumes/Local/IdeaProjects/projects/vkpostqueue-nuxt/pages/auth.vue",
+    "chunkName": "pages/auth",
+    "_name": "_2d649e48"
+  },
+  {
+    "name": "post",
+    "path": "/post",
+    "component": "/Volumes/Local/IdeaProjects/projects/vkpostqueue-nuxt/pages/post/index.vue",
+    "chunkName": "pages/post/index",
+    "_name": "_65e48757"
+  },
+  {
+    "name": "RedirectToVkAuthorization",
+    "path": "/RedirectToVkAuthorization",
+    "component": "/Volumes/Local/IdeaProjects/projects/vkpostqueue-nuxt/pages/RedirectToVkAuthorization.vue",
+    "chunkName": "pages/RedirectToVkAuthorization",
+    "_name": "_4bba0829"
+  },
+  {
+    "name": "VkAuthError",
+    "path": "/VkAuthError",
+    "component": "/Volumes/Local/IdeaProjects/projects/vkpostqueue-nuxt/pages/VkAuthError.vue",
+    "chunkName": "pages/VkAuthError",
+    "_name": "_3ca1aa32"
+  },
+  {
+    "name": "VkAuthorizationSuccessCallback",
+    "path": "/VkAuthorizationSuccessCallback",
+    "component": "/Volumes/Local/IdeaProjects/projects/vkpostqueue-nuxt/pages/VkAuthorizationSuccessCallback.vue",
+    "chunkName": "pages/VkAuthorizationSuccessCallback",
+    "_name": "_55dc2150"
+  },
+  {
+    "name": "post-create",
+    "path": "/post/create",
+    "component": "/Volumes/Local/IdeaProjects/projects/vkpostqueue-nuxt/pages/post/create.vue",
+    "chunkName": "pages/post/create",
+    "_name": "_7e60ae47"
+  },
+  {
+    "name": "post-list",
+    "path": "/post/list",
+    "component": "/Volumes/Local/IdeaProjects/projects/vkpostqueue-nuxt/pages/post/list.vue",
+    "chunkName": "pages/post/list",
+    "_name": "_7e45ada9"
+  },
+  {
+    "name": "index",
+    "path": "/",
+    "component": "/Volumes/Local/IdeaProjects/projects/vkpostqueue-nuxt/pages/index.vue",
+    "chunkName": "pages/index",
+    "_name": "_8858fd64"
+  }
+]
