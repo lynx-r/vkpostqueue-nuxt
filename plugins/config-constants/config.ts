@@ -7,4 +7,5 @@ export const POST_ATTACHMENTS = [PHOTO_TYPE]
 
 export const DATE_FMT = 'yyyy-MM-dd'
 export const TIME_FMT = 'HH:mm'
+export const DATETIME_FMT = DATE_FMT + ' ' + TIME_FMT
 export const TIME_NEAREST_TO = 30

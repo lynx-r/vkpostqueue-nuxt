@@ -1,4 +1,5 @@
 import { Repository, TSendRequest } from 'vkontakte-api'
+import { IDocSaveResult } from '../model'
 
 // Firstly, describe parameters and result. Dont forget that sent parameters
 // will be snake cased, and result - camel cased.
@@ -20,10 +21,6 @@ export interface ISaveParams {
   returnTags?: boolean
 }
 
-export interface ISaveResult {
-  type: string
-}
-
 // Create repository class which should extends abstract Repository.
 export class DocsRepository extends Repository {
   constructor (sendRequest: TSendRequest) {
@@ -43,5 +40,5 @@ export class DocsRepository extends Repository {
   // "formatOptionalBoolean" from 'vkontakte-api'.
   getUploadServer = this.r<IGetUploadServerParams, IGetUploadServerResult>('getUploadServer');
 
-  save = this.r<ISaveParams, ISaveResult>('save');
+  save = this.r<ISaveParams, IDocSaveResult>('save');
 }

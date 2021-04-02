@@ -1,6 +1,6 @@
 import { IVKAPIConstructorProps, VKAPI } from 'vkontakte-api'
 import { ACCESS_TOKEN_KEY } from '../config-constants'
-import { QueuePost, SaveDoc } from '../model'
+import { DocsStore, IDocSaveResult, QueuePost, SaveDoc } from '../model'
 import { DocsRepository } from './DocsRepository'
 
 const props: IVKAPIConstructorProps = {
@@ -43,17 +43,27 @@ const saveDoc: SaveDoc = async (ctx, params) => {
   formData.append('file', file, fileName)
   formData.append('uploadUrl', uploadUrl)
 
-  const uploadFileString = await $http.post('/api/vk-save-docs', formData)
+  const uploadFileString = await $http.post('/api/vk-save-doc', formData)
     .then(r => r.json())
     .then(p => p.payload.file)
 
-  await api.docs.save({ accessToken, file: uploadFileString, title: fileName })
+  return await api.docs.save({ accessToken, file: uploadFileString, title: fileName })
 }
 
 export const queuePost: QueuePost = async (ctx, { images, message, postOnDate, userId }) => {
-  await saveDoc(ctx, { userId, postOnDate, doc: message, type: 'msg' })
+  const queue: DocsStore = {}
+  const msg = await saveDoc(ctx, { userId, postOnDate, doc: message, type: 'msg' })
+  const title = message.substr(0, 500)
+  const saved = queue[postOnDate] || []
+  saved.push({ docInfo: msg, title })
 
-  for await (const image of images) {
-    saveDoc(ctx, { userId, postOnDate, doc: image, type: 'img' })
+  for (const image of images) {
+    const img = await saveDoc(ctx, { userId, postOnDate, doc: image, type: 'img' })
+    saved.push({ docInfo: img })
   }
+  queue[postOnDate] = saved
+
+  const currentQueue = ctx.$storage.getLocalStorage(postOnDate) || {}
+  const newQueue = { ...currentQueue, ...queue }
+  ctx.$storage.setLocalStorage(userId, newQueue)
 }
