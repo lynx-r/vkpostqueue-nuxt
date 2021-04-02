@@ -13,6 +13,17 @@ export interface IGetUploadServerResult {
   uploadUrl: string
 }
 
+export interface ISaveParams {
+  file: string
+  title: string
+  tags?: string
+  returnTags?: boolean
+}
+
+export interface ISaveResult {
+  type: string
+}
+
 // Create repository class which should extends abstract Repository.
 export class DocsRepository extends Repository {
   constructor (sendRequest: TSendRequest) {
@@ -31,4 +42,6 @@ export class DocsRepository extends Repository {
   // want. You could use such functions as "formatOptionalArray" or
   // "formatOptionalBoolean" from 'vkontakte-api'.
   getUploadServer = this.r<IGetUploadServerParams, IGetUploadServerResult>('getUploadServer');
+
+  save = this.r<ISaveParams, ISaveResult>('save');
 }
