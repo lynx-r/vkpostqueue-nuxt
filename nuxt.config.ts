@@ -87,7 +87,7 @@ const config: NuxtConfigExt = {
 
   serverMiddleware: [
     // { path: '/api', handler: bodyParser.json() },
-    { path: '/api', handler: connectBusboy() },
+    { path: '/api', handler: connectBusboy({ immediate: true }) },
     { path: '/api/vk-save-docs', handler: '~/server-middleware/vkSaveDocs.ts' }
   //   { path: '/api/isAuthenticated', handler: '~/server-middleware/isAuthenticated.ts' },
   //   { path: '/api/saveVkToken', handler: '~/server-middleware/saveVkToken.ts' },

@@ -1,6 +1,7 @@
 import { defineNuxtPlugin } from '@nuxtjs/composition-api'
-import { saveMessage } from './vk-service'
+import { queuePost } from './vk-service'
+import { VkWallPostParams } from '~/plugins/model'
 
 export default defineNuxtPlugin((ctx, inject) => {
-  inject('saveMessage', (message: string) => saveMessage(ctx, message))
+  inject('queuePost', (params: VkWallPostParams) => queuePost(ctx, params))
 })

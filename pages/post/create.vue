@@ -18,7 +18,7 @@ export default {
     },
 
     userId () {
-      return this.$storage.getUniversal(this.$const.USER_ID)
+      return this.$storage.getCookie(this.$const.USER_ID_KEY)
     },
 
     ...mapFields('post', ['message', 'date', 'time', 'images'])
@@ -26,19 +26,8 @@ export default {
 
   methods: {
     queuePost () {
-      // console.log(this.$saveMessage)
-      this.$saveMessage('hi')
-      // const { userId, postOnDate, message, images } = this
-      // await this.$http.post('/api/queuePost', { message, postOnDate, userId })
-      //
-      // for (const image of images) {
-      //   const urlParams = { name: image.name, postOnDate, userId }
-      //   const signedUrl = await this.$http.post('/api/getSignedUrl', urlParams)
-      //     .then(r => r.json())
-      //     .then(({ payload: { signedUrl } }) => signedUrl)
-      //   await this.$http.put(signedUrl, image)
-      // }
-
+      const { userId, postOnDate, message, images } = this
+      this.$queuePost({ message, postOnDate, userId, images })
       this.$toast.success(this.$const.NEWS_IN_QUEUE)
     }
   }

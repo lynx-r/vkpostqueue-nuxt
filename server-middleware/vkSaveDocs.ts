@@ -1,32 +1,34 @@
+import { Readable } from 'stream'
 import { ServerMiddleware } from '@nuxt/types'
-// import busboy from 'busboy'
+import fetch from 'node-fetch'
+import FormData from 'form-data'
 import { MiddlewareResponse } from './model'
-// import Busboy = busboy.Busboy
+import { parseBody } from './services'
 
-const vkSaveDocs: ServerMiddleware = (req, res) => {
+const vkSaveDocs: ServerMiddleware = async (req, res) => {
   if (req.method === 'POST') {
-    // console.log(req.body)
-    // console.log(req.files)
-    console.log(req.busboy)
-    // eslint-disable-next-line no-undef
-    // let doc: {file: NodeJS.ReadableStream, filename: string}, uploadUrl: string
-    // const bb = (req as any).busboy as any
-    // bb.on('file', (fieldname, file, filename) => {
-    //   doc = { file, filename }
-    //   console.log(fieldname, file, filename)
-    // })
-    // bb.on('field', (key, value) => {
-    //   uploadUrl = value
-    //   console.log(key, value)
-    // })
-    // bb.end(() => {
-    //   console.log(doc, uploadUrl)
-    // })
-    // req.pipe(bb)
-    return res.end(MiddlewareResponse.payloadSuccessAsString())
-  }
+    const busboy: any = (req as any).busboy
+    const filePromise = new Promise(resolve =>
+      busboy.on('file', (fieldname: string, data: Readable, filename: string) =>
+        fieldname === 'file' && parseBody(data).then(file => resolve({ file, filename }))
+      )
+    )
 
-  console.log('???')
+    const uploadUrlPromise = new Promise(resolve =>
+      busboy.on('field', (fieldname: string, uploadUrl: string) =>
+        fieldname === 'uploadUrl' && resolve({ uploadUrl }))
+    )
+
+    const payload =
+      await Promise.all([filePromise, uploadUrlPromise]) as [{file: Buffer, filename: string}, {uploadUrl: string}]
+    const { file, filename } = payload[0]
+    const { uploadUrl } = payload[1]
+    const body = new FormData()
+    body.append('file', file, { filename })
+    const r = await fetch(uploadUrl, { method: 'POST', body })
+      .then(r => r.json())
+    return res.end(MiddlewareResponse.payloadSuccessAsString(r))
+  }
 
   MiddlewareResponse.failMethodNotAllowed(res)
 }
