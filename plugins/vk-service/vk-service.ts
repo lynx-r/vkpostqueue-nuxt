@@ -1,8 +1,7 @@
 import { Context } from '@nuxt/types'
 import { IVKAPIConstructorProps, VKAPI } from 'vkontakte-api'
+import { ACCESS_TOKEN_KEY } from '../config-constants'
 import { DocsRepository } from './DocsRepository'
-import { ACCESS_TOKEN_KEY } from '~/plugins/config-constants'
-// import { ACCESS_TOKEN_KEY } from '~/plugins/constants'
 
 const props: IVKAPIConstructorProps = {
   // rps: 20,
@@ -13,35 +12,18 @@ const props: IVKAPIConstructorProps = {
 const api = new VKAPI(props)
   .addRepository('docs', DocsRepository)
 
-export const saveMessage = (ctx: Context, message: string) => {
-  const accessToken = ctx.$storage.getCookie(ACCESS_TOKEN_KEY)
-  console.log(accessToken)
-  // console.log(accessToken, ctx.$config.groupId)
-  // console.log(api.docs.getUploadServer)
-  // return new Promise((resolve) => {
-  //   setTimeout(() => resolve(1), 1000)
+export const saveMessage = ({ $storage, $http, $config }: Context, message: string) => {
+  // const accessToken = $storage.getCookie(ACCESS_TOKEN_KEY)
+  // console.log(await api.users.get({ accessToken, userIds: [1111] }))
+  // const { uploadUrl } = await api.docs.getUploadServer({
+  //   accessToken,
+  //   groupId: $config.groupId
   // })
 
-  return api.users.get({ accessToken, userIds: [1] })
-    .then((r) => {
-      console.log(r)
-      return r
-    })
-    .catch((e) => {
-      console.log(e)
-      return e
-    })
-  // const url = await api.docs.getUploadServer({
-  //   accessToken,
-  //   groupId: ctx.$config.groupId
-  // })
-  //   .then(r => console.log(r))
-  //   .catch(r => console.log(r))
-  // await new Promise((resolve) => {
-  //   setTimeout(() => resolve(1), 1000)
-  // })
-  // console.log('!!!')
-  // console.log(url)
-  // console.log(message)
-  // return 0
+  const uploadUrl = 'uplUrl'
+  const file = new Blob([message], { type: 'text/plain' })
+  const formData = new FormData()
+  formData.append('file', file, 'message123123.txt')
+  formData.append('uploadUrl', uploadUrl)
+  return $http.post('/api/vk-save-docs', formData)
 }

@@ -1,4 +1,5 @@
 import { NuxtConfig } from '@nuxt/types'
+import connectBusboy from 'connect-busboy'
 
 interface NuxtConfigExt extends NuxtConfig {
   components: boolean | {dirs: string[]; loader: any} | undefined
@@ -84,14 +85,17 @@ const config: NuxtConfigExt = {
     'nuxt-typed-vuex'
   ],
 
-  // serverMiddleware: [
+  serverMiddleware: [
+    // { path: '/api', handler: bodyParser.json() },
+    { path: '/api', handler: connectBusboy() },
+    { path: '/api/vk-save-docs', handler: '~/server-middleware/vkSaveDocs.ts' }
   //   { path: '/api/isAuthenticated', handler: '~/server-middleware/isAuthenticated.ts' },
   //   { path: '/api/saveVkToken', handler: '~/server-middleware/saveVkToken.ts' },
   //   { path: '/api/getSignedUrl', handler: '~/server-middleware/getSignedUrl.ts' },
   //   { path: '/api/queuePost', handler: '~/server-middleware/queuePost.ts' },
   //   { path: '/api/listPosts', handler: '~/server-middleware/listPosts.ts' },
   //   { path: '/action/processQueue', handler: '~/server-middleware/processQueue.ts' }
-  // ],
+  ],
 
   env: {},
 
@@ -120,15 +124,15 @@ const config: NuxtConfigExt = {
 
   tailwindcss: {
     jit: true
-  },
-
-  typescript: {
-    typeCheck: {
-      eslint: {
-        files: './**/*.{ts,js,vue}'
-      }
-    }
   }
+
+  // typescript: {
+  //   typeCheck: {
+  //     eslint: {
+  //       files: './**/*.{ts,js,vue}'
+  //     }
+  //   }
+  // }
 }
 
 export default config

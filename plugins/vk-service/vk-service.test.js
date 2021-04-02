@@ -11,7 +11,13 @@ it('should save message', () => {
       groupId: process.env.TEST_GROUP_ID
     }
   }
-  return expect(saveMessage(ctx, 'hi')).resolves.toEqual(1)
+  return saveMessage(ctx, 'hi')
+  // .then(r => console.log(r))
+  // .catch(e => console.log(e))
+  // .finally((d) => {
+  //   console.log(d)
+  //   done()
+  // })
 
   // console.log(r)
   // expect(r).toEqual(0)

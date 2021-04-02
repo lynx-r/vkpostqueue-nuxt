@@ -7,7 +7,7 @@
             <PostTimer />
             <PostText />
           </div>
-          <PostAttachment class="w-1/2" />
+          <!--          <PostAttachment class="w-1/2" />-->
         </div>
         <div class="mt-4">
           <Button :disabled="invalid">

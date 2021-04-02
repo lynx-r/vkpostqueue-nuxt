@@ -1,4 +1,12 @@
-###
+POST https://pu.vk.com/c537232/upload_doc.php?act=add_doc&mid=99949353&aid=0&gid=203255283&type=0&hash=8628a4171044305f0aab7d60c57428e5&rhash=b1b8447bcd234ad67d15c033546e0647&api=1
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+
+--WebAppBoundary
+Content-Disposition: form-data; name="file"; filename="message.txt"
+
+< ./message.txt
+--WebAppBoundary--
+
 
 GET http://localhost:3000/api/queuePost
 Content-Type: application/json
