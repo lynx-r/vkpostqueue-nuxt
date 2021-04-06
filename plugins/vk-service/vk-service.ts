@@ -1,12 +1,11 @@
 import { IVKAPIConstructorProps, VKAPI } from 'vkontakte-api'
 import { ACCESS_TOKEN_KEY } from '../config-constants'
-import { DocsStore, IDocSaveResult, QueuePost, SaveDoc } from '../model'
+import { DocsStore, PutToQueue, QueuePost, SaveDoc } from '../model'
 import { DocsRepository } from './DocsRepository'
 
 const props: IVKAPIConstructorProps = {
   lang: 'ru',
-  isBrowser: true,
-  v: '5.130'
+  isBrowser: true
 }
 const api = new VKAPI(props)
   .addRepository('docs', DocsRepository)
@@ -50,20 +49,53 @@ const saveDoc: SaveDoc = async (ctx, params) => {
   return await api.docs.save({ accessToken, file: uploadFileString, title: fileName })
 }
 
-export const queuePost: QueuePost = async (ctx, { images, message, postOnDate, userId }) => {
+const putToQueue: PutToQueue = async (ctx, params) => {
+  const { images, message, postOnDate, userId } = params
   const queue: DocsStore = {}
-  const msg = await saveDoc(ctx, { userId, postOnDate, doc: message, type: 'msg' })
+  const msg = await saveDoc(ctx, {
+    userId,
+    postOnDate,
+    doc: message,
+    type: 'msg'
+  })
   const title = message.substr(0, 500)
   const saved = queue[postOnDate] || []
-  saved.push({ docInfo: msg, title })
+  saved.push({
+    docInfo: msg,
+    title
+  })
 
   for (const image of images) {
-    const img = await saveDoc(ctx, { userId, postOnDate, doc: image, type: 'img' })
+    const img = await saveDoc(ctx, {
+      userId,
+      postOnDate,
+      doc: image,
+      type: 'img'
+    })
     saved.push({ docInfo: img })
   }
   queue[postOnDate] = saved
+  return queue
+}
 
-  const currentQueue = ctx.$storage.getLocalStorage(postOnDate) || {}
-  const newQueue = { ...currentQueue, ...queue }
-  ctx.$storage.setLocalStorage(userId, newQueue)
+export const queuePost: QueuePost = async (ctx, params) => {
+  const { $storage, $toast, $const, redirect, store } = ctx
+  try {
+    const queue = await putToQueue(ctx, params)
+    const { postOnDate, userId } = params
+
+    const currentQueue = $storage.getLocalStorage(userId) || {}
+    const newQueue = { ...currentQueue, ...queue }
+    $storage.setLocalStorage(userId, newQueue)
+    $toast.success($const.NEWS_IN_QUEUE)
+  } catch (e) {
+    const { errorMsg, errorCode } = JSON.parse(e.message)
+    if (errorCode === 5) {
+      store.commit('post/resetForm')
+      $toast.error($const.NEWS_QUEUE_ERROR_AUTH)
+      redirect($const.AUTH_URL)
+      return
+    }
+    $toast.error(errorMsg)
+  }
 }

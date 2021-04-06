@@ -20,9 +20,14 @@ export type SaveDoc = (
   params: { doc: File | string, type: 'msg' | 'img', postOnDate: string, userId: string }
 ) => Promise<IDocSaveResult>
 
+export type DocsStore = {[key: string]: {docInfo: IDocSaveResult, title?: string, postOnDate?: string}[]}
+
+export type PutToQueue = (
+  ctx: Context,
+  params: { images: File[], message: string, postOnDate: string, userId: string }
+) => Promise<DocsStore>
+
 export type QueuePost = (
   ctx: Context,
   params: { images: File[], message: string, postOnDate: string, userId: string }
 ) => void
-
-export type DocsStore = {[key: string]: {docInfo: IDocSaveResult, title?: string, postOnDate?: string}[]}

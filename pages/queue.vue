@@ -38,6 +38,7 @@ export default defineComponent({
   mounted () {
     const userId = this.$storage.getCookie(this.$const.USER_ID_KEY)
     const queue: DocsStore = this.$storage.getLocalStorage(userId)
+    console.log(queue)
     this.queue = _.entries(queue)
       .flatMap(([postOnDate, q]) => (q.filter(p => p.title).map(p => ({ postOnDate, title: p.title }))))
   },
@@ -46,7 +47,6 @@ export default defineComponent({
     queuePost () {
       const { userId, postOnDate, message, images } = this
       this.$queuePost({ message, postOnDate, userId, images })
-      this.$toast.success(this.$const.NEWS_IN_QUEUE)
     }
   }
 

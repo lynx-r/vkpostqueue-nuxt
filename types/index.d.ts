@@ -26,5 +26,6 @@ declare module '@nuxt/types' {
 
   interface Context {
     $const: typeof constants
+    $accessor: typeof accessorType
   }
 }

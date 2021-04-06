@@ -3,11 +3,8 @@
     <NuxtLink to="/" exact>
       Главная
     </NuxtLink>
-    <NuxtLink to="/post/list">
-      Объявления в очереди
-    </NuxtLink>
-    <NuxtLink to="/post/create">
-      Создать объявление
+    <NuxtLink :to="$const.QUEUE_URL">
+      Очередь
     </NuxtLink>
   </header>
 </template>

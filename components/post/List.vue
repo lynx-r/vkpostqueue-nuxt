@@ -14,9 +14,8 @@
 </template>
 
 <script lang="ts">
-import draggable from 'vuedraggable'
-import _ from 'lodash'
 import { defineComponent } from '@nuxtjs/composition-api'
+import draggable from 'vuedraggable'
 
 export default defineComponent({
   name: 'List',
@@ -39,7 +38,3 @@ export default defineComponent({
   }
 })
 </script>
-
-<style lang="css" scoped >
-
-</style>

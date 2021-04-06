@@ -35,7 +35,7 @@ export default {
 
   methods: {
     onSubmit () {
-      const { ACCESS_TOKEN_KEY, USER_ID_KEY } = this.$const
+      const { ACCESS_TOKEN_KEY, USER_ID_KEY, QUEUE_URL } = this.$const
       const accessToken = this.accessTokenUrl.match(/access_token=(\w+)/)[1]
       const userId = this.accessTokenUrl.match(/user_id=(\w+)/)[1]
       const expiresIn = this.accessTokenUrl.match(/expires_in=(\w+)/)[1]
@@ -43,7 +43,7 @@ export default {
       this.$storage.setCookie(ACCESS_TOKEN_KEY, accessToken, { expiresIn })
       this.$storage.setCookie(USER_ID_KEY, userId, { expiresIn })
 
-      this.$router.push('/post/create')
+      this.$router.push(QUEUE_URL)
     }
   }
 }
