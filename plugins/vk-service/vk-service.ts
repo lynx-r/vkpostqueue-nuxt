@@ -1,6 +1,6 @@
 import { IVKAPIConstructorProps, VKAPI } from 'vkontakte-api'
 import { ACCESS_TOKEN_KEY } from '../config-constants'
-import { DocsStore, PutToQueue, QueuePost, SaveDoc } from '../model'
+import { Docs, PutToQueue, QueuePost, SaveDoc } from '../model'
 import { DocsRepository } from './DocsRepository'
 
 const props: IVKAPIConstructorProps = {
@@ -51,7 +51,7 @@ const saveDoc: SaveDoc = async (ctx, params) => {
 
 const putToQueue: PutToQueue = async (ctx, params) => {
   const { images, message, postOnDate, userId } = params
-  const queue: DocsStore = {}
+  const queue: Docs = []
   const msg = await saveDoc(ctx, {
     userId,
     postOnDate,
@@ -59,8 +59,7 @@ const putToQueue: PutToQueue = async (ctx, params) => {
     type: 'msg'
   })
   const title = message.substr(0, 500)
-  const saved = queue[postOnDate] || []
-  saved.push({
+  queue.push({
     docInfo: msg,
     title
   })
@@ -72,9 +71,8 @@ const putToQueue: PutToQueue = async (ctx, params) => {
       doc: image,
       type: 'img'
     })
-    saved.push({ docInfo: img })
+    queue.push({ docInfo: img })
   }
-  queue[postOnDate] = saved
   return queue
 }
 
@@ -84,9 +82,14 @@ export const queuePost: QueuePost = async (ctx, params) => {
     const queue = await putToQueue(ctx, params)
     const { postOnDate, userId } = params
 
-    const currentQueue = $storage.getLocalStorage(userId) || {}
-    const newQueue = { ...currentQueue, ...queue }
-    $storage.setLocalStorage(userId, newQueue)
+    const userQueue = $storage.getLocalStorage(userId) || {}
+    const userPosts = userQueue[postOnDate] || []
+    if (_.isEmpty(userPosts)) {
+      userQueue[postOnDate] = queue
+    } else {
+      userPosts.push(...queue)
+    }
+    $storage.setLocalStorage(userId, userQueue)
     $toast.success($const.NEWS_IN_QUEUE)
   } catch (e) {
     const { errorMsg, errorCode } = JSON.parse(e.message)

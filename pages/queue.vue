@@ -6,10 +6,10 @@
 </template>
 
 <script lang="ts">
-import { parse, formatISO } from 'date-fns'
-import _ from 'lodash'
-import { DocsStore } from 'plugins/model'
 import { defineComponent } from '@nuxtjs/composition-api'
+import { formatISO, parse } from 'date-fns'
+import _ from 'lodash'
+import { Docs } from 'plugins/model'
 import { mapFields } from 'vuex-map-fields'
 
 export default defineComponent({
@@ -37,10 +37,13 @@ export default defineComponent({
 
   mounted () {
     const userId = this.$storage.getCookie(this.$const.USER_ID_KEY)
-    const queue: DocsStore = this.$storage.getLocalStorage(userId)
-    console.log(queue)
+    const queue: Docs = this.$storage.getLocalStorage(userId)
     this.queue = _.entries(queue)
-      .flatMap(([postOnDate, q]) => (q.filter(p => p.title).map(p => ({ postOnDate, title: p.title }))))
+      .flatMap(([postOnDate, q]) =>
+        q
+          .filter(p => p.title)
+          .map(p => ({ postOnDate, title: p.title, id: p.docInfo.doc.id }))
+      )
   },
 
   methods: {

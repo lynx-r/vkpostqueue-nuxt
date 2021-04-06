@@ -3,6 +3,7 @@ import { getField, updateField } from 'vuex-map-fields'
 import { RootState } from '~/store'
 
 const INIT_STATE = {
+  posts: [],
   message: 'message',
   date: '',
   time: '',

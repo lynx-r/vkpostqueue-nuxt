@@ -6,7 +6,7 @@
       @start="drag=true"
       @end="drag=false"
     >
-      <ul v-for="post in queue" :key="post.postOnDate">
+      <ul v-for="post in queue" :key="post.id">
         <li>{{ formatPostOnDate(post.postOnDate) }}: {{ post.title }}</li>
       </ul>
     </draggable>
