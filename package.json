@@ -32,6 +32,7 @@
     "vee-validate": "^3.4.5",
     "vkontakte-api": "^2.4.1",
     "vue-lodash": "^2.1.2",
+    "vuedraggable": "^2.24.3",
     "vuex-map-fields": "^1.4.1"
   },
   "devDependencies": {
@@ -68,5 +69,8 @@
     "ts-jest": "^26.5.4",
     "vue-cli-plugin-generator": "https://github.com/lynx-r/vue-cli-plugin-generator.git",
     "vue-jest": "^3.0.7"
-  }
+  },
+  "main": "index.js",
+  "repository": "https://github.com/lynx-r/vkpostqueue-nuxt.git",
+  "license": "MIT"
 }

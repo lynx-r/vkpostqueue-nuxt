@@ -1,8 +1,15 @@
 <template>
   <div class="container">
-    <ul v-for="post of queue" :key="post.postOnDate">
-      <li>{{ formatPostOnDate(post.postOnDate) }}: {{ post.title }}</li>
-    </ul>
+    <draggable
+      v-model="queue"
+      group="people"
+      @start="drag=true"
+      @end="drag=false"
+    >
+      <ul v-for="post in queue" :key="post.postOnDate">
+        <li>{{ formatPostOnDate(post.postOnDate) }}: {{ post.title }}</li>
+      </ul>
+    </draggable>
   </div>
 </template>
 
@@ -10,13 +17,25 @@
 import { defineComponent } from '@nuxtjs/composition-api'
 import _ from 'lodash'
 import { DocsStore } from 'plugins/model'
+import draggable from 'vuedraggable'
 
 export default defineComponent({
+
+  components: {
+    draggable
+  },
   middleware: 'auth',
 
   data () {
     return {
-      queue: []
+      queue: [],
+      myArray: [{
+        id: 1,
+        name: 'alex'
+      }, {
+        id: 2,
+        name: 'tom'
+      }]
     }
   },
 

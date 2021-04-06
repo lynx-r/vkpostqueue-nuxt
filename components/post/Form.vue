@@ -1,22 +1,17 @@
 <template>
-  <div>
-    <ValidationObserver v-slot="{handleSubmit, invalid}">
-      <form @submit.prevent="handleSubmit(onSubmit)">
-        <div class="flex space-x-4">
-          <div class="flex flex-col flex space-y-4 w-1/2">
-            <PostTimer />
-            <PostText />
-          </div>
-          <PostAttachment class="w-1/2" />
-        </div>
-        <div class="mt-4">
-          <Button :disabled="invalid">
-            Поставить в очередь
-          </Button>
-        </div>
-      </form>
-    </ValidationObserver>
-  </div>
+  <ValidationObserver v-slot="{handleSubmit, invalid}" class="container">
+    <form
+      class="flex flex-col flex space-y-4"
+      @submit.prevent="handleSubmit(onSubmit)"
+    >
+      <PostTimer />
+      <PostText />
+      <PostAttachment />
+      <Button :disabled="invalid">
+        Поставить в очередь
+      </Button>
+    </form>
+  </ValidationObserver>
 </template>
 
 <script lang="ts">
