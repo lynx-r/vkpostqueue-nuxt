@@ -37,10 +37,11 @@ const config: NuxtConfigExt = {
    ** Plugins to load before mounting the App
    */
   plugins: [
+    '~/plugins/constants.ts',
+    '~/plugins/utils',
     '~/plugins/vee-validate',
     '~/plugins/vue-lodash.ts',
-    '~/plugins/vk-wall-post.ts',
-    '~/plugins/constants.ts'
+    '~/plugins/vk-wall-post.ts'
   ],
   /*
    ** Nuxt.js modules

@@ -1,5 +1,5 @@
 import { Repository, TSendRequest } from 'vkontakte-api'
-import { IDocSaveResult } from '../model'
+import { DocInfo } from '../model'
 
 // Firstly, describe parameters and result. Dont forget that sent parameters
 // will be snake cased, and result - camel cased.
@@ -20,6 +20,8 @@ export interface ISaveParams {
   tags?: string
   returnTags?: boolean
 }
+
+export type IDocSaveResult = {type: 'doc', doc: DocInfo}
 
 // Create repository class which should extends abstract Repository.
 export class DocsRepository extends Repository {

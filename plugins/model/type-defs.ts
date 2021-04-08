@@ -1,6 +1,6 @@
 import { Context } from '@nuxt/types'
 
-type Doc = {
+export type DocInfo = {
   id: number,
   // eslint-disable-next-line camelcase
   owner_id: number,
@@ -13,19 +13,21 @@ type Doc = {
   preview: any
 }
 
-export type IDocSaveResult = {type: 'doc', doc: Doc}
+export type Doc = {type: 'img' | 'msg', docInfo: DocInfo, msgSlug?: string}
+export type Message = Omit<Doc, 'msgSlug'> & {msgSlug: string}
 
 export type SaveDoc = (
   ctx: Context,
   params: { doc: File | string, type: 'msg' | 'img', postOnDate: string, userId: string }
-) => Promise<IDocSaveResult>
+) => Promise<Doc>
 
-export type Docs = {docInfo: IDocSaveResult, title?: string, postOnDate?: string}[]
+export type StoredDocs = {[type: string]: Doc[]}
+export type PostMessages = {postOnDate: string, slug: string, docId: number}[]
 
 export type PutToQueue = (
   ctx: Context,
   params: { images: File[], message: string, postOnDate: string, userId: string }
-) => Promise<Docs>
+) => Promise<Doc[]>
 
 export type QueuePost = (
   ctx: Context,

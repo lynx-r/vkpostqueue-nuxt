@@ -1,13 +1,13 @@
 <template>
   <div class="container">
     <draggable
-      v-model="queue"
+      v-model="messages"
       group="people"
       @start="drag=true"
       @end="drag=false"
     >
-      <ul v-for="post in queue" :key="post.id">
-        <li>{{ formatPostOnDate(post.postOnDate) }}: {{ post.title }}</li>
+      <ul v-for="post in messages" :key="post.id">
+        <li>{{ formatPostOnDate(post.postOnDate) }}: {{ post.slug }}</li>
       </ul>
     </draggable>
   </div>
@@ -16,6 +16,7 @@
 <script lang="ts">
 import { defineComponent } from '@nuxtjs/composition-api'
 import draggable from 'vuedraggable'
+import { mapFields } from 'vuex-map-fields'
 
 export default defineComponent({
   name: 'List',
@@ -23,11 +24,8 @@ export default defineComponent({
     draggable
   },
 
-  props: {
-    queue: {
-      type: Array,
-      required: true
-    }
+  computed: {
+    ...mapFields(['messages'])
   },
 
   methods: {

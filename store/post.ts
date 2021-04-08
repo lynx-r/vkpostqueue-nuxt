@@ -2,24 +2,29 @@ import { GetterTree, MutationTree } from 'vuex'
 import { getField, updateField } from 'vuex-map-fields'
 import { RootState } from '~/store'
 
-const INIT_STATE = {
-  posts: [],
+export interface QueueState {
+  message: string
+  date: string
+  time: string
+  images: File[]
+}
+
+const INIT_STATE: QueueState = {
   message: 'message',
   date: '',
   time: '',
-  images: [] as File[]
+  images: []
 }
+
 export const state = () => INIT_STATE
 
-export type PostState = ReturnType<typeof state>
-
-export const getters: GetterTree<PostState, RootState> = {
+export const getters: GetterTree<QueueState, RootState> = {
   getField
 }
 
-export const mutations: MutationTree<PostState> = {
-  setImages (state, files) {
-    state.images = [...files]
+export const mutations: MutationTree<QueueState> = {
+  setImages (state, images) {
+    state.images = images
   },
   updateField,
 
