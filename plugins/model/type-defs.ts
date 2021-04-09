@@ -1,5 +1,3 @@
-import { Context } from '@nuxt/types'
-
 export type DocInfo = {
   id: number,
   // eslint-disable-next-line camelcase
@@ -15,8 +13,8 @@ export type DocInfo = {
 
 export type DocType = 'msg' | 'img'
 
-export type Image = {id: string, doc: DocInfo}
-export type Text = {id: string, doc: DocInfo, slug: string}
+export type Image = {id: number, doc: DocInfo}
+export type Text = {id: number, doc: DocInfo, slug: string}
 
 export type Message = {
   text: Text,
@@ -24,7 +22,7 @@ export type Message = {
 }
 
 export type StoredDocs = {[key: string]: Message[]}
-export type PostMessages = {postOnDate: string, slug: string, id: string}[]
+export type PostMessages = {postOnDate: string, slug: string, id: number}[]
 
 export type SavePostParams = { images: File[], text: string, postOnDate: string }
 export type SaveDocParams = { doc: File | string, postOnDate: string, type: DocType }

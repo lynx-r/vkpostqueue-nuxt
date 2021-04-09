@@ -30,7 +30,7 @@ export default defineComponent({
       })
     },
 
-    onRemove (messageId: string) {
+    onRemove (messageId: number) {
       this.$vkService.removePost(messageId)
     }
   }

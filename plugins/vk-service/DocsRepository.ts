@@ -23,6 +23,13 @@ export interface ISaveParams {
 
 export type IDocSaveResult = {type: 'doc', doc: DocInfo}
 
+export interface IDeleteParams {
+  ownerId: number
+  docId: number
+}
+
+export type IDocDeleteResult = number
+
 // Create repository class which should extends abstract Repository.
 export class DocsRepository extends Repository {
   constructor (sendRequest: TSendRequest) {
@@ -43,4 +50,6 @@ export class DocsRepository extends Repository {
   getUploadServer = this.r<IGetUploadServerParams, IGetUploadServerResult>('getUploadServer');
 
   save = this.r<ISaveParams, IDocSaveResult>('save');
+
+  delete = this.r<IDeleteParams, IDocDeleteResult>('delete');
 }

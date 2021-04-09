@@ -22,6 +22,7 @@
 
 <script lang="ts">
 import { defineComponent } from '@nuxtjs/composition-api'
+import _ from 'lodash'
 import { mapFields } from 'vuex-map-fields'
 
 export default defineComponent({
@@ -37,6 +38,14 @@ export default defineComponent({
     ...mapFields('post', ['images'])
   },
 
+  watch: {
+    images (val, oldVal) {
+      if (!_.isEmpty(oldVal) && _.isEmpty(val)) {
+        this.resetFileInputFlag = !this.resetFileInputFlag
+      }
+    }
+  },
+
   methods: {
     imageUploaded (files: FileList) {
       this.$accessor.post.setImages(files)
@@ -44,7 +53,6 @@ export default defineComponent({
 
     clearImages () {
       this.$accessor.post.setImages([])
-      this.resetFileInputFlag = !this.resetFileInputFlag
     }
   }
 

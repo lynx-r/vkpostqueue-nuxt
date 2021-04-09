@@ -71,7 +71,7 @@ const putToQueue = async (ctx: Context, params: SavePostParams) => {
   const slug = textDoc.substring(0, MESSAGE_SLUG_LENGTH)
   const message: Message = {
     text: {
-      id: savedText.id.toString(),
+      id: savedText.id,
       doc: savedText,
       slug
     },
@@ -85,7 +85,7 @@ const putToQueue = async (ctx: Context, params: SavePostParams) => {
       type: 'img'
     })
     message.images.push({
-      id: img.id.toString(),
+      id: img.id,
       doc: img
     })
   }
@@ -124,15 +124,29 @@ async function queuePost (ctx: Context, params: SavePostParams) {
   }
 }
 
-const removePost = (ctx: Context, messageId: string) => {
-  const { $toast, $ctxUtils, $const, store } = ctx
+async function removePost (ctx: Context, messageId: number) {
+  const { $toast, $ctxUtils, $const, $config, store } = ctx
   const docs: StoredDocs = $ctxUtils.getUserPosts()
   if (_.isEmpty(docs)) {
     return
   }
 
-  const entries = Object
-    .entries(docs)
+  const doc = Object.values(docs)
+    .map(posts => posts.find(p => p.text.id === messageId))
+    .find(d => !!d)
+  if (!doc) {
+    $toast.info($const.NEWS_NOT_FOUND)
+    return
+  }
+  const accessToken = $ctxUtils.getAccessToken()
+  const ownerId = -$config.groupId
+  await api.docs.delete({ accessToken, ownerId, docId: messageId })
+  const imagesIds = doc.images.map(i => i.id)
+  for (const imgId of imagesIds) {
+    await api.docs.delete({ accessToken, ownerId, docId: imgId })
+  }
+
+  const entries = Object.entries(docs)
     .map(([postOnDate, posts]) => [postOnDate, posts.filter(p => p.text.id !== messageId)])
   const newPosts = Object
     .fromEntries(entries)
@@ -145,5 +159,5 @@ const removePost = (ctx: Context, messageId: string) => {
 
 export const vkServiceFactory = (ctx: Context) => ({
   queuePost: (params: SavePostParams) => queuePost(ctx, params),
-  removePost: (messageId: string) => removePost(ctx, messageId)
+  removePost: (messageId: number) => removePost(ctx, messageId)
 })
