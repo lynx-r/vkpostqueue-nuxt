@@ -26,5 +26,5 @@ export type Message = {
 export type StoredDocs = {[key: string]: Message[]}
 export type PostMessages = {postOnDate: string, slug: string, id: string}[]
 
-export type SavePostParams = { images: File[], text: string, postOnDate: string, userId: string }
-export type SaveDocParams = { doc: File | string, postOnDate: string, userId: string, type: DocType }
+export type SavePostParams = { images: File[], text: string, postOnDate: string }
+export type SaveDocParams = { doc: File | string, postOnDate: string, type: DocType }

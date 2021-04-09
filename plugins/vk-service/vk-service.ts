@@ -1,7 +1,7 @@
 import { Context } from '@nuxt/types'
 import _ from 'lodash'
 import { IVKAPIConstructorProps, VKAPI } from 'vkontakte-api'
-import { ACCESS_TOKEN_KEY, MESSAGE_SLUG_LENGTH } from '../config-constants'
+import { MESSAGE_SLUG_LENGTH } from '../config-constants'
 import { DocInfo, DocType, Message, SaveDocParams, SavePostParams, StoredDocs } from '../model'
 import { sortStoredDocs, storedDocsToPostMessages } from '../utils/utils'
 import { DocsRepository } from './DocsRepository'
@@ -33,13 +33,14 @@ function createFile (userId: string, postOnDate: string, doc: File | string, typ
 
 const saveDoc = async (ctx: Context, params: SaveDocParams): Promise<DocInfo> => {
   const { $ctxUtils, $config: { groupId }, $http } = ctx
-  const { postOnDate, userId, doc, type } = params
+  const { postOnDate, doc, type } = params
   const accessToken = $ctxUtils.getAccessToken()
   const { uploadUrl } = await api.docs.getUploadServer({
     accessToken,
     groupId
   })
 
+  const userId = $ctxUtils.getUserId()
   const { file, fileName } = createFile(userId, postOnDate, doc, type)
 
   const formData = new FormData()
@@ -59,11 +60,10 @@ const saveDoc = async (ctx: Context, params: SaveDocParams): Promise<DocInfo> =>
 }
 
 const putToQueue = async (ctx: Context, params: SavePostParams) => {
-  const { images, text, postOnDate, userId } = params
+  const { images, text, postOnDate } = params
   const queue: Message[] = []
   const textDoc = _.trim(text)
   const savedText = await saveDoc(ctx, {
-    userId,
     postOnDate,
     doc: textDoc,
     type: 'msg'
@@ -80,7 +80,6 @@ const putToQueue = async (ctx: Context, params: SavePostParams) => {
 
   for (const image of images) {
     const img = await saveDoc(ctx, {
-      userId,
       postOnDate,
       doc: image,
       type: 'img'
@@ -96,17 +95,17 @@ const putToQueue = async (ctx: Context, params: SavePostParams) => {
 }
 
 async function queuePost (ctx: Context, params: SavePostParams) {
-  const { $storage, $toast, $const, redirect, store } = ctx
+  const { $toast, $const, $ctxUtils, redirect, store } = ctx
   try {
-    const { userId, postOnDate } = params
+    const { postOnDate } = params
     const queue = await putToQueue(ctx, params)
-    let userQueue: StoredDocs = $storage.getLocalStorage(userId) || {}
+    let userQueue: StoredDocs = $ctxUtils.getUserPosts() || {}
     const dateQueue = userQueue[postOnDate] || []
     dateQueue.push(...queue)
     userQueue[postOnDate] = dateQueue
 
     userQueue = sortStoredDocs(userQueue)
-    $storage.setLocalStorage(userId, userQueue)
+    $ctxUtils.setUserPosts(userQueue)
 
     const messages = storedDocsToPostMessages(userQueue)
     store.commit('setMessages', messages)
@@ -126,18 +125,22 @@ async function queuePost (ctx: Context, params: SavePostParams) {
 }
 
 const removePost = (ctx: Context, messageId: string) => {
-  console.log(messageId)
-  const { $storage, $ctxUtils } = ctx
-  const userId = $ctxUtils.getUserId()
-  console.log(userId)
-  const docs: StoredDocs = $storage.getLocalStorage(userId)
-  console.log(docs)
+  const { $toast, $ctxUtils, $const, store } = ctx
+  const docs: StoredDocs = $ctxUtils.getUserPosts()
   if (_.isEmpty(docs)) {
     return
   }
 
-  window.d = docs
-  console.log(docs)
+  const entries = Object
+    .entries(docs)
+    .map(([postOnDate, posts]) => [postOnDate, posts.filter(p => p.text.id !== messageId)])
+  const newPosts = Object
+    .fromEntries(entries)
+  $ctxUtils.setUserPosts(newPosts)
+
+  const messages = storedDocsToPostMessages(newPosts)
+  store.commit('setMessages', messages)
+  $toast.success($const.NEWS_QUEUE_REMOVED)
 }
 
 export const vkServiceFactory = (ctx: Context) => ({

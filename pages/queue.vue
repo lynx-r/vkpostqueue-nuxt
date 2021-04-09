@@ -24,10 +24,9 @@ export default defineComponent({
       const text: string = this.text as string
       const images: File[] = this.images as File[]
 
-      const userId = this.$ctxUtils.getUserId()
       const postOnDate = this.$utils.formatDatetimeISO(date, time)
       this.$vkService.queuePost({
-        images, postOnDate, text, userId
+        images, postOnDate, text
       })
     },
 
