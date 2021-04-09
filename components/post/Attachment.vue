@@ -44,8 +44,9 @@ export default defineComponent({
     },
 
     clearImages () {
-      this.$accessor.post.setImages([])
-      this.$refs.fileUpload.resetInput()
+      this.$accessor.post.setImages([]);
+      // https://vee-validate.logaretm.com/v3/api/validation-provider.html#methods
+      (this.$refs.fileUpload as any).resetInput()
     }
   }
 })
