@@ -1,7 +1,7 @@
 <template>
   <div class="container flex">
-    <PostList />
-    <PostForm @queuePost="queuePost" />
+    <PostList class="w-1/2" @remove="onRemove" />
+    <PostForm class="w-1/2" @queuePost="onQueuePost" />
   </div>
 </template>
 
@@ -14,20 +14,25 @@ export default defineComponent({
   middleware: 'auth',
 
   computed: {
-    userId () {
-      return this.$storage.getCookie(this.$const.USER_ID_KEY)
-    },
-
     ...mapFields('post', ['text', 'date', 'time', 'images'])
   },
 
   methods: {
-    queuePost () {
-      const { userId, date, time, text, images } = this
+    onQueuePost () {
+      const date: string = this.date as string
+      const time: string = this.time as string
+      const text: string = this.text as string
+      const images: File[] = this.images as File[]
+
+      const userId = this.$ctxUtils.getUserId()
       const postOnDate = this.$utils.formatDatetimeISO(date, time)
-      this.$queuePost({
+      this.$vkService.queuePost({
         images, postOnDate, text, userId
       })
+    },
+
+    onRemove (messageId: string) {
+      this.$vkService.removePost(messageId)
     }
   }
 })

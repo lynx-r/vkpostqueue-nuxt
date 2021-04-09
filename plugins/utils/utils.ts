@@ -10,7 +10,7 @@ import {
   subHours
 } from 'date-fns'
 import _ from 'lodash'
-import { DATE_FMT, DATETIME_FMT, DATETIME_FMT_SPLIT, TIME_FMT, TIME_NEAREST_TO } from '../config-constants'
+import { DATE_FMT, DATETIME_FMT, DATETIME_FMT_SPLIT, TIME_FMT, TIME_NEAREST_TO, USER_ID_KEY } from '../config-constants'
 import { PostMessages, StoredDocs } from '../model'
 
 // Message store utils
@@ -27,6 +27,8 @@ export const sortStoredDocs = (docs: StoredDocs): StoredDocs =>
     .sort(([k1], [k2]) =>
       parseISO(k1).getTime() - parseISO(k2).getTime())
   )
+
+export const getUserId = () => localStorage.getItem(USER_ID_KEY)
 
 // Time utils
 

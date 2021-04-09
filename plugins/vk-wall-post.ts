@@ -1,14 +1,14 @@
 import { defineNuxtPlugin } from '@nuxtjs/composition-api'
-import { queuePost } from './vk-service'
+import { StoredDocs } from './model'
 import { storedDocsToPostMessages } from './utils/utils'
-import { SavePostParams, StoredDocs } from './model'
+import { vkServiceFactory } from '~/plugins/vk-service'
 
 export default defineNuxtPlugin((ctx, inject) => {
-  const { $storage, $const, store } = ctx
-  const userId = $storage.getCookie($const.USER_ID_KEY)
+  const { $storage, $ctxUtils, store } = ctx
+  const userId = $ctxUtils.getUserId()
   const docs: StoredDocs = $storage.getLocalStorage(userId)
   const messages = storedDocsToPostMessages(docs)
   store.commit('setMessages', messages)
 
-  inject('queuePost', (params: SavePostParams) => queuePost(ctx, params))
+  inject('vkService', vkServiceFactory(ctx))
 })

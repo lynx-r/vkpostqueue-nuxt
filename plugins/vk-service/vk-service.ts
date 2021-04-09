@@ -32,9 +32,9 @@ function createFile (userId: string, postOnDate: string, doc: File | string, typ
 }
 
 const saveDoc = async (ctx: Context, params: SaveDocParams): Promise<DocInfo> => {
-  const { $storage, $config: { groupId }, $http } = ctx
+  const { $ctxUtils, $config: { groupId }, $http } = ctx
   const { postOnDate, userId, doc, type } = params
-  const accessToken = $storage.getCookie(ACCESS_TOKEN_KEY)
+  const accessToken = $ctxUtils.getAccessToken()
   const { uploadUrl } = await api.docs.getUploadServer({
     accessToken,
     groupId
@@ -95,7 +95,7 @@ const putToQueue = async (ctx: Context, params: SavePostParams) => {
   return queue
 }
 
-export async function queuePost (ctx: Context, params: SavePostParams) {
+async function queuePost (ctx: Context, params: SavePostParams) {
   const { $storage, $toast, $const, redirect, store } = ctx
   try {
     const { userId, postOnDate } = params
@@ -124,3 +124,23 @@ export async function queuePost (ctx: Context, params: SavePostParams) {
     store.commit('post/resetForm')
   }
 }
+
+const removePost = (ctx: Context, messageId: string) => {
+  console.log(messageId)
+  const { $storage, $ctxUtils } = ctx
+  const userId = $ctxUtils.getUserId()
+  console.log(userId)
+  const docs: StoredDocs = $storage.getLocalStorage(userId)
+  console.log(docs)
+  if (_.isEmpty(docs)) {
+    return
+  }
+
+  window.d = docs
+  console.log(docs)
+}
+
+export const vkServiceFactory = (ctx: Context) => ({
+  queuePost: (params: SavePostParams) => queuePost(ctx, params),
+  removePost: (messageId: string) => removePost(ctx, messageId)
+})

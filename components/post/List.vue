@@ -1,11 +1,9 @@
 <template>
-  <div class="container">
-    <ul>
-      <li v-for="message in messages" :key="message.id">
-        <PostListItem :message="message" @remove="onRemove($event)" />
-      </li>
-    </ul>
-  </div>
+  <ul>
+    <li v-for="message in messages" :key="message.id">
+      <PostListItem :message="message" @remove="$emit('remove', $event)" />
+    </li>
+  </ul>
 </template>
 
 <script lang="ts">
@@ -17,12 +15,6 @@ export default defineComponent({
 
   computed: {
     ...mapFields(['messages'])
-  },
-
-  methods: {
-    onRemove (docId: number) {
-      console.log(docId)
-    }
   }
 
 })
