@@ -32,7 +32,6 @@
     "vee-validate": "^3.4.5",
     "vkontakte-api": "^2.4.1",
     "vue-lodash": "^2.1.2",
-    "vuedraggable": "^2.24.3",
     "vuex-map-fields": "^1.4.1"
   },
   "devDependencies": {

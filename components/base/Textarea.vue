@@ -18,7 +18,7 @@
 
 <script>
 export default {
-  name: 'TextInput',
+  name: 'Textarea',
 
   props: {
     label: {

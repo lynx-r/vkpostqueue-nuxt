@@ -1,38 +1,29 @@
 <template>
   <div class="container">
-    <draggable
-      v-model="messages"
-      group="people"
-      @start="drag=true"
-      @end="drag=false"
-    >
-      <ul v-for="post in messages" :key="post.id">
-        <li>{{ formatPostOnDate(post.postOnDate) }}: {{ post.slug }}</li>
-      </ul>
-    </draggable>
+    <ul>
+      <li v-for="message in messages" :key="message.id">
+        <PostListItem :message="message" @remove="onRemove($event)" />
+      </li>
+    </ul>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from '@nuxtjs/composition-api'
-import draggable from 'vuedraggable'
 import { mapFields } from 'vuex-map-fields'
 
 export default defineComponent({
-  name: 'List',
-  components: {
-    draggable
-  },
+  name: 'PostList',
 
   computed: {
     ...mapFields(['messages'])
   },
 
   methods: {
-    formatPostOnDate (dateStr: string) {
-      const d = this.$dateFns.parseISO(dateStr)
-      return this.$dateFns.format(d, this.$const.DATETIME_FMT)
+    onRemove (docId: number) {
+      console.log(docId)
     }
   }
+
 })
 </script>

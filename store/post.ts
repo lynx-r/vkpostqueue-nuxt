@@ -1,18 +1,19 @@
 import { GetterTree, MutationTree } from 'vuex'
 import { getField, updateField } from 'vuex-map-fields'
+import { formatDate, getRoundedTimeFromDate } from '~/plugins/utils/utils'
 import { RootState } from '~/store'
 
 export interface QueueState {
-  message: string
+  text: string
   date: string
   time: string
   images: File[]
 }
 
 const INIT_STATE: QueueState = {
-  message: 'message',
-  date: '',
-  time: '',
+  text: '',
+  date: formatDate(new Date()),
+  time: getRoundedTimeFromDate(new Date()),
   images: []
 }
 

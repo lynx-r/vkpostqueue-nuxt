@@ -13,23 +13,18 @@ export type DocInfo = {
   preview: any
 }
 
-export type Doc = {type: 'img' | 'msg', docInfo: DocInfo, msgSlug?: string}
-export type Message = Omit<Doc, 'msgSlug'> & {msgSlug: string}
+export type DocType = 'msg' | 'img'
 
-export type SaveDoc = (
-  ctx: Context,
-  params: { doc: File | string, type: 'msg' | 'img', postOnDate: string, userId: string }
-) => Promise<Doc>
+export type Image = {id: string, doc: DocInfo}
+export type Text = {id: string, doc: DocInfo, slug: string}
 
-export type StoredDocs = {[type: string]: Doc[]}
-export type PostMessages = {postOnDate: string, slug: string, docId: number}[]
+export type Message = {
+  text: Text,
+  images: Image[]
+}
 
-export type PutToQueue = (
-  ctx: Context,
-  params: { images: File[], message: string, postOnDate: string, userId: string }
-) => Promise<Doc[]>
+export type StoredDocs = {[key: string]: Message[]}
+export type PostMessages = {postOnDate: string, slug: string, id: string}[]
 
-export type QueuePost = (
-  ctx: Context,
-  params: { images: File[], message: string, postOnDate: string, userId: string }
-) => void
+export type SavePostParams = { images: File[], text: string, postOnDate: string, userId: string }
+export type SaveDocParams = { doc: File | string, postOnDate: string, userId: string, type: DocType }

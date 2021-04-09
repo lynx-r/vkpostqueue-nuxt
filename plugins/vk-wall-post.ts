@@ -1,7 +1,7 @@
 import { defineNuxtPlugin } from '@nuxtjs/composition-api'
 import { queuePost } from './vk-service'
-import { StoredDocs, VkWallPostParams } from '~/plugins/model'
-import { storedDocsToPostMessages } from '~/plugins/utils/utils'
+import { storedDocsToPostMessages } from './utils/utils'
+import { SavePostParams, StoredDocs } from './model'
 
 export default defineNuxtPlugin((ctx, inject) => {
   const { $storage, $const, store } = ctx
@@ -10,5 +10,5 @@ export default defineNuxtPlugin((ctx, inject) => {
   const messages = storedDocsToPostMessages(docs)
   store.commit('setMessages', messages)
 
-  inject('queuePost', (params: VkWallPostParams) => queuePost(ctx, params))
+  inject('queuePost', (params: SavePostParams) => queuePost(ctx, params))
 })

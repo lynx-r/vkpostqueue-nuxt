@@ -1,19 +1,20 @@
-import { parseISO } from 'date-fns'
+import { Context } from '@nuxt/types'
 import _ from 'lodash'
 import { IVKAPIConstructorProps, VKAPI } from 'vkontakte-api'
 import { ACCESS_TOKEN_KEY, MESSAGE_SLUG_LENGTH } from '../config-constants'
-import { Doc, PostMessages, PutToQueue, QueuePost, SaveDoc, StoredDocs } from '../model'
+import { DocInfo, DocType, Message, SaveDocParams, SavePostParams, StoredDocs } from '../model'
+import { sortStoredDocs, storedDocsToPostMessages } from '../utils/utils'
 import { DocsRepository } from './DocsRepository'
-import { sortStoredDocs, storedDocsToPostMessages } from '~/plugins/utils/utils'
 
 const props: IVKAPIConstructorProps = {
   lang: 'ru',
   isBrowser: true
 }
+
 const api = new VKAPI(props)
   .addRepository('docs', DocsRepository)
 
-function createFile (userId: string, postOnDate: string, doc: File | string, type: 'msg' | 'img') {
+function createFile (userId: string, postOnDate: string, doc: File | string, type: DocType) {
   let file, fileName
   switch (type) {
     case 'img': {
@@ -30,7 +31,7 @@ function createFile (userId: string, postOnDate: string, doc: File | string, typ
   return { file, fileName }
 }
 
-const saveDoc: SaveDoc = async (ctx, params) => {
+const saveDoc = async (ctx: Context, params: SaveDocParams): Promise<DocInfo> => {
   const { $storage, $config: { groupId }, $http } = ctx
   const { postOnDate, userId, doc, type } = params
   const accessToken = $storage.getCookie(ACCESS_TOKEN_KEY)
@@ -49,25 +50,33 @@ const saveDoc: SaveDoc = async (ctx, params) => {
     .then(r => r.json())
     .then(p => p.payload.file)
 
-  const { doc: docInfo } = await api.docs.save({ accessToken, file: uploadFileString, title: fileName })
-  let msgSlug
-  if (type === 'msg' && typeof doc === 'string') {
-    msgSlug = doc.substring(0, MESSAGE_SLUG_LENGTH)
-  }
-  return { docInfo, type, msgSlug }
+  const { doc: docInfo } = await api.docs.save({
+    accessToken,
+    file: uploadFileString,
+    title: fileName
+  })
+  return docInfo
 }
 
-const putToQueue: PutToQueue = async (ctx, params) => {
-  const { images, message, postOnDate, userId } = params
-  const queue: Doc[] = []
-  const msg = await saveDoc(ctx, {
+const putToQueue = async (ctx: Context, params: SavePostParams) => {
+  const { images, text, postOnDate, userId } = params
+  const queue: Message[] = []
+  const textDoc = _.trim(text)
+  const savedText = await saveDoc(ctx, {
     userId,
     postOnDate,
-    doc: message,
+    doc: textDoc,
     type: 'msg'
   })
-  // const title = message.substr(0, 500)
-  queue.push(msg)
+  const slug = textDoc.substring(0, MESSAGE_SLUG_LENGTH)
+  const message: Message = {
+    text: {
+      id: savedText.id.toString(),
+      doc: savedText,
+      slug
+    },
+    images: []
+  }
 
   for (const image of images) {
     const img = await saveDoc(ctx, {
@@ -76,12 +85,17 @@ const putToQueue: PutToQueue = async (ctx, params) => {
       doc: image,
       type: 'img'
     })
-    queue.push(img)
+    message.images.push({
+      id: img.id.toString(),
+      doc: img
+    })
   }
+
+  queue.push(message)
   return queue
 }
 
-export const queuePost: QueuePost = async (ctx, params) => {
+export async function queuePost (ctx: Context, params: SavePostParams) {
   const { $storage, $toast, $const, redirect, store } = ctx
   try {
     const { userId, postOnDate } = params
@@ -101,11 +115,12 @@ export const queuePost: QueuePost = async (ctx, params) => {
   } catch (e) {
     const { errorMsg, errorCode } = JSON.parse(e.message)
     if (errorCode === 5) {
-      store.commit('post/resetForm')
       $toast.error($const.NEWS_QUEUE_ERROR_AUTH)
       redirect($const.AUTH_URL)
       return
     }
     $toast.error(errorMsg)
+  } finally {
+    store.commit('post/resetForm')
   }
 }

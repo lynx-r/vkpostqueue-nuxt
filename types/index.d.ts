@@ -1,3 +1,4 @@
+import { SavePostParams } from '~/plugins/model'
 import { accessorType } from '~/store'
 import * as constants from '~/plugins/config-constants'
 import * as utils from '~/plugins/utils/utils'
@@ -7,6 +8,7 @@ declare module 'vue/types/vue' {
     $accessor: typeof accessorType
     $const: typeof constants
     $utils: typeof utils
+    $queuePost: (params: SavePostParams) => void
   }
 }
 

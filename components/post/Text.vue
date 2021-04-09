@@ -1,9 +1,6 @@
 <template>
-  <div class="space-y-4">
-    <div class="flex flex-col justify-start">
-      <span class="w-min min-w-max">Введите запись на стену</span>
-      <textarea v-model="message" class="rounded h-40" />
-    </div>
+  <div>
+    <Textarea v-model="text" label="Введите запись на стену" />
   </div>
 </template>
 
@@ -15,7 +12,7 @@ export default defineComponent({
   name: 'PostText',
 
   computed: {
-    ...mapFields('post', ['message'])
+    ...mapFields('post', ['text'])
   }
 
 })

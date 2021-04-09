@@ -6,7 +6,7 @@
     >
       <PostTimer />
       <PostText />
-      <!--      <PostAttachment />-->
+      <PostAttachment />
       <Button :disabled="invalid">
         Поставить в очередь
       </Button>
