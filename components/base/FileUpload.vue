@@ -21,7 +21,7 @@
 
 <script>
 export default {
-  name: 'FileInput',
+  name: 'FileUpload',
 
   props: {
     label: {
@@ -32,34 +32,23 @@ export default {
     rules: {
       type: String,
       required: true
-    },
-    resetInputFlag: {
-      type: Boolean,
-      required: false,
-      default: false
-    }
-  },
-
-  watch: {
-    resetInputFlag () {
-      this.resetInput()
     }
   },
 
   methods: {
     async validate ($event) {
       const { valid } = await this.$refs.provider.validate($event)
-      if (valid) {
-        this.$emit('change', $event.target.files)
+      if (!valid) {
+        this.resetInput()
         return
       }
-      this.resetInput()
+      this.$emit('change', $event.target.files)
     },
 
     resetInput () {
       this.$refs.input.value = ''
       this.$refs.provider.syncValue('')
-      this.$refs.provider.validate()
+      this.$refs.provider.validateSilent()
     }
   }
 }

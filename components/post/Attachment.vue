@@ -1,6 +1,6 @@
 <template>
   <div>
-    <FileInput
+    <FileUpload
       ref="fileUpload"
       :reset-input-flag="resetFileInputFlag"
       rules="required|mimes:image/jpg,image/png,image/gif"
@@ -38,14 +38,6 @@ export default defineComponent({
     ...mapFields('post', ['images'])
   },
 
-  watch: {
-    images (val, oldVal) {
-      if (!_.isEmpty(oldVal) && _.isEmpty(val)) {
-        this.resetFileInputFlag = !this.resetFileInputFlag
-      }
-    }
-  },
-
   methods: {
     imageUploaded (files: FileList) {
       this.$accessor.post.setImages(files)
@@ -53,8 +45,8 @@ export default defineComponent({
 
     clearImages () {
       this.$accessor.post.setImages([])
+      this.$refs.fileUpload.resetInput()
     }
   }
-
 })
 </script>
