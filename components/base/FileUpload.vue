@@ -38,11 +38,9 @@ export default {
   methods: {
     async validate ($event) {
       const { valid } = await this.$refs.provider.validate($event)
-      if (!valid) {
-        this.resetInput()
-        return
+      if (valid) {
+        this.$emit('change', $event.target.files)
       }
-      this.$emit('change', $event.target.files)
     },
 
     resetInput () {

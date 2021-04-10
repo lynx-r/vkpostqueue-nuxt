@@ -1,8 +1,8 @@
 <template>
-  <ValidationObserver ref="observer" v-slot="{handleSubmit, invalid, reset}">
+  <ValidationObserver ref="observer" v-slot="{handleSubmit, invalid}">
     <form
       class="flex flex-col flex"
-      @submit.prevent="handleSubmit(onSubmit) && reset()"
+      @submit.prevent="handleSubmit(onSubmit)"
     >
       <PostTimer />
       <PostText />
@@ -15,16 +15,10 @@
 </template>
 
 <script lang="ts">
-
 import { defineComponent } from '@nuxtjs/composition-api'
-import { mapFields } from 'vuex-map-fields'
 
 export default defineComponent({
   name: 'PostForm',
-
-  computed: {
-    ...mapFields('post', ['resetForm'])
-  },
 
   methods: {
     onSubmit () {

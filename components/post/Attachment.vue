@@ -2,7 +2,6 @@
   <div>
     <FileUpload
       ref="fileUpload"
-      :reset-input-flag="resetFileInputFlag"
       rules="required|mimes:image/jpg,image/png,image/gif"
       label="Прикрепить изображение"
       @change="imageUploaded"
@@ -28,14 +27,16 @@ import { mapFields } from 'vuex-map-fields'
 export default defineComponent({
   name: 'PostAttachment',
 
-  data () {
-    return {
-      resetFileInputFlag: false
-    }
-  },
-
   computed: {
     ...mapFields('post', ['images'])
+  },
+
+  watch: {
+    images (val, oldVal) {
+      if (!_.isEmpty(oldVal) && _.isEmpty(val)) {
+        (this.$refs.fileUpload as any).resetInput()
+      }
+    }
   },
 
   methods: {
