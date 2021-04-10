@@ -48,7 +48,7 @@ export default {
     resetInput () {
       this.$refs.input.value = ''
       this.$refs.provider.syncValue('')
-      this.$refs.provider.validateSilent()
+      this.$refs.provider.validate()
     }
   }
 }

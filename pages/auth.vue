@@ -4,6 +4,7 @@
       :href="$config.vkAuthorizeUrl"
       target="_blank"
       class="bg-blue-300 w-96 block text-center rounded p-2 shadow"
+      @click="setTokenCreatedAt"
     >
       Получить ссылку авторизации в ВКонтакте
     </a>
@@ -29,20 +30,24 @@ export default {
   name: 'Login',
   data () {
     return {
-      accessTokenUrl: ''
+      accessTokenUrl: '',
+      tokenCreatedAt: new Date().getTime()
     }
   },
 
   methods: {
+    setTokenCreatedAt () {
+      this.tokenCreatedAt = new Date().getTime()
+    },
+
     onSubmit () {
       const { QUEUE_URL } = this.$const
       const accessToken = this.accessTokenUrl.match(/access_token=(\w+)/)[1]
-      const userId = this.accessTokenUrl.match(/user_id=(\w+)/)[1]
-      const expiresIn = this.accessTokenUrl.match(/expires_in=(\w+)/)[1]
+      const userId = +this.accessTokenUrl.match(/user_id=(\w+)/)[1]
+      const expiresIn = +this.accessTokenUrl.match(/expires_in=(\w+)/)[1]
 
-      this.$ctxUtils.setUserId(userId)
-      this.$ctxUtils.setAccessToken(accessToken)
-      this.$ctxUtils.setAuthExpiresIn(expiresIn)
+      this.$ctxUtils.setAccessToken(accessToken, this.tokenCreatedAt, expiresIn)
+      this.$ctxUtils.setUserId(userId, expiresIn)
 
       this.$router.push(QUEUE_URL)
     }

@@ -14,7 +14,7 @@ const props: IVKAPIConstructorProps = {
 const api = new VKAPI(props)
   .addRepository('docs', DocsRepository)
 
-function createFile (userId: string, postOnDate: string, doc: File | string, type: DocType) {
+function createFile (userId: number, postOnDate: string, doc: File | string, type: DocType) {
   let file, fileName
   switch (type) {
     case 'img': {

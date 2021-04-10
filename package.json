@@ -49,6 +49,7 @@
     "@tailwindcss/jit": "^0.1.14",
     "@tailwindcss/postcss7-compat": "^2.0.3",
     "@types/connect-busboy": "^0.0.2",
+    "@types/cookie": "^0.4.0",
     "@types/jest": "^26.0.22",
     "@types/lodash": "^4.14.168",
     "@types/node": "^14.14.35",
