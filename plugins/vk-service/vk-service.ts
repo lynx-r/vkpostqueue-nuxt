@@ -1,9 +1,10 @@
 import { Context } from '@nuxt/types'
+import { parseISO } from 'date-fns'
 import _ from 'lodash'
 import { IVKAPIConstructorProps, VKAPI } from 'vkontakte-api'
 import { MESSAGE_SLUG_LENGTH } from '../config-constants'
-import { DocInfo, DocType, Message, SaveDocParams, SavePostParams, StoredDocs } from '../model'
-import { sortStoredDocs, storedDocsToPostMessages } from '../utils/utils'
+import { DocInfo, DocType, Message, SaveDocParams, SavePostParams, StoredDocs, VkDownloadDocRequest } from '../model'
+import { docTitleToName, formatDate, formatTime, sortStoredDocs, storedDocsToPostMessages } from '../utils/utils'
 import { DocsRepository } from './DocsRepository'
 
 const props: IVKAPIConstructorProps = {
@@ -20,12 +21,12 @@ function createFile (userId: number, postOnDate: string, doc: File | string, typ
     case 'img': {
       const img = doc as File
       file = new Blob([img], { type: img.type })
-      fileName = `${type}.${userId}.${postOnDate}.${img.name}`
+      fileName = `${type}.${userId}.${postOnDate}_${img.name}`
       break
     }
     case 'msg':
       file = new Blob([doc], { type: 'text/plain' })
-      fileName = `${type}.${userId}.${postOnDate}.txt`
+      fileName = `${type}.${userId}_${postOnDate}.txt`
       break
   }
   return { file, fileName }
@@ -124,6 +125,68 @@ async function queuePost (ctx: Context, params: SavePostParams) {
   }
 }
 
+async function getPost (ctx: Context, messageId: number) {
+  const { $http, $toast, $ctxUtils, $const, $accessor, store } = ctx
+  const docs: StoredDocs = $ctxUtils.getUserPosts()
+  if (_.isEmpty(docs)) {
+    return
+  }
+
+  const post = Object.entries(docs)
+    .map(([postOnDate, posts]) => {
+      const doc = posts.find(p => p.text.id === messageId)
+      if (!doc) {
+        return undefined
+      }
+      return { postOnDate, doc }
+    })
+    .find(d => !!d)
+  if (!post) {
+    $toast.info($const.NEWS_NOT_FOUND)
+    return
+  }
+
+  const { postOnDate, doc } = post
+
+  const dateParsed = parseISO(postOnDate)
+  const date = formatDate(dateParsed)
+  const time = formatTime(dateParsed)
+
+  const body: VkDownloadDocRequest = { url: doc.text.doc.url, type: 'msg' }
+  const text = await $http.post('/api/vk-download-doc', body)
+    .then(r => r.json())
+    .then(({ payload }) => payload)
+
+  const images = []
+  for (const image of doc.images) {
+    const body: VkDownloadDocRequest = { url: image.doc.url, type: 'img' }
+    const img = await $http.post('/api/vk-download-doc', body)
+      .then(r => r.body)
+    if (!img) {
+      continue
+    }
+    const reader = img.getReader()
+    const imgArr = []
+    while (true) {
+      const { done, value } = await reader.read()
+      if (done) {
+        if (value) {
+          imgArr.push(value)
+        }
+        break
+      }
+      if (value) {
+        imgArr.push(value)
+      }
+    }
+    reader.releaseLock()
+    const name = docTitleToName(image.doc.title)
+    images.push(new File(imgArr, name))
+  }
+
+  store.commit('post/setPost', { text, date, time, images })
+}
+
 async function removePost (ctx: Context, messageId: number) {
   const { $toast, $ctxUtils, $const, $config, store } = ctx
   const docs: StoredDocs = $ctxUtils.getUserPosts()
@@ -147,7 +210,15 @@ async function removePost (ctx: Context, messageId: number) {
   }
 
   const entries = Object.entries(docs)
-    .map(([postOnDate, posts]) => [postOnDate, posts.filter(p => p.text.id !== messageId)])
+    .map(([postOnDate, posts]) => {
+      const filtered = posts.filter(p => p.text.id !== messageId)
+      if (_.isEmpty(filtered)) {
+        return null
+      }
+      return [postOnDate, filtered]
+    })
+    .filter(p => !!p)
+    .map(p => p!)
   const newPosts = Object
     .fromEntries(entries)
   $ctxUtils.setUserPosts(newPosts)
@@ -159,5 +230,6 @@ async function removePost (ctx: Context, messageId: number) {
 
 export const vkServiceFactory = (ctx: Context) => ({
   queuePost: (params: SavePostParams) => queuePost(ctx, params),
+  getPost: (messageId: number) => getPost(ctx, messageId),
   removePost: (messageId: number) => removePost(ctx, messageId)
 })

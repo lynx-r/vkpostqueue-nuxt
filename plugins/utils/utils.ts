@@ -52,7 +52,7 @@ export function getRoundedTimeFromDate (timeParsed: Date): string {
 }
 
 export const formatTime = (time: Date): string => format(time, TIME_FMT)
-export const formatDate = (time: Date): string => format(time, DATE_FMT)
+export const formatDate = (date: Date): string => format(date, DATE_FMT)
 
 export const formatDatetimeISO = (dateISO: string) => {
   const d = parseISO(dateISO)
@@ -76,9 +76,11 @@ export const parseDateAndTime = (date: string, time: string): Date =>
   parse(dateAndTimeFormatter(date, time), DATETIME_FMT, new Date())
 
 export const isValidDatetime = (date: string, time: string): boolean => isValid(parseDateAndTime(date, time))
-export const isValidTime = (time: string): boolean => isValid(time)
+export const isValidTime = (time: string): boolean => isValid(parse(time, TIME_FMT, new Date()))
 
 export const isPastISO = (dateISO: string) => {
   const date = parseISO(dateISO)
   return isPast(date)
 }
+
+export const docTitleToName = (title: string) => title.substr(title.indexOf('_') + 1)

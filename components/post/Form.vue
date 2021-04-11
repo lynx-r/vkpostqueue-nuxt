@@ -1,13 +1,14 @@
 <template>
   <ValidationObserver ref="observer" v-slot="{handleSubmit, invalid}">
     <form
-      class="flex flex-col flex space-y-2"
+      class="flex flex-col space-y-2"
       @submit.prevent="handleSubmit(onSubmit)"
     >
       <PostTimer />
       <PostText />
       <PostAttachment />
-      <Button :disabled="invalid">
+      <br><br>
+      <Button :disabled="invalid" type="submit">
         Поставить в очередь
       </Button>
     </form>

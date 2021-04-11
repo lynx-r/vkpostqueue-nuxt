@@ -1,6 +1,6 @@
 <template>
   <div class="container flex space-x-4">
-    <PostList class="w-1/2" @remove="onRemove" />
+    <PostList class="w-1/2" @edit="onEdit" @remove="onRemove" />
     <PostForm class="w-1/2" @queuePost="onQueuePost" />
   </div>
 </template>
@@ -32,6 +32,10 @@ export default defineComponent({
 
     onRemove (messageId: number) {
       this.$vkService.removePost(messageId)
+    },
+
+    async onEdit (messageId: number) {
+      await this.$vkService.getPost(messageId)
     }
   }
 })

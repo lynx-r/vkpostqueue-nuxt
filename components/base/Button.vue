@@ -3,6 +3,7 @@
     :class="color"
     class="rounded p-2 shadow"
     :disabled="disabled"
+    :type="type"
     @click="$emit('click')"
   >
     <slot />
@@ -22,6 +23,11 @@ export default {
       type: Boolean,
       required: false,
       default: false
+    },
+    type: {
+      type: String,
+      required: false,
+      default: 'button'
     }
   }
 }

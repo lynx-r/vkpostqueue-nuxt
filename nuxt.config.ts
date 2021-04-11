@@ -1,6 +1,6 @@
 import { NuxtConfig } from '@nuxt/types'
 import connectBusboy from 'connect-busboy'
-import { CookieSerializeOptions } from 'cookie'
+import bodyParser from 'body-parser'
 
 interface NuxtConfigExt extends NuxtConfig {
   components: boolean | {dirs: string[]; loader: any} | undefined
@@ -88,8 +88,10 @@ const config: NuxtConfigExt = {
   ],
 
   serverMiddleware: [
+    { path: '/api', handler: bodyParser.json() },
     { path: '/api', handler: connectBusboy({ immediate: true }) as any },
-    { path: '/api/vk-save-doc', handler: '~/server-middleware/vkSaveDoc.ts' }
+    { path: '/api/vk-save-doc', handler: '~/server-middleware/vkSaveDoc.ts' },
+    { path: '/api/vk-download-doc', handler: '~/server-middleware/vkDownloadDoc.ts' }
   ],
 
   env: {},
@@ -120,14 +122,6 @@ const config: NuxtConfigExt = {
   tailwindcss: {
     jit: true
   }
-
-  // typescript: {
-  //   typeCheck: {
-  //     eslint: {
-  //       files: './**/*.{ts,js,vue}'
-  //     }
-  //   }
-  // }
 }
 
 export default config

@@ -31,3 +31,9 @@ declare module '@nuxt/types' {
     $ctxUtils: ReturnType<typeof contextUtilsFactory>
   }
 }
+
+declare module 'connect' {
+  interface IncomingMessage {
+    body: object
+  }
+}

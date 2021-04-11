@@ -31,5 +31,9 @@ export const mutations: MutationTree<QueueState> = {
 
   resetForm (state) {
     Object.assign(state, INIT_STATE)
+  },
+
+  setPost (state, post) {
+    Object.assign(state, post)
   }
 }

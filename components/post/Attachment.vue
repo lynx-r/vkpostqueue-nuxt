@@ -1,12 +1,12 @@
 <template>
-  <div>
+  <div class="flex flex-col space-y-2">
     <FileUpload
       ref="fileUpload"
       rules="required|mimes:image/jpg,image/png,image/gif"
       label="Прикрепить изображение"
       @change="imageUploaded"
     />
-    <div v-if="images.length" class="mb-4">
+    <div v-if="images.length">
       <ul>
         <li v-for="img of images" :key="img.name">
           {{ img.name }}
@@ -35,6 +35,8 @@ export default defineComponent({
     images (val, oldVal) {
       if (!_.isEmpty(oldVal) && _.isEmpty(val)) {
         (this.$refs.fileUpload as any).resetInput()
+      } else if (_.isEqual(oldVal, val)) {
+        console.log(val, oldVal)
       }
     }
   },

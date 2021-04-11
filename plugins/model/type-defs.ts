@@ -26,3 +26,5 @@ export type PostMessages = {postOnDate: string, slug: string, id: number}[]
 
 export type SavePostParams = { images: File[], text: string, postOnDate: string }
 export type SaveDocParams = { doc: File | string, postOnDate: string, type: DocType }
+
+export type VkDownloadDocRequest = {url: string, type: DocType}
