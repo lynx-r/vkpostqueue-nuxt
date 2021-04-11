@@ -8,23 +8,37 @@
       <PostText />
       <PostAttachment />
       <br><br>
-      <Button :disabled="invalid" type="submit">
+      <Button v-show="!isEdit" :disabled="invalid" type="submit">
         Поставить в очередь
       </Button>
+      <div class="flex space-x-4">
+        <Button v-show="isEdit" :disabled="invalid" type="submit">
+          Сохранить
+        </Button>
+        <Button v-show="isEdit" @click="$emit('createPost')">
+          Создать новый
+        </Button>
+      </div>
     </form>
   </ValidationObserver>
 </template>
 
-<script lang="ts">
-import { defineComponent } from '@nuxtjs/composition-api'
-
-export default defineComponent({
+<script>
+export default {
   name: 'PostForm',
+
+  props: {
+    isEdit: {
+      type: Boolean,
+      required: false,
+      default: false
+    }
+  },
 
   methods: {
     onSubmit () {
       this.$emit('queuePost')
     }
   }
-})
+}
 </script>

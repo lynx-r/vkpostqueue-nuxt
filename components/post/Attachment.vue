@@ -2,7 +2,7 @@
   <div class="flex flex-col space-y-2">
     <FileUpload
       ref="fileUpload"
-      rules="required|mimes:image/jpg,image/png,image/gif"
+      rules="mimes:image/jpg,image/png,image/gif"
       label="Прикрепить изображение"
       @change="imageUploaded"
     />
@@ -28,26 +28,33 @@ export default defineComponent({
   name: 'PostAttachment',
 
   computed: {
-    ...mapFields('post', ['images'])
+    ...mapFields('post', ['images']),
+    ...mapFields(['editMessageId'])
   },
 
   watch: {
     images (val, oldVal) {
       if (!_.isEmpty(oldVal) && _.isEmpty(val)) {
         (this.$refs.fileUpload as any).resetInput()
-      } else if (_.isEqual(oldVal, val)) {
-        console.log(val, oldVal)
+      }
+    },
+
+    editMessageId (val) {
+      console.log(val)
+      if (val) {
+        console.log(this.images);
+        (this.$refs.fileUpload as any).setInput(this.images)
       }
     }
   },
 
   methods: {
     imageUploaded (files: FileList) {
-      this.$accessor.post.setImages(files)
+      this.$store.commit('post/setImages', files)
     },
 
     clearImages () {
-      this.$accessor.post.setImages([]);
+      this.$store.commit('post/setImages', []);
       // https://vee-validate.logaretm.com/v3/api/validation-provider.html#methods
       (this.$refs.fileUpload as any).resetInput()
     }

@@ -1,7 +1,7 @@
 <template>
   <div class="container flex space-x-4">
     <PostList class="w-1/2" @edit="onEdit" @remove="onRemove" />
-    <PostForm class="w-1/2" @queuePost="onQueuePost" />
+    <PostForm class="w-1/2" :is-edit="isEdit" @createPost="onCreate" @queuePost="onQueuePost" />
   </div>
 </template>
 
@@ -14,11 +14,21 @@ export default defineComponent({
   middleware: 'auth',
 
   computed: {
-    ...mapFields('post', ['text', 'date', 'time', 'images'])
+    isEdit () {
+      return !!this.editMessageId
+    },
+
+    ...mapFields('post', ['text', 'date', 'time', 'images']),
+    ...mapFields(['editMessageId'])
   },
 
   methods: {
     onQueuePost () {
+      if (this.isEdit) {
+        this.$vkService.removePost(this.editMessageId as number)
+        this.$store.commit('setEditMessage', null)
+      }
+
       const date: string = this.date as string
       const time: string = this.time as string
       const text: string = this.text as string
@@ -28,6 +38,11 @@ export default defineComponent({
       this.$vkService.queuePost({
         images, postOnDate, text
       })
+    },
+
+    onCreate () {
+      this.$store.commit('post/resetForm')
+      this.$store.commit('setEditMessage', null)
     },
 
     onRemove (messageId: number) {

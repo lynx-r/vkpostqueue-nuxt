@@ -7,11 +7,13 @@ import * as auth from '~/store/auth'
 import * as post from '~/store/post'
 
 export interface RootState {
-  messages: StoredDocs
+  messages: StoredDocs,
+  editMessageId: number | null
 }
 
 export const state = () => ({
-  messages: {}
+  messages: {},
+  editMessageId: null
 })
 
 export const getters: GetterTree<RootState, RootState> = {
@@ -23,6 +25,10 @@ export const mutations: MutationTree<RootState> = {
 
   setMessages (state, messages) {
     state.messages = messages
+  },
+
+  setEditMessage (state, messageId) {
+    state.editMessageId = messageId
   }
 }
 

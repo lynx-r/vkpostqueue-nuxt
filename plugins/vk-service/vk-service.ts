@@ -185,6 +185,7 @@ async function getPost (ctx: Context, messageId: number) {
   }
 
   store.commit('post/setPost', { text, date, time, images })
+  store.commit('setEditMessage', messageId)
 }
 
 async function removePost (ctx: Context, messageId: number) {
