@@ -1,7 +1,7 @@
 <template>
   <ValidationObserver ref="observer" v-slot="{handleSubmit, invalid}">
     <form
-      class="flex flex-col flex"
+      class="flex flex-col flex space-y-2"
       @submit.prevent="handleSubmit(onSubmit)"
     >
       <PostTimer />

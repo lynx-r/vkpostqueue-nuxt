@@ -1,5 +1,5 @@
 <template>
-  <ul>
+  <ul class="space-y-4">
     <li v-for="message in messages" :key="message.id">
       <PostListItem :message="message" @remove="$emit('remove', $event)" />
     </li>

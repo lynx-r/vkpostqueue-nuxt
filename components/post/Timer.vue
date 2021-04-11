@@ -1,5 +1,5 @@
 <template>
-  <div class="">
+  <div class="space-y-2">
     <div class="flex space-x-4">
       <Button class="bg-green-300" @click="onNearest">
         Ближайшее

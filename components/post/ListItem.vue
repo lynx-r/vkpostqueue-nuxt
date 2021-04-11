@@ -1,14 +1,12 @@
 <template>
-  <span>
-    {{ formatPostOnDate(message.postOnDate) }}: {{ message.slug }}
-    <Button @click="$emit('remove', message.id)">x</Button>
-  </span>
+  <div :class="{'bg-red-100': expired, 'bg-green-100': !expired}" class="p-4 rounded flex justify-between">
+    <span>{{ postOnDate }}: {{ message.slug }}</span>
+    <span class="cursor-pointer text-red-700" @click="$emit('remove', message.id)">&times;</span>
+  </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from '@nuxtjs/composition-api'
-
-export default defineComponent({
+<script>
+export default {
   name: 'PostListItem',
   props: {
     message: {
@@ -17,15 +15,18 @@ export default defineComponent({
     }
   },
 
-  methods: {
-    formatPostOnDate (dateStr: string) {
-      const d = this.$dateFns.parseISO(dateStr)
-      return this.$dateFns.format(d, this.$const.DATETIME_FMT)
+  computed: {
+    expired () {
+      return this.$utils.isPastISO(this.message.postOnDate)
+    },
+
+    postOnDate () {
+      return this.$utils.formatDatetimeISO(this.message.postOnDate)
     }
   }
-})
+}
 </script>
 
-<style scoped>
-
+<style lang="scss" scoped>
+@import "assets/css/colors";
 </style>

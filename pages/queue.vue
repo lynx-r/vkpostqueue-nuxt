@@ -1,5 +1,5 @@
 <template>
-  <div class="container flex">
+  <div class="container flex space-x-4">
     <PostList class="w-1/2" @remove="onRemove" />
     <PostForm class="w-1/2" @queuePost="onQueuePost" />
   </div>
@@ -24,7 +24,7 @@ export default defineComponent({
       const text: string = this.text as string
       const images: File[] = this.images as File[]
 
-      const postOnDate = this.$utils.formatDatetimeISO(date, time)
+      const postOnDate = this.$utils.formatDateAndTimeISO(date, time)
       this.$vkService.queuePost({
         images, postOnDate, text
       })

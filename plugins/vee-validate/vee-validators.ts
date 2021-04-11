@@ -1,7 +1,7 @@
 import { isFuture } from 'date-fns'
 import { extend } from 'vee-validate'
 import { mimes, required } from 'vee-validate/dist/rules'
-import { parseDateTime } from '~/plugins/utils/utils'
+import { parseDateAndTime } from '~/plugins/utils/utils'
 
 export const createValidators = () => {
   extend('required', {
@@ -34,7 +34,7 @@ export const createValidators = () => {
   extend('onlyFutureDateWithTime', {
     validate (value: string, { linkedTime }: any) {
       if (linkedTime) {
-        const date = parseDateTime(value, linkedTime)
+        const date = parseDateAndTime(value, linkedTime)
         return isFuture(date)
       }
       return true
@@ -46,7 +46,7 @@ export const createValidators = () => {
   extend('onlyFutureTimeWithDate', {
     validate (value: string, { linkedDate }: any) {
       if (linkedDate) {
-        const date = parseDateTime(linkedDate, value)
+        const date = parseDateAndTime(linkedDate, value)
         return isFuture(date)
       }
       return true

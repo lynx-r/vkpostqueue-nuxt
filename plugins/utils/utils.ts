@@ -54,21 +54,31 @@ export function getRoundedTimeFromDate (timeParsed: Date): string {
 export const formatTime = (time: Date): string => format(time, TIME_FMT)
 export const formatDate = (time: Date): string => format(time, DATE_FMT)
 
+export const formatDatetimeISO = (dateISO: string) => {
+  const d = parseISO(dateISO)
+  return format(d, DATETIME_FMT)
+}
+
 export const addHoursAndReformat = (time: string, hours: number): string =>
   format(addHours(parse(time, TIME_FMT, new Date()), hours), TIME_FMT)
 export const subHoursAndReformat = (time: string, hours: number): string =>
   format(subHours(parse(time, TIME_FMT, new Date()), hours), TIME_FMT)
 
-export const dateTimeFormatter = (date: string, time: string) => date + DATETIME_FMT_SPLIT + time
+export const dateAndTimeFormatter = (date: string, time: string) => date + DATETIME_FMT_SPLIT + time
 
-export const formatDatetimeISO = (dateStr: string, timeStr: string): string => {
-  const datetime = dateTimeFormatter(dateStr, timeStr)
+export const formatDateAndTimeISO = (dateISO: string, timeISO: string): string => {
+  const datetime = dateAndTimeFormatter(dateISO, timeISO)
   const date = parse(datetime, DATETIME_FMT, new Date())
   return formatISO(date)
 }
 
-export const parseDateTime = (date: string, time: string): Date =>
-  parse(dateTimeFormatter(date, time), DATETIME_FMT, new Date())
+export const parseDateAndTime = (date: string, time: string): Date =>
+  parse(dateAndTimeFormatter(date, time), DATETIME_FMT, new Date())
 
-export const isValidDatetime = (date: string, time: string): boolean => isValid(parseDateTime(date, time))
+export const isValidDatetime = (date: string, time: string): boolean => isValid(parseDateAndTime(date, time))
 export const isValidTime = (time: string): boolean => isValid(time)
+
+export const isPastISO = (dateISO: string) => {
+  const date = parseISO(dateISO)
+  return isPast(date)
+}
