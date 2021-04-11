@@ -11,21 +11,7 @@
 
 <script lang="ts">
 import { defineComponent } from '@nuxtjs/composition-api'
-
-function urlBase64ToUint8Array (base64String: string) {
-  const padding = '='.repeat((4 - base64String.length % 4) % 4)
-  const base64 = (base64String + padding)
-    .replace(/-/g, '+')
-    .replace(/_/g, '/')
-
-  const rawData = window.atob(base64)
-  const outputArray = new Uint8Array(rawData.length)
-
-  for (let i = 0; i < rawData.length; ++i) {
-    outputArray[i] = rawData.charCodeAt(i)
-  }
-  return outputArray
-}
+import { VKAPI } from 'vkontakte-api'
 
 export default defineComponent({
   name: 'Home',
@@ -36,14 +22,32 @@ export default defineComponent({
         const register = await navigator.serviceWorker.register('/sw.js', {
           scope: '/'
         })
+        const accessToken = this.$ctxUtils.getAccessToken()
+        if (navigator.serviceWorker.controller) {
+          navigator.serviceWorker.controller.postMessage({ accessToken })
+          console.log(`This page is currently controlled by: ${navigator.serviceWorker.controller}`)
+        } else {
+          console.log('This page is not currently controlled by a service worker.')
+        }
 
-        const subscription = await register.pushManager.subscribe({
-          userVisibleOnly: true,
-          applicationServerKey: urlBase64ToUint8Array(this.$config.publicVapidKey)
-        })
-        await this.$http.post('/api/subscribe', { subscription })
-      } else {
-        console.error('Service workers are not supported in this browser')
+        //   const accessToken = this.$ctxUtils.getAccessToken()
+      //   navigator.serviceWorker.addEventListener('message', (event) => {
+      //     console.log('???', event.data.action)
+      //     if (navigator.serviceWorker.controller) {
+      //       navigator.serviceWorker.controller.postMessage({ accessToken })
+      //       console.log(`This page is currently controlled by: ${navigator.serviceWorker.controller}`)
+      //     } else {
+      //       console.log('This page is not currently controlled by a service worker.')
+      //     }
+      //   })
+      //
+      //   const subscription = await register.pushManager.subscribe({
+      //     userVisibleOnly: true,
+      //     applicationServerKey: this.$config.publicVapidKey
+      //   })
+      //   await this.$http.post('/api/subscribe', { subscription })
+      // } else {
+      //   console.error('Service workers are not supported in this browser')
       }
     }
   }
