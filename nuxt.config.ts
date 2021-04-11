@@ -1,5 +1,6 @@
 import { NuxtConfig } from '@nuxt/types'
 import connectBusboy from 'connect-busboy'
+import { CookieSerializeOptions } from 'cookie'
 
 interface NuxtConfigExt extends NuxtConfig {
   components: boolean | {dirs: string[]; loader: any} | undefined

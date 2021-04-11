@@ -1,7 +1,7 @@
-import { isFuture, parse } from 'date-fns'
+import { isFuture } from 'date-fns'
 import { extend } from 'vee-validate'
 import { mimes, required } from 'vee-validate/dist/rules'
-import { DATE_FMT, TIME_FMT } from '../config-constants'
+import { parseDateTime } from '~/plugins/utils/utils'
 
 export const createValidators = () => {
   extend('required', {
@@ -34,8 +34,7 @@ export const createValidators = () => {
   extend('onlyFutureDateWithTime', {
     validate (value: string, { linkedTime }: any) {
       if (linkedTime) {
-        const date = parse(value + ' ' + linkedTime, DATE_FMT + ' ' + TIME_FMT, new Date())
-        // console.log(isFuture(date), 'date with time')
+        const date = parseDateTime(value, linkedTime)
         return isFuture(date)
       }
       return true
@@ -47,8 +46,7 @@ export const createValidators = () => {
   extend('onlyFutureTimeWithDate', {
     validate (value: string, { linkedDate }: any) {
       if (linkedDate) {
-        const date = parse(linkedDate + ' ' + value, DATE_FMT + ' ' + TIME_FMT, new Date())
-        // console.log(isFuture(date), 'time with date')
+        const date = parseDateTime(linkedDate, value)
         return isFuture(date)
       }
       return true

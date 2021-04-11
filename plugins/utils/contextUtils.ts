@@ -1,4 +1,6 @@
 import { Context } from '@nuxt/types'
+import { formatDuration, intervalToDuration, Duration } from 'date-fns'
+import { ru } from 'date-fns/locale'
 import { StoredDocs } from '~/plugins/model'
 
 const getPosts = ({ $storage }: Context, userId: number): StoredDocs =>
@@ -13,6 +15,7 @@ const setAccessToken = ({ $storage, $const }: Context, accessToken: string, crea
   if (!tokenCreatedAt) {
     const timePassed = Math.round((new Date().getTime() - createdAt) / 1000)
     const maxAge = expiresIn - timePassed
+    $storage.setCookie($const.AUTH_EXPIRES_IN_KEY, expiresIn, { maxAge, sameSite })
     $storage.setCookie(accessToken, createdAt, { maxAge, sameSite })
     const oldAccessToken = $storage.getCookie($const.ACCESS_TOKEN_KEY)
     if (oldAccessToken) {
@@ -22,24 +25,29 @@ const setAccessToken = ({ $storage, $const }: Context, accessToken: string, crea
   } else {
     const timePassed = Math.round((new Date().getTime() - tokenCreatedAt) / 1000)
     const maxAge = expiresIn - timePassed
+    $storage.setCookie($const.AUTH_EXPIRES_IN_KEY, expiresIn, { maxAge, sameSite })
     $storage.setCookie($const.ACCESS_TOKEN_KEY, accessToken, { maxAge, sameSite })
   }
 }
 
 const getUserId = ({ $storage, $const }: Context): number => $storage.getCookie($const.USER_ID_KEY)
-/**
- * MUST BE CALLED AFTER setAccessToken
- * @param $storage
- * @param $const
- * @param userId
- * @param expiresIn
- */
 const setUserId = ({ $storage, $const }: Context, userId: number, expiresIn: number) => {
   const accessToken = $storage.getCookie($const.ACCESS_TOKEN_KEY)
   const tokenCreatedAt: number = $storage.getCookie(accessToken)
-  const timePassed = (new Date().getTime() - tokenCreatedAt) / 1000
+  const timePassed = Math.round((new Date().getTime() - tokenCreatedAt) / 1000)
   const maxAge = expiresIn - timePassed
   $storage.setCookie($const.USER_ID_KEY, userId, { maxAge, sameSite: true })
+}
+
+const getExpiresTime = ({ $storage, $const }: Context): {formatted: string, duration: Duration} => {
+  const accessToken = $storage.getCookie($const.ACCESS_TOKEN_KEY)
+  const tokenCreatedAt: number = $storage.getCookie(accessToken)
+  const expiresIn = $storage.getCookie($const.AUTH_EXPIRES_IN_KEY)
+  const start = new Date().getTime()
+  const end = tokenCreatedAt + expiresIn * 1000
+  const duration = intervalToDuration({ start, end })
+  const formatted = formatDuration(duration, { format: ['hours', 'minutes'], locale: ru })
+  return { formatted, duration }
 }
 
 export const contextUtilsFactory = (ctx: Context) => ({
@@ -54,5 +62,6 @@ export const contextUtilsFactory = (ctx: Context) => ({
     setAccessToken(ctx, accessToken, createdAt, expiresIn),
 
   getUserId: () => getUserId(ctx),
-  setUserId: (userId: number, expiresIn: number) => setUserId(ctx, userId, expiresIn)
+  setUserId: (userId: number, expiresIn: number) => setUserId(ctx, userId, expiresIn),
+  getExpiresTime: () => getExpiresTime(ctx)
 })
