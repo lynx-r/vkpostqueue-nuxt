@@ -24,20 +24,25 @@ export default defineComponent({
 
   methods: {
     onQueuePost () {
-      if (this.isEdit) {
-        this.$vkService.removePost(this.editMessageId as number)
+      const isEdit = this.isEdit
+      if (isEdit) {
+        const params = { messageId: this.editMessageId as number, silent: true }
+        this.$vkService.removePost(params)
         this.$store.commit('setEditMessage', null)
       }
 
-      const date: string = this.date as string
-      const time: string = this.time as string
-      const text: string = this.text as string
+      const date = this.date as string
+      const time = this.time as string
+      const text = this.text as string
       const images: File[] = this.images as File[]
 
       const postOnDate = this.$utils.formatDateAndTimeISO(date, time)
       this.$vkService.queuePost({
-        images, postOnDate, text
+        images, postOnDate, text, silent: isEdit
       })
+      if (isEdit) {
+        this.$toast.success(this.$const.NEWS_RENAMED)
+      }
     },
 
     onCreate () {
@@ -46,7 +51,7 @@ export default defineComponent({
     },
 
     onRemove (messageId: number) {
-      this.$vkService.removePost(messageId)
+      this.$vkService.removePost({ messageId })
     },
 
     async onEdit (messageId: number) {

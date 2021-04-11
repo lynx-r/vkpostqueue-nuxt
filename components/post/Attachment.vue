@@ -37,14 +37,6 @@ export default defineComponent({
       if (!_.isEmpty(oldVal) && _.isEmpty(val)) {
         (this.$refs.fileUpload as any).resetInput()
       }
-    },
-
-    editMessageId (val) {
-      console.log(val)
-      if (val) {
-        console.log(this.images);
-        (this.$refs.fileUpload as any).setInput(this.images)
-      }
     }
   },
 

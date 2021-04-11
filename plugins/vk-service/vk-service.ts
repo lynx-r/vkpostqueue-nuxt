@@ -3,7 +3,16 @@ import { parseISO } from 'date-fns'
 import _ from 'lodash'
 import { IVKAPIConstructorProps, VKAPI } from 'vkontakte-api'
 import { MESSAGE_SLUG_LENGTH } from '../config-constants'
-import { DocInfo, DocType, Message, SaveDocParams, SavePostParams, StoredDocs, VkDownloadDocRequest } from '../model'
+import {
+  DocInfo,
+  DocType,
+  Message,
+  RemovePostParams,
+  SaveDocParams,
+  SavePostParams,
+  StoredDocs,
+  VkDownloadDocRequest
+} from '../model'
 import { docTitleToName, formatDate, formatTime, sortStoredDocs, storedDocsToPostMessages } from '../utils/utils'
 import { DocsRepository } from './DocsRepository'
 
@@ -98,7 +107,7 @@ const putToQueue = async (ctx: Context, params: SavePostParams) => {
 async function queuePost (ctx: Context, params: SavePostParams) {
   const { $toast, $const, $ctxUtils, redirect, store } = ctx
   try {
-    const { postOnDate } = params
+    const { postOnDate, silent = false } = params
     const queue = await putToQueue(ctx, params)
     let userQueue: StoredDocs = $ctxUtils.getUserPosts() || {}
     const dateQueue = userQueue[postOnDate] || []
@@ -111,7 +120,7 @@ async function queuePost (ctx: Context, params: SavePostParams) {
     const messages = storedDocsToPostMessages(userQueue)
     store.commit('setMessages', messages)
 
-    $toast.success($const.NEWS_IN_QUEUE)
+    !silent && $toast.success($const.NEWS_IN_QUEUE)
   } catch (e) {
     const { errorMsg, errorCode } = JSON.parse(e.message)
     if (errorCode === 5) {
@@ -126,7 +135,7 @@ async function queuePost (ctx: Context, params: SavePostParams) {
 }
 
 async function getPost (ctx: Context, messageId: number) {
-  const { $http, $toast, $ctxUtils, $const, $accessor, store } = ctx
+  const { $http, $toast, $ctxUtils, $const, store } = ctx
   const docs: StoredDocs = $ctxUtils.getUserPosts()
   if (_.isEmpty(docs)) {
     return
@@ -188,8 +197,9 @@ async function getPost (ctx: Context, messageId: number) {
   store.commit('setEditMessage', messageId)
 }
 
-async function removePost (ctx: Context, messageId: number) {
+async function removePost (ctx: Context, params: RemovePostParams) {
   const { $toast, $ctxUtils, $const, $config, store } = ctx
+  const { messageId, silent = false } = params
   const docs: StoredDocs = $ctxUtils.getUserPosts()
   if (_.isEmpty(docs)) {
     return
@@ -226,11 +236,11 @@ async function removePost (ctx: Context, messageId: number) {
 
   const messages = storedDocsToPostMessages(newPosts)
   store.commit('setMessages', messages)
-  $toast.success($const.NEWS_QUEUE_REMOVED)
+  !silent && $toast.success($const.NEWS_QUEUE_REMOVED)
 }
 
 export const vkServiceFactory = (ctx: Context) => ({
   queuePost: (params: SavePostParams) => queuePost(ctx, params),
   getPost: (messageId: number) => getPost(ctx, messageId),
-  removePost: (messageId: number) => removePost(ctx, messageId)
+  removePost: (params: RemovePostParams) => removePost(ctx, params)
 })
