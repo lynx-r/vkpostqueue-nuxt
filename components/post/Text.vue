@@ -14,6 +14,5 @@ export default defineComponent({
   computed: {
     ...mapFields('post', ['text'])
   }
-
 })
 </script>
