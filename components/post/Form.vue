@@ -1,8 +1,8 @@
 <template>
-  <ValidationObserver ref="observer" v-slot="{handleSubmit, invalid}">
+  <ValidationObserver ref="observer" v-slot="{handleSubmit, invalid, reset}">
     <form
       class="flex flex-col space-y-2"
-      @submit.prevent="handleSubmit(onSubmit)"
+      @submit.prevent="handleSubmit(onSubmitFactory(reset))"
     >
       <PostTimer />
       <PostText />
@@ -36,8 +36,12 @@ export default {
   },
 
   methods: {
-    onSubmit () {
-      this.$emit('queuePost')
+    onSubmitFactory (reset) {
+      const self = this
+      return () => {
+        self.$emit('queuePost')
+        reset()
+      }
     }
   }
 }

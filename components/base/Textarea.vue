@@ -2,7 +2,7 @@
   <ValidationProvider
     v-slot="{ errors }"
     :rules="rules"
-    class="flex flex-col"
+    class="flex flex-col h-full"
   >
     <label for="textarea" class="">{{ label }}</label>
     <textarea

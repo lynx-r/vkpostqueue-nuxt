@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="h-96">
     <Textarea v-model="text" label="Введите запись на стену" />
   </div>
 </template>
