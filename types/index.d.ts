@@ -1,5 +1,3 @@
-import { NuxtRuntimeConfig } from '@nuxt/types/config/runtime'
-import { PublicRuntimeConfig } from '~/nuxt.config'
 import * as constants from '~/plugins/config-constants'
 import { contextUtilsFactory } from '~/plugins/utils/contextUtils'
 import * as utils from '~/plugins/utils/utils'

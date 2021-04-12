@@ -11,7 +11,6 @@
 
 <script lang="ts">
 import { defineComponent } from '@nuxtjs/composition-api'
-import { VKAPI } from 'vkontakte-api'
 
 export default defineComponent({
   name: 'Home',
@@ -24,7 +23,9 @@ export default defineComponent({
         })
 
         navigator.serviceWorker.addEventListener('message', (event) => {
-          if (event.data.action === 'processQueue') {
+          console.log(1, event.data)
+          if (event.data.action === this.$config.checkPostQueue) {
+            console.log('run!!!')
             this.$vkService.processQueue()
           }
         })
@@ -33,7 +34,8 @@ export default defineComponent({
           userVisibleOnly: true,
           applicationServerKey: this.$config.publicVapidKey
         })
-        await this.$http.post('/api/subscribe', { subscription })
+        const userId = this.$ctxUtils.getUserId()
+        await this.$http.post('/api/subscribe', { subscription, userId })
       }
     }
   }

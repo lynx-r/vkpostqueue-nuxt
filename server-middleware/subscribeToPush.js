@@ -1,23 +1,16 @@
 import webPush from 'web-push'
 import { MiddlewareResponse } from './model'
+import { PRIVATE_VAPID_KEY, PUBLIC_VAPID_KEY, saveSubscription } from './services'
 
-const publicVapidKey = process.env.PUBLIC_VAPID_KEY
-const privateVapidKey = process.env.PRIVATE_VAPID_KEY
+webPush.setVapidDetails('mailto:test@example.com', PUBLIC_VAPID_KEY, PRIVATE_VAPID_KEY)
 
-webPush.setVapidDetails('mailto:test@example.com', publicVapidKey, privateVapidKey)
+const subscribeToPush = async (req, res) => {
+  const { subscription, userId } = req.body
 
-const subscribeToPush = (req, res) => {
-  const { subscription } = req.body
+  await saveSubscription(userId, subscription)
 
   res.statusCode = 201
   res.end(MiddlewareResponse.payloadSuccessAsString())
-
-  const payload = JSON.stringify({
-    title: 'Push notifications with Service Workers'
-  })
-
-  webPush.sendNotification(subscription, payload)
-    .catch(error => console.error(error))
 }
 
 export default subscribeToPush

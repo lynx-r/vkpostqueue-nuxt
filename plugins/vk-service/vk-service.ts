@@ -201,7 +201,7 @@ async function getAttachments (images: Image[], ctx: Context): Promise<string> {
     groupId
   })
 
-  const attachemnts = []
+  const attachments = []
   for (const image of images) {
     const file = await getImageFile(image, $http)
     if (!file) {
@@ -226,9 +226,9 @@ async function getAttachments (images: Image[], ctx: Context): Promise<string> {
     })
     const { id: mediaId, ownerId } = a[0]
     const attachPhoto = `photo${ownerId}_${mediaId}`
-    attachemnts.push(attachPhoto)
+    attachments.push(attachPhoto)
   }
-  return attachemnts.join(',')
+  return attachments.join(',')
 }
 
 async function getPost (ctx: Context, messageId: number) {
@@ -307,11 +307,14 @@ async function removePost (ctx: Context, params: RemovePostParams) {
 }
 
 const processQueue = async (ctx: Context) => {
-  const { $ctxUtils, $http, $config } = ctx
+  const { $ctxUtils, $http, $config, $const } = ctx
   const posts = $ctxUtils.getUserPosts()
   const docs = _.entries(posts)
     .filter(([postOnDate]) => {
-      const interval = { start: subMinutes(new Date(), 200), end: addMinutes(new Date(), 200) }
+      const interval = {
+        start: new Date(),
+        end: addMinutes(new Date(), $const.MINUTES_IN_INTERVAL_CHECK_POST_ON_DATE)
+      }
       const date = parseISO(postOnDate)
       return isWithinInterval(date, interval)
     })
@@ -323,9 +326,7 @@ const processQueue = async (ctx: Context) => {
     const message = await getTextFile(doc.text.doc.url, $http)
     const attachments = await getAttachments(doc.images, ctx)
     const wallPostParams = { accessToken, ownerId, message, attachments, fromGroup: true }
-    console.log(wallPostParams)
-    const r = await api.wall.post(wallPostParams)
-    console.log(r)
+    await api.wall.post(wallPostParams)
   }
 }
 

@@ -91,7 +91,8 @@ const config: NuxtConfigExt = {
     { path: '/api', handler: connectBusboy({ immediate: true }) as any },
     { path: '/api/vk-save-doc', handler: '~/server-middleware/vkSaveDoc.ts' },
     { path: '/api/vk-download-doc', handler: '~/server-middleware/vkDownloadDoc.ts' },
-    { path: '/api/subscribe', handler: '~/server-middleware/subscribeToPush.js' }
+    { path: '/api/subscribe', handler: '~/server-middleware/subscribeToPush.js' },
+    { path: '/api/touch-cron', handler: '~/server-middleware/cron.ts' }
   ],
 
   env: {},
@@ -102,12 +103,14 @@ const config: NuxtConfigExt = {
   },
 
   publicRuntimeConfig: {
+    checkPostQueue: process.env.CHECK_POST_QUEUE_ACTION,
     publicVapidKey: process.env.PUBLIC_VAPID_KEY,
     groupId: process.env.VK_GROUP_OWNER_ID,
     vkAuthorizeUrl: `https://oauth.vk.com/authorize?client_id=${process.env.VK_CLIENT_ID}&display=page&redirect_uri=${process.env.VK_AUTHORIZATION_CALLBACK}&scope=${process.env.VK_SCOPE}&response_type=token&v=${process.env.VK_API_V}`
   },
 
   privateRuntimeConfig: {
+    privateVapidKey: process.env.PRIVATE_VAPID_KEY,
     http: {
       // HTTP options here
       baseUrl: process.env.VERCEL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000'

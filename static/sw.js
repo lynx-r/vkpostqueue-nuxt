@@ -6,6 +6,7 @@ self.addEventListener('load', () => {
 self.addEventListener('push', (event) => {
   event.waitUntil(async function () {
     const allClients = await clients.matchAll()
+    console.log('clients', allClients)
     if (!allClients) {
       return
     }
@@ -14,6 +15,7 @@ self.addEventListener('push', (event) => {
       return
     }
 
-    client.postMessage({ action: 'processQueue' })
+    const data = event.data.json()
+    client.postMessage(data)
   }())
 })
