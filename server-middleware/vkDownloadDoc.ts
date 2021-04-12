@@ -1,4 +1,5 @@
 import { ServerMiddleware } from '@nuxt/types'
+import fetch from 'node-fetch'
 import { MiddlewareResponse } from './model'
 import { VkDownloadDocRequest } from '~/plugins/model'
 

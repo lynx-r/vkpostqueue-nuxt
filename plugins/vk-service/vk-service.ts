@@ -16,9 +16,9 @@ import {
   VkDownloadDocRequest
 } from '../model'
 import { docTitleToName, formatDate, formatTime, sortStoredDocs, storedDocsToPostMessages } from '../utils/utils'
-import { WallRepository } from './WallRepository'
-import { PhotosRepository } from './PhotosRepository'
 import { DocsRepository } from './DocsRepository'
+import { PhotosRepository } from './PhotosRepository'
+import { WallRepository } from './WallRepository'
 
 const props: IVKAPIConstructorProps = {
   lang: 'ru',
@@ -307,13 +307,13 @@ async function removePost (ctx: Context, params: RemovePostParams) {
 }
 
 const processQueue = async (ctx: Context) => {
-  const { $ctxUtils, $http, $config, $const } = ctx
+  const { $ctxUtils, $http, $config } = ctx
   const posts = $ctxUtils.getUserPosts()
   const docs = _.entries(posts)
     .filter(([postOnDate]) => {
       const interval = {
-        start: new Date(),
-        end: addMinutes(new Date(), $const.MINUTES_IN_INTERVAL_CHECK_POST_ON_DATE)
+        start: subMinutes(new Date(), $config.checkPostIntervalMin - 1),
+        end: addMinutes(new Date(), $config.checkPostIntervalMin - 1)
       }
       const date = parseISO(postOnDate)
       return isWithinInterval(date, interval)

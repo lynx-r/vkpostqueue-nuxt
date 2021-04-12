@@ -42,6 +42,9 @@ const setUserId = ({ $storage, $const }: Context, userId: number, expiresIn: num
 
 const getExpiresTime = ({ $storage, $const }: Context): {formatted: string, duration: Duration} => {
   const accessToken = $storage.getCookie($const.ACCESS_TOKEN_KEY)
+  if (!accessToken) {
+    return { formatted: '', duration: { hours: 24, seconds: 0 } }
+  }
   const tokenCreatedAt: number = $storage.getCookie(accessToken)
   const expiresIn = $storage.getCookie($const.AUTH_EXPIRES_IN_KEY)
   const start = new Date().getTime()

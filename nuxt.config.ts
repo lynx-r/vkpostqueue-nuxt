@@ -103,6 +103,7 @@ const config: NuxtConfigExt = {
   },
 
   publicRuntimeConfig: {
+    checkPostIntervalMin: process.env.CHECK_POST_INTERVAL_MIN,
     checkPostQueue: process.env.CHECK_POST_QUEUE_ACTION,
     publicVapidKey: process.env.PUBLIC_VAPID_KEY,
     groupId: process.env.VK_GROUP_OWNER_ID,

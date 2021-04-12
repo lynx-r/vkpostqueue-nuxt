@@ -25,12 +25,6 @@ export default defineComponent({
   methods: {
     onQueuePost () {
       const isEdit = this.isEdit
-      if (isEdit) {
-        const params = { messageId: this.editMessageId as number, silent: true }
-        this.$vkService.removePost(params)
-        this.$store.commit('setEditMessage', null)
-      }
-
       const date = this.date as string
       const time = this.time as string
       const text = this.text as string
@@ -41,6 +35,9 @@ export default defineComponent({
         images, postOnDate, text, silent: isEdit
       })
       if (isEdit) {
+        const params = { messageId: this.editMessageId as number, silent: true }
+        this.$vkService.removePost(params)
+        this.$store.commit('setEditMessage', null)
         this.$toast.success(this.$const.NEWS_RENAMED)
       }
     },

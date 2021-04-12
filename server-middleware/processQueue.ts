@@ -1,6 +1,5 @@
 import { ServerMiddleware } from '@nuxt/types'
 import { MiddlewareResponse } from './model'
-// import { getNewsFromS3, postNews } from './services'
 
 const processQueue: ServerMiddleware = (req, res) => {
   if (req.method === 'GET') {

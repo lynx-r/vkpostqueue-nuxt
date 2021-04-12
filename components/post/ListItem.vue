@@ -3,7 +3,6 @@
     <div>{{ postOnDate }}: {{ message.slug }}</div>
     <div class="flex space-x-4">
       <div
-        v-if="!expired"
         class="cursor-pointer"
         @click="$emit('edit', message.id)"
       >
