@@ -1,6 +1,6 @@
 import { NuxtConfig } from '@nuxt/types'
-import connectBusboy from 'connect-busboy'
 import bodyParser from 'body-parser'
+import connectBusboy from 'connect-busboy'
 
 interface NuxtConfigExt extends NuxtConfig {
   components: boolean | {dirs: string[]; loader: any} | undefined
@@ -83,8 +83,7 @@ const config: NuxtConfigExt = {
     '@nuxt/typescript-build',
     '@nuxtjs/composition-api',
     '@nuxtjs/tailwindcss',
-    '@nuxtjs/date-fns',
-    'nuxt-typed-vuex'
+    '@nuxtjs/date-fns'
   ],
 
   serverMiddleware: [

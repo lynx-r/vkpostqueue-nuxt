@@ -1,11 +1,13 @@
+import { NuxtHTTPInstance } from '@nuxt/http'
 import { Context } from '@nuxt/types'
-import { parseISO } from 'date-fns'
+import { addMinutes, isWithinInterval, parseISO, subMinutes } from 'date-fns'
 import _ from 'lodash'
 import { IVKAPIConstructorProps, VKAPI } from 'vkontakte-api'
 import { MESSAGE_SLUG_LENGTH } from '../config-constants'
 import {
   DocInfo,
   DocType,
+  Image,
   Message,
   RemovePostParams,
   SaveDocParams,
@@ -14,6 +16,8 @@ import {
   VkDownloadDocRequest
 } from '../model'
 import { docTitleToName, formatDate, formatTime, sortStoredDocs, storedDocsToPostMessages } from '../utils/utils'
+import { WallRepository } from './WallRepository'
+import { PhotosRepository } from './PhotosRepository'
 import { DocsRepository } from './DocsRepository'
 
 const props: IVKAPIConstructorProps = {
@@ -23,6 +27,8 @@ const props: IVKAPIConstructorProps = {
 
 const api = new VKAPI(props)
   .addRepository('docs', DocsRepository)
+  .addRepository('wall', WallRepository)
+  .addRepository('photos', PhotosRepository)
 
 function createFile (userId: number, postOnDate: string, doc: File | string, type: DocType) {
   let file, fileName
@@ -134,6 +140,97 @@ async function queuePost (ctx: Context, params: SavePostParams) {
   }
 }
 
+async function getTextFile (url: string, $http: NuxtHTTPInstance) {
+  const body: VkDownloadDocRequest = {
+    url,
+    type: 'msg'
+  }
+  return await $http.post('/api/vk-download-doc', body)
+    .then(r => r.json())
+    .then(({ payload }) => payload)
+}
+
+async function getImageFile (image: Image, $http: NuxtHTTPInstance) {
+  const body: VkDownloadDocRequest = {
+    url: image.doc.url,
+    type: 'img'
+  }
+  const img = await $http.post('/api/vk-download-doc', body)
+    .then(r => r.body)
+  if (!img) {
+    return
+  }
+  const reader = img.getReader()
+  const imgArr = []
+  while (true) {
+    const {
+      done,
+      value
+    } = await reader.read()
+    if (done) {
+      if (value) {
+        imgArr.push(value)
+      }
+      break
+    }
+    if (value) {
+      imgArr.push(value)
+    }
+  }
+  reader.releaseLock()
+  const name = docTitleToName(image.doc.title)
+  return new File(imgArr, name)
+}
+
+async function getImageFiles (images: Image[], $http: NuxtHTTPInstance) {
+  const imageFiles = []
+  for (const image of images) {
+    const file = await getImageFile(image, $http)
+    imageFiles.push(file)
+  }
+  return imageFiles
+}
+
+async function getAttachments (images: Image[], ctx: Context): Promise<string> {
+  const { $http, $ctxUtils, $config } = ctx
+
+  const accessToken = $ctxUtils.getAccessToken()
+  const groupId = $config.groupId
+  const { uploadUrl, userId } = await api.photos.getWallUploadServer({
+    accessToken,
+    groupId
+  })
+
+  const attachemnts = []
+  for (const image of images) {
+    const file = await getImageFile(image, $http)
+    if (!file) {
+      continue
+    }
+    const formData = new FormData()
+    const fileName = docTitleToName(image.doc.title)
+    formData.append('photo', file, fileName)
+    formData.append('uploadUrl', uploadUrl)
+
+    const { server, photo, hash } = await $http.post('/api/vk-save-doc', formData)
+      .then(r => r.json())
+      .then(p => p.payload)
+    const a = await api.photos.saveWallPhoto({
+      accessToken,
+      groupId,
+      hash,
+      photo,
+      userId,
+      server,
+      caption: fileName
+    })
+    const { id: mediaId, ownerId } = a[0]
+    const attachPhoto = `photo${ownerId}_${mediaId}`
+    attachemnts.push(attachPhoto)
+  }
+  return attachemnts.join(',')
+}
+
 async function getPost (ctx: Context, messageId: number) {
   const { $http, $toast, $ctxUtils, $const, store } = ctx
   const docs: StoredDocs = $ctxUtils.getUserPosts()
@@ -160,38 +257,8 @@ async function getPost (ctx: Context, messageId: number) {
   const dateParsed = parseISO(postOnDate)
   const date = formatDate(dateParsed)
   const time = formatTime(dateParsed)
-
-  const body: VkDownloadDocRequest = { url: doc.text.doc.url, type: 'msg' }
-  const text = await $http.post('/api/vk-download-doc', body)
-    .then(r => r.json())
-    .then(({ payload }) => payload)
-
-  const images = []
-  for (const image of doc.images) {
-    const body: VkDownloadDocRequest = { url: image.doc.url, type: 'img' }
-    const img = await $http.post('/api/vk-download-doc', body)
-      .then(r => r.body)
-    if (!img) {
-      continue
-    }
-    const reader = img.getReader()
-    const imgArr = []
-    while (true) {
-      const { done, value } = await reader.read()
-      if (done) {
-        if (value) {
-          imgArr.push(value)
-        }
-        break
-      }
-      if (value) {
-        imgArr.push(value)
-      }
-    }
-    reader.releaseLock()
-    const name = docTitleToName(image.doc.title)
-    images.push(new File(imgArr, name))
-  }
+  const text = await getTextFile(doc.text.doc.url, $http)
+  const images = await getImageFiles(doc.images, $http)
 
   store.commit('post/setPost', { text, date, time, images })
   store.commit('setEditMessage', messageId)
@@ -239,8 +306,32 @@ async function removePost (ctx: Context, params: RemovePostParams) {
   !silent && $toast.success($const.NEWS_QUEUE_REMOVED)
 }
 
+const processQueue = async (ctx: Context) => {
+  const { $ctxUtils, $http, $config } = ctx
+  const posts = $ctxUtils.getUserPosts()
+  const docs = _.entries(posts)
+    .filter(([postOnDate]) => {
+      const interval = { start: subMinutes(new Date(), 200), end: addMinutes(new Date(), 200) }
+      const date = parseISO(postOnDate)
+      return isWithinInterval(date, interval)
+    })
+    .flatMap(([, docs]) => docs)
+
+  const ownerId = -$config.groupId
+  const accessToken = $ctxUtils.getAccessToken()
+  for (const doc of docs) {
+    const message = await getTextFile(doc.text.doc.url, $http)
+    const attachments = await getAttachments(doc.images, ctx)
+    const wallPostParams = { accessToken, ownerId, message, attachments, fromGroup: true }
+    console.log(wallPostParams)
+    const r = await api.wall.post(wallPostParams)
+    console.log(r)
+  }
+}
+
 export const vkServiceFactory = (ctx: Context) => ({
   queuePost: (params: SavePostParams) => queuePost(ctx, params),
+  processQueue: () => processQueue(ctx),
   getPost: (messageId: number) => getPost(ctx, messageId),
   removePost: (params: RemovePostParams) => removePost(ctx, params)
 })

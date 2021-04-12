@@ -1,14 +1,27 @@
+type DocInfoType = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8
+
 export type DocInfo = {
-  id: number,
-  // eslint-disable-next-line camelcase
-  owner_id: number,
-  title: string,
-  size: number,
-  ext: string,
+  id: number
+  ownerId: number
+  title: string
+  size: number
+  ext: string
   url: string
-  date: number,
-  type: 1 | 2 | 3| 4| 5| 6| 7| 8,
+  date: number
+  type: DocInfoType
   preview: any
+}
+
+export type PhotoInfo = {
+  id: number,
+  albumId: number
+  ownerId: number
+  userId: number
+  text: string
+  date: number
+  sizes: any[]
+  width: number
+  height: number
 }
 
 export type DocType = 'msg' | 'img'

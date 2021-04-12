@@ -2,6 +2,7 @@ import { Context } from '@nuxt/types'
 import { formatDuration, intervalToDuration, Duration } from 'date-fns'
 import { ru } from 'date-fns/locale'
 import { StoredDocs } from '~/plugins/model'
+import processQueue from '~/server-middleware/processQueue'
 
 const getPosts = ({ $storage }: Context, userId: number): StoredDocs =>
   $storage.getLocalStorage(userId?.toString())

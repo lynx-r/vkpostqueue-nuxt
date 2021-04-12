@@ -1,4 +1,3 @@
-import { getAccessorType } from 'typed-vuex'
 import { ActionTree, GetterTree, MutationTree } from 'vuex'
 import { getField, updateField } from 'vuex-map-fields'
 import { StoredDocs } from '~/plugins/model'
@@ -36,7 +35,7 @@ export const actions: ActionTree<RootState, RootState> = {
 }
 
 // This compiles to nothing and only serves to return the correct type of the accessor
-export const accessorType = getAccessorType({
+export const accessorType = {
   state,
   getters,
   mutations,
@@ -45,4 +44,4 @@ export const accessorType = getAccessorType({
     auth,
     post
   }
-})
+}

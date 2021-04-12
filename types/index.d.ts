@@ -1,12 +1,12 @@
-import { contextUtilsFactory } from '~/plugins/utils/contextUtils'
-import { vkServiceFactory } from '~/plugins/vk-service'
-import { accessorType } from '~/store'
+import { NuxtRuntimeConfig } from '@nuxt/types/config/runtime'
+import { PublicRuntimeConfig } from '~/nuxt.config'
 import * as constants from '~/plugins/config-constants'
+import { contextUtilsFactory } from '~/plugins/utils/contextUtils'
 import * as utils from '~/plugins/utils/utils'
+import { vkServiceFactory } from '~/plugins/vk-service'
 
 declare module 'vue/types/vue' {
   interface Vue {
-    $accessor: typeof accessorType
     $const: typeof constants
     $utils: typeof utils
     $ctxUtils: ReturnType<typeof contextUtilsFactory>
@@ -26,7 +26,6 @@ declare module '@nuxt/types' {
 
   interface Context {
     $const: typeof constants
-    $accessor: typeof accessorType
     $utils: typeof utils
     $ctxUtils: ReturnType<typeof contextUtilsFactory>
   }
