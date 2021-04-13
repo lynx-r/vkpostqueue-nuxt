@@ -7,11 +7,14 @@ export const saveSubscription = (userId, subscription) => {
   const exists = client
     .query(
       q.ContainsValue(userId,
-        q.SelectAll(['data', 'data', 'userId'],
+        q.Select('data',
           q.Map(
             q.Paginate(q.Documents(q.Collection('PushSubscribers'))),
-            q.Lambda(x => q.Get(x))
-          ))
+            q.Lambda(['ref'],
+              q.Select(['data', 'userId'], q.Get(q.Var('ref')))
+            )
+          )
+        )
       )
     )
     .catch(err => console.error('Error: %s', err))
@@ -38,8 +41,13 @@ export const saveSubscription = (userId, subscription) => {
 export const getSubscriptions = async () => {
   return await client
     .query(
-      q.SelectAll(['data', 'data', 'subscription'],
-        q.Map(q.Paginate(q.Documents(q.Collection('PushSubscribers'))), q.Lambda(x => q.Get(x)))
+      q.Select('data',
+        q.Map(
+          q.Paginate(q.Documents(q.Collection('PushSubscribers'))),
+          q.Lambda(['ref'],
+            q.Select(['data', 'subscription'], q.Get(q.Var('ref')))
+          )
+        )
       )
     )
     .catch(err => console.error('Error: %s', err))
