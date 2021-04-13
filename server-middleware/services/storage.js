@@ -3,7 +3,22 @@ import { FAUNADB_SECRET } from './constants'
 
 const client = new faunadb.Client({ secret: FAUNADB_SECRET })
 
-export const saveSubscription = (userId, subscription) =>
+export const saveSubscription = (userId, subscription) => {
+  const exists = client
+    .query(
+      q.ContainsValue(userId,
+        q.SelectAll(['data', 'data', 'userId'],
+          q.Map(
+            q.Paginate(q.Documents(q.Collection('PushSubscribers'))),
+            q.Lambda(x => q.Get(x))
+          ))
+      )
+    )
+    .catch(err => console.error('Error: %s', err))
+  if (exists) {
+    return
+  }
+
   client
     .query(
       q.Create(
@@ -18,14 +33,14 @@ export const saveSubscription = (userId, subscription) =>
     )
     .then(ret => console.log(ret))
     .catch(err => console.error('Error: %s', err))
+}
 
-export const getSubscribers = async () => {
-  const subscriptions = await client
+export const getSubscriptions = async () => {
+  return await client
     .query(
-      q.Map(q.Paginate(q.Documents(q.Collection('PushSubscribers'))), q.Lambda(x => q.Get(x)))
+      q.SelectAll(['data', 'data', 'subscription'],
+        q.Map(q.Paginate(q.Documents(q.Collection('PushSubscribers'))), q.Lambda(x => q.Get(x)))
+      )
     )
-    .then(({ data }) => data)
     .catch(err => console.error('Error: %s', err))
-
-  return subscriptions.map(({ data }) => data)
 }
