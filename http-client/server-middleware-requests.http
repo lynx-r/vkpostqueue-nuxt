@@ -34,7 +34,7 @@ Content-Type: application/json
 
 ###
 
-GET http://localhost:3000/api/generatePresignedUrl
+GET http://localhost:3000/api/touch-cron
 Content-Type: application/json
 
 

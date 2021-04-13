@@ -1,6 +1,6 @@
 import webPush from 'web-push'
+import { saveSubscription, PRIVATE_VAPID_KEY, PUBLIC_VAPID_KEY } from './services'
 import { MiddlewareResponse } from './model'
-import { PRIVATE_VAPID_KEY, PUBLIC_VAPID_KEY, saveSubscription } from './services'
 
 webPush.setVapidDetails('mailto:test@example.com', PUBLIC_VAPID_KEY, PRIVATE_VAPID_KEY)
 
