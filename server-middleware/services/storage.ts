@@ -1,7 +1,7 @@
 import faunadb, { query as q } from 'faunadb'
 import { FAUNADB_SECRET } from './constants'
 
-const client = new faunadb.Client({ secret: FAUNADB_SECRET!, domain: '' })
+const client = new faunadb.Client({ secret: FAUNADB_SECRET! })
 
 export const saveSubscription = (userId: number, subscription: any) =>
   client
