@@ -22,9 +22,10 @@ export const saveSubscription = (userId, subscription) => {
       )
     )
     .catch(err => console.error('Error: %s', err))
-
+  console.log(existedSubscriptions)
   if (!existedSubscriptions.length) {
     const ref = existedSubscriptions[0]
+    console.log('replace', ref)
     client
       .query(
         q.Replace(
@@ -40,6 +41,7 @@ export const saveSubscription = (userId, subscription) => {
       .then(ret => console.log(ret))
       .catch(err => console.error('Error: %s', err))
   } else {
+    console.log('create')
     client
       .query(
         q.Create(
