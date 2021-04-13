@@ -13,7 +13,8 @@ webPush.setVapidDetails('mailto:test@example.com', PUBLIC_VAPID_KEY!, PRIVATE_VA
 
 cron.schedule(CHECK_POST_CRON, async () => {
   const subscribers = await getSubscribers()
-  for (const subscription of subscribers) {
+  const subscriptions = subscribers.map(({ subscription }: any) => subscription)
+  for (const subscription of subscriptions) {
     webPush.sendNotification(subscription, CHECK_POST_QUEUE_ACTION)
       .catch(error => console.error(error))
   }
@@ -21,8 +22,7 @@ cron.schedule(CHECK_POST_CRON, async () => {
 })
 
 const cronService: ServerMiddleware = async (_, res) => {
-  console.log(await getSubscribers())
-  res.end('')
+  res.end('cron')
 }
 
 export default cronService
