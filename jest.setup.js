@@ -2,7 +2,7 @@ import constants from './tests/constants'
 
 const { Nuxt, Builder } = require('nuxt')
 
-const nuxtConfig = require('./nuxt.config.ts')
+const nuxtConfig = require('./nuxt.config.js')
 
 // these boolean switches turn off the build for all but the store
 const resetConfig = {

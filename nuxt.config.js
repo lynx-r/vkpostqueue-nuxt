@@ -1,12 +1,7 @@
-import { NuxtConfig } from '@nuxt/types'
 import bodyParser from 'body-parser'
 import connectBusboy from 'connect-busboy'
 
-interface NuxtConfigExt extends NuxtConfig {
-  components: boolean | {dirs: string[]; loader: any} | undefined
-}
-
-const config: NuxtConfigExt = {
+const config = {
   target: 'server',
   /*
    ** Headers of the page
@@ -88,7 +83,7 @@ const config: NuxtConfigExt = {
 
   serverMiddleware: [
     { path: '/api', handler: bodyParser.json() },
-    { path: '/api', handler: connectBusboy({ immediate: true }) as any },
+    { path: '/api', handler: connectBusboy({ immediate: true }) },
     { path: '/api/vk-save-doc', handler: '~/server-middleware/vkSaveDoc.ts' },
     { path: '/api/vk-download-doc', handler: '~/server-middleware/vkDownloadDoc.ts' },
     { path: '/api/subscribe', handler: '~/server-middleware/subscribeToPush.js' },

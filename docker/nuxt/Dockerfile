@@ -14,7 +14,7 @@ COPY static static
 COPY store store
 COPY types types
 
-COPY nuxt.config.ts .
+COPY nuxt.config.js .
 COPY package.json .
 COPY tailwind.config.js .
 COPY tsconfig.json .

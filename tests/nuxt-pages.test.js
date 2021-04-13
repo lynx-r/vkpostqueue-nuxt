@@ -2,7 +2,7 @@ import constants from '~/tests/constants'
 const { Nuxt } = require('nuxt')
 // eslint-disable-next-line no-unused-vars
 // const request = require('supertest')
-const nuxtConfig = require('../nuxt.config.ts')
+const nuxtConfig = require('../nuxt.config.js')
 
 // We keep the nuxt and server instance
 // So we can close them at the end of the test
