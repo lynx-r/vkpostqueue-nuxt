@@ -26,7 +26,6 @@
     "faunadb": "^4.2.0",
     "form-data": "^4.0.0",
     "lodash": "^4.17.21",
-    "node-cron": "^3.0.0",
     "node-fetch": "^2.6.1",
     "nuxt": "^2.15.3",
     "tslog": "^3.1.2",

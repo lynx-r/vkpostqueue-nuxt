@@ -87,7 +87,7 @@ const config = {
     { path: '/api/vk-save-doc', handler: '~/server-middleware/vkSaveDoc.ts' },
     { path: '/api/vk-download-doc', handler: '~/server-middleware/vkDownloadDoc.ts' },
     { path: '/api/subscribe', handler: '~/server-middleware/subscribeToPush.js' },
-    { path: '/api/broadcastCheckQueue', handler: '~/server-middleware/broadcastCheckQueue.js' }
+    { path: '/api/broadcast-check-queue', handler: '~/server-middleware/broadcastCheckQueue.js' }
   ],
 
   env: {},
