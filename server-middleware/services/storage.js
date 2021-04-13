@@ -4,28 +4,23 @@ import { FAUNADB_SECRET } from './constants'
 const client = new faunadb.Client({ secret: FAUNADB_SECRET })
 
 export const saveSubscription = (userId, subscription) => {
-  const exists = client
+  const ref = client
     .query(
-      q.ContainsValue(userId,
-        q.Select('data',
-          q.Map(
-            q.Paginate(q.Documents(q.Collection('PushSubscribers'))),
-            q.Lambda(['ref'],
-              q.Select(['data', 'userId'], q.Get(q.Var('ref')))
-            )
+      q.Select('data',
+        q.Map(
+          q.Paginate(q.Documents(q.Collection('PushSubscribers'))),
+          q.Lambda(['ref'],
+            q.Select(['ref'], q.Get(q.Var('ref')))
           )
         )
       )
     )
     .catch(err => console.error('Error: %s', err))
-  if (exists) {
-    return
-  }
-
+  console.log(ref)
   client
     .query(
-      q.Create(
-        q.Collection('PushSubscribers'),
+      q.Replace(
+        ref,
         {
           data: {
             userId,
