@@ -88,5 +88,3 @@ sw.*
 # Mac OSX
 .DS_Store
 .vercel
-
-.node-persist/storage/**
