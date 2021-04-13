@@ -307,6 +307,7 @@ async function removePost (ctx: Context, params: RemovePostParams) {
 }
 
 const processQueue = async (ctx: Context) => {
+  console.log('start processing queue')
   const { $ctxUtils, $http, $config } = ctx
   const posts = $ctxUtils.getUserPosts()
   const docs = _.entries(posts)
@@ -328,6 +329,7 @@ const processQueue = async (ctx: Context) => {
     const wallPostParams = { accessToken, ownerId, message, attachments, fromGroup: true }
     await api.wall.post(wallPostParams)
   }
+  console.log('queue processed')
 }
 
 export const vkServiceFactory = (ctx: Context) => ({

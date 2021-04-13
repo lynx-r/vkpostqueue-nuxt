@@ -23,6 +23,7 @@ export default defineComponent({
         })
 
         navigator.serviceWorker.addEventListener('message', (event) => {
+          console.log('triggered queue process')
           if (event.data === this.$config.checkPostQueue) {
             this.$vkService.processQueue()
           }
