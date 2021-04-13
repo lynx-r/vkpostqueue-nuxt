@@ -3,8 +3,8 @@ import { FAUNADB_SECRET } from './constants'
 
 const client = new faunadb.Client({ secret: FAUNADB_SECRET })
 
-export const saveSubscription = (userId, subscription) => {
-  const existedSubscriptions = client
+export const saveSubscription = async (userId, subscription) => {
+  const existedSubscriptions = await client
     .query(
       q.Map(
         q.Filter(
@@ -23,13 +23,12 @@ export const saveSubscription = (userId, subscription) => {
     )
     .catch(err => console.error('Error: %s', err))
   console.log(existedSubscriptions)
-  if (!existedSubscriptions.length) {
-    const ref = existedSubscriptions[0]
-    console.log('replace', ref)
-    client
+  if (_.isEmpty(existedSubscriptions)) {
+    console.log('create')
+    await client
       .query(
-        q.Replace(
-          ref,
+        q.Create(
+          q.Collection('PushSubscribers'),
           {
             data: {
               userId,
@@ -41,11 +40,12 @@ export const saveSubscription = (userId, subscription) => {
       .then(ret => console.log(ret))
       .catch(err => console.error('Error: %s', err))
   } else {
-    console.log('create')
-    client
+    const ref = existedSubscriptions[0]
+    console.log('replace', ref)
+    await client
       .query(
-        q.Create(
-          q.Collection('PushSubscribers'),
+        q.Replace(
+          ref,
           {
             data: {
               userId,
