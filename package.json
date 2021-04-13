@@ -2,13 +2,14 @@
   "name": "nuxtjs",
   "version": "1.0.0",
   "private": true,
-  "description": "My astonishing Nuxt.js project",
-  "author": "msweeneydev",
+  "description": "The app for postponed posting in vk.com",
+  "author": "lynx-r",
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt",
     "make": "vue invoke generator",
     "start": "nuxt start",
+    "deploy": "vercel",
     "lint": "eslint --ext .ts,.js,.vue .",
     "test": "jest"
   },
