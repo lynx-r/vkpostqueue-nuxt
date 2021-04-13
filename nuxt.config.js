@@ -94,7 +94,7 @@ const config = {
 
   http: {
     // HTTP options here
-    baseUrl: process.env.VERCEL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000'
+    baseUrl: process.env.VERCEL ? process.env.VERCEL_PROD_URL : 'http://localhost:3000'
   },
 
   publicRuntimeConfig: {
@@ -109,7 +109,7 @@ const config = {
     privateVapidKey: process.env.PRIVATE_VAPID_KEY,
     http: {
       // HTTP options here
-      baseUrl: process.env.VERCEL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000'
+      baseUrl: process.env.VERCEL ? process.env.VERCEL_PROD_URL : 'http://localhost:3000'
     }
   },
 
