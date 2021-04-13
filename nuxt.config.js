@@ -86,8 +86,7 @@ const config = {
     { path: '/api', handler: connectBusboy({ immediate: true }) },
     { path: '/api/vk-save-doc', handler: '~/server-middleware/vkSaveDoc.ts' },
     { path: '/api/vk-download-doc', handler: '~/server-middleware/vkDownloadDoc.ts' },
-    { path: '/api/subscribe', handler: '~/server-middleware/subscribeToPush.js' },
-    { path: '/api/touch-cron', handler: '~/server-middleware/cron.ts' }
+    { path: '/api/subscribe', handler: '~/server-middleware/subscribeToPush.js' }
   ],
 
   env: {},
