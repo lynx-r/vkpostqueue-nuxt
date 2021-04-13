@@ -13,6 +13,7 @@ webPush.setVapidDetails('mailto:test@example.com', PUBLIC_VAPID_KEY, PRIVATE_VAP
 
 cron.schedule(CHECK_POST_CRON, async () => {
   const subscriptions = await getSubscriptions()
+  console.log(subscriptions)
   for (const subscription of subscriptions) {
     webPush.sendNotification(subscription, CHECK_POST_QUEUE_ACTION)
       .catch(error => console.error(error))
