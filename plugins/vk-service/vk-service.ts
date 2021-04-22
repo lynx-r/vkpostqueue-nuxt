@@ -128,6 +128,7 @@ async function queuePost (ctx: Context, params: SavePostParams) {
 
     !silent && $toast.success($const.NEWS_IN_QUEUE)
   } catch (e) {
+    console.log(e)
     const { errorMsg, errorCode } = JSON.parse(e.message)
     if (errorCode === 5) {
       $toast.error($const.NEWS_QUEUE_ERROR_AUTH)

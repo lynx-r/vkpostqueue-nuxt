@@ -6,9 +6,9 @@
       class="bg-blue-300 w-96 block text-center rounded p-2 shadow"
       @click="setTokenCreatedAt"
     >
-      Получить ссылку авторизации в ВКонтакте
+      {{ isWindowAuth ? 'Получить ссылку авторизации в ВКонтакте' : 'Авторизоваться в Vk.com' }}
     </a>
-    <form>
+    <form v-if="isWindowAuth">
       <div class="flex items-center space-x-4">
         <Textarea
           v-model="accessTokenUrl"
@@ -32,6 +32,12 @@ export default {
     return {
       accessTokenUrl: '',
       tokenCreatedAt: new Date().getTime()
+    }
+  },
+
+  computed: {
+    isWindowAuth () {
+      return this.$config.vkAuthWindow
     }
   },
 

@@ -20,6 +20,10 @@ export default {
     },
 
     visible () {
+      console.log(this.expiresTime)
+      if (!this.expiresTime) {
+        return false
+      }
       const { duration: { hours } } = this.expiresTime
       return this.$route.path !== this.$const.AUTH_URL && hours < this.$const.AUTH_EXPIRES_REST_HOURS
     }

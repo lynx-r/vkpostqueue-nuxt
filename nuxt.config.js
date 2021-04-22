@@ -102,7 +102,10 @@ const config = {
     checkPostQueue: process.env.CHECK_POST_QUEUE_ACTION,
     publicVapidKey: process.env.PUBLIC_VAPID_KEY,
     groupId: process.env.VK_GROUP_OWNER_ID,
-    vkAuthorizeUrl: `https://oauth.vk.com/authorize?client_id=${process.env.VK_CLIENT_ID}&display=page&redirect_uri=${process.env.VK_AUTHORIZATION_CALLBACK}&scope=${process.env.VK_SCOPE}&response_type=token&v=${process.env.VK_API_V}`
+    // приложение будет работать, только для этого пользователя в случае авторизации через Implicit Flow
+    vkUserId: process.env.VK_USER_ID,
+    vkAuthorizeUrl: process.env.VK_AUTH_TYPE === 'window' ? process.env.VK_AUTH_WINDOW_URL : process.env.VK_AUTH_IMPLICIT_URL,
+    vkAuthWindow: process.env.VK_AUTH_TYPE === 'window'
   },
 
   privateRuntimeConfig: {
