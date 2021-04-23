@@ -47,14 +47,14 @@ const setUserId = ({ $storage, $const }: Context, userId: number, expiresIn?: nu
   $storage.setCookie($const.USER_ID_KEY, userId, { maxAge, sameSite: true })
 }
 
-const getExpiresTime = ({ $storage, $const }: Context): {formatted: string, duration: Duration} | null => {
+const getExpiresTime = ({ $storage, $const }: Context): {formatted: string, duration: Duration } | {notUsed: boolean} => {
   const accessToken = $storage.getCookie($const.ACCESS_TOKEN_KEY)
   if (!accessToken) {
     return { formatted: '', duration: { hours: 24, seconds: 0 } }
   }
   const tokenCreatedAt: number = $storage.getCookie(accessToken)
   if (!tokenCreatedAt) {
-    return null
+    return { formatted: '', notUsed: true }
   }
   const expiresIn = $storage.getCookie($const.AUTH_EXPIRES_IN_KEY)
   const start = new Date().getTime()

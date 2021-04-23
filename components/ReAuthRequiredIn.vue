@@ -9,19 +9,22 @@
 export default {
   name: 'ReAuthRequiredIn',
 
-  computed: {
-    expiresTime () {
-      return this.$ctxUtils.getExpiresTime()
-    },
+  data () {
+    const expiresTime = this.$ctxUtils.getExpiresTime()
+    return {
+      expiresTime
+    }
+  },
 
+  computed: {
     expiresIn () {
       const { formatted } = this.expiresTime
       return formatted
     },
 
     visible () {
-      console.log(this.expiresTime)
-      if (!this.expiresTime) {
+      const { notUsed } = this.expiresTime
+      if (notUsed) {
         return false
       }
       const { duration: { hours } } = this.expiresTime
